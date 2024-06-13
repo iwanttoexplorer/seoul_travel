@@ -1,14 +1,21 @@
 package com.pcwk.tvl.comment;
 
 public class CommentDTO {
-	private String comSeq;
-	private String aboardSeq;
+	private int comSeq;
+	private int aboardSeq;
 	private String userId;
 	private String content;
 	private String regDt;
 	private String modDt;
 	public CommentDTO() {}
-	public CommentDTO(String comSeq, String aboardSeq, String userId, String content, String regDt, String modDt) {
+	
+	@Override
+	public String toString() {
+		return "CommentDTO [comSeq=" + comSeq + ", aboardSeq=" + aboardSeq + ", userId=" + userId + ", content="
+				+ content + ", regDt=" + regDt + ", modDt=" + modDt + "]";
+	}
+
+	public CommentDTO(int comSeq, int aboardSeq, String userId, String content, String regDt, String modDt) {
 		super();
 		this.comSeq = comSeq;
 		this.aboardSeq = aboardSeq;
@@ -17,16 +24,17 @@ public class CommentDTO {
 		this.regDt = regDt;
 		this.modDt = modDt;
 	}
-	public String getComSeq() {
+
+	public int getComSeq() {
 		return comSeq;
 	}
-	public void setComSeq(String comSeq) {
+	public void setComSeq(int comSeq) {
 		this.comSeq = comSeq;
 	}
-	public String getAboardSeq() {
+	public int getAboardSeq() {
 		return aboardSeq;
 	}
-	public void setAboardSeq(String aboardSeq) {
+	public void setAboardSeq(int aboardSeq) {
 		this.aboardSeq = aboardSeq;
 	}
 	public String getUserId() {
@@ -53,5 +61,4 @@ public class CommentDTO {
 	public void setModDt(String modDt) {
 		this.modDt = modDt;
 	}
-	
 }
