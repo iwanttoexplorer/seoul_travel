@@ -1,27 +1,33 @@
 package com.pcwk.tvl.like;
 
 public class LikeDTO {
-	private String user_id;
-	private String aboard_seq;
-	private String crt_dt;
-	public LikeDTO() {}
-	public String getUser_id() {
-		return user_id;
+	private String userId;
+	private int aboardSeq;
+	private String crtDt;
+	public String getUserId() {
+		return userId;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
-	public String getAboard_seq() {
-		return aboard_seq;
+	public int getAboardSeq() {
+		return aboardSeq;
 	}
-	public void setAboard_seq(String aboard_seq) {
-		this.aboard_seq = aboard_seq;
+	public void setAboardSeq(int aboardSeq) {
+		this.aboardSeq = aboardSeq;
 	}
-	public String getCrt_dt() {
-		return crt_dt;
+	public String getCrtDt() {
+		return crtDt;
 	}
-	public void setCrt_dt(String crt_dt) {
-		this.crt_dt = crt_dt;
+	public void setCrtDt(String crtDt) {
+		this.crtDt = crtDt;
 	}
+	public LikeDTO(String userId, int aboardSeq, String crtDt) {
+		super();
+		this.userId = userId;
+		this.aboardSeq = aboardSeq;
+		this.crtDt = crtDt;
+	}
+
 	
 }

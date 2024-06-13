@@ -64,7 +64,7 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
-			DBUtil.close(conn, pstmt);
+			DBUtill.close(conn, pstmt);
 			log.debug("5.finally conn:{} pstmt:{}",conn,pstmt);
 		}
 		log.debug("6.flag:{}",flag);
@@ -100,7 +100,7 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-			DBUtil.close(conn, pstmt);
+			DBUtill.close(conn, pstmt);
 			log.debug("5.finally conn:{} pstmt:{}",conn,pstmt);
 		}
 		log.debug("6.flag:{}",flag);
@@ -138,7 +138,7 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
-			DBUtil.close(conn, pstmt);
+			DBUtill.close(conn, pstmt);
 			log.debug("5.finally conn:{} pstmt:{}",conn,pstmt);
 		}
 		log.debug("6.flag:{}",flag);
