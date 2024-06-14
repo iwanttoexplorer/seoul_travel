@@ -5,13 +5,13 @@ import java.util.List;
 import com.pcwk.ehr.cmn.PLog;
 import com.pcwk.ehr.cmn.SearchDTO;
 
-public class MemberMain implements PLog {
-	MemberDao dao;
-	MemberDTO member;
+public class UserMain implements PLog {
+	UserDao dao;
+	UserDTO member;
 	
-	public MemberMain() {
-		dao = new MemberDao();
-		member = new MemberDTO("1kqD993", 1, "이름", "pw123213#2", "emailamc1@na3231ver.kr", "디폴트");
+	public UserMain() {
+		dao = new UserDao();
+		member = new UserDTO("1kqD993", 1, "이름", "pw123213#2", "emailamc1@na3231ver.kr", "디폴트");
 	}
 	
 	public void doSave() {
@@ -54,7 +54,7 @@ public class MemberMain implements PLog {
 	
 	public void doSelectOne() {
 		log.debug(" doSelectOne() ");
-		MemberDTO outVO = dao.doSelectOne(member);
+		UserDTO outVO = dao.doSelectOne(member);
 		if(null!=outVO) {
 			log.debug("단건조회 성공 :{}",outVO);
 		}else {
@@ -72,16 +72,16 @@ public class MemberMain implements PLog {
 		searchVO.setSearchDiv("50");
 		searchVO.setSearchWord("2024-06-13");
 		
-		List<MemberDTO> list = dao.doRetrieve(searchVO);
+		List<UserDTO> list = dao.doRetrieve(searchVO);
 		
 		int i=1;
-		for(MemberDTO vo : list) {
+		for(UserDTO vo : list) {
 			log.debug("i:{}, vo:{}",i++,vo);
 		}
 	}
 	
 	public static void main(String[] args) {
-		MemberMain m = new MemberMain();
+		UserMain m = new UserMain();
 //		m.doSave();
 //		m.doDelete();
 //		m.doUpdate();

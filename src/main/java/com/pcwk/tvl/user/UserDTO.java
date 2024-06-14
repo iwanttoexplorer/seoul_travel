@@ -2,7 +2,7 @@ package com.pcwk.tvl.user;
 
 import com.pcwk.ehr.cmn.DTO;
 
-public class MemberDTO extends DTO{
+public class UserDTO extends DTO{
 	private String userId     ; //유저 아이디
     private int gradesSeq     ; //회원 1 관리자0
     private String userName   ; //이름
@@ -10,11 +10,11 @@ public class MemberDTO extends DTO{
     private String userEmail  ; //이메일
     private String regDt      ; //생성일
     
-    public MemberDTO() {
+    public UserDTO() {
     	
 	}
 
-	public MemberDTO(String userId, int gradesSeq, String userName, String userPw, String userEmail, String regDt) {
+	public UserDTO(String userId, int gradesSeq, String userName, String userPw, String userEmail, String regDt) {
 		super();
 		this.userId = userId;
 		this.gradesSeq = gradesSeq;

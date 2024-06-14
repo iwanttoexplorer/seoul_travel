@@ -15,19 +15,19 @@ import com.pcwk.ehr.cmn.DTO;
 import com.pcwk.ehr.cmn.SearchDTO;
 import com.pcwk.ehr.cmn.WorkDiv;
 
-public class MemberDao implements WorkDiv<MemberDTO> {
+public class UserDao implements WorkDiv<UserDTO> {
 	private ConnectionMaker connectionMaker;
 	
 	
-	public MemberDao() {
+	public UserDao() {
 		connectionMaker = new ConnectionMaker();
 	}
 
 	@Override
-	public List<MemberDTO> doRetrieve(DTO search) {
-		List<MemberDTO> list = new ArrayList<MemberDTO>();
+	public List<UserDTO> doRetrieve(DTO search) {
+		List<UserDTO> list = new ArrayList<UserDTO>();
 		
-		MemberDTO outVO = null;
+		UserDTO outVO = null;
 		SearchDTO searchVO = (SearchDTO) search;
 		StringBuilder sbWhere = new StringBuilder(100);
 		
@@ -192,7 +192,7 @@ public class MemberDao implements WorkDiv<MemberDTO> {
 			log.debug("5.rs:{}",rs);
 			
 			while(rs.next()) {
-				outVO = new MemberDTO();
+				outVO = new UserDTO();
 				
 				outVO.setUserId(rs.getString("user_id"));
 				outVO.setGradesSeq(rs.getInt("grades_seq"));
@@ -226,7 +226,7 @@ public class MemberDao implements WorkDiv<MemberDTO> {
 	 * 
 	 */
 	@Override
-	public int doSave(MemberDTO param) {
+	public int doSave(UserDTO param) {
 		String checkId = checkId(param.getUserId());
 		String checkPW = checkPassword(param.getUserPw());
 		String checkName = checkName(param.getUserName());
@@ -297,7 +297,7 @@ public class MemberDao implements WorkDiv<MemberDTO> {
 	}
 
 	@Override
-	public int doDelete(MemberDTO param) {
+	public int doDelete(UserDTO param) {
 		
 		Connection conn = connectionMaker.getConnection();
 		PreparedStatement pstmt = null; // SQL+PARAM
@@ -331,7 +331,7 @@ public class MemberDao implements WorkDiv<MemberDTO> {
 	
 	
 	@Override
-	public int doUpdate(MemberDTO param) {
+	public int doUpdate(UserDTO param) {
 		String checkPW = checkPassword(param.getUserPw());
 		String checkName = checkName(param.getUserName());
 		String checkEmail = checkEmail(param.getUserEmail());
@@ -390,8 +390,8 @@ public class MemberDao implements WorkDiv<MemberDTO> {
 
 
 	@Override
-	public MemberDTO doSelectOne(MemberDTO param) {
-		MemberDTO outVO = null; 
+	public UserDTO doSelectOne(UserDTO param) {
+		UserDTO outVO = null; 
 		Connection conn = connectionMaker.getConnection();
 		PreparedStatement pstmt = null; 
 		ResultSet rs = null;
@@ -421,7 +421,7 @@ public class MemberDao implements WorkDiv<MemberDTO> {
 			log.debug("5.rs:{}",rs);
 			
 			if(rs.next()) {
-				outVO = new MemberDTO();
+				outVO = new UserDTO();
 				outVO.setUserId(rs.getString("user_id"));
 				outVO.setGradesSeq(rs.getInt("grades_seq"));
 				outVO.setUserName(rs.getString("user_name"));
