@@ -12,8 +12,11 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-.classpath
+# Eclipse Core
 .project
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+출처: https://we-always-fight-with-code.tistory.com/66 [감귤농장:티스토리]
 # External tool builders
 .externalToolBuilders/
 # Locally stored "Eclipse launch configurations"
