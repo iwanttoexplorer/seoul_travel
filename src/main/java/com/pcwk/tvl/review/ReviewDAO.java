@@ -176,4 +176,10 @@ public class ReviewDAO implements WorkDiv<ReviewDTO>, PLog {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	// 추천 함수임
+	public int like(int aboardSeq) {
+		String SQL = "Update V_REVIEW set ";
+		return -1;
+	}
 }
