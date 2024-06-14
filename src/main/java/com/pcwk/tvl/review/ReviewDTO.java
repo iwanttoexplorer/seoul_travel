@@ -5,16 +5,15 @@ import java.util.Date;
 import com.pcwk.ehr.cmn.DTO;
 
 public class ReviewDTO extends DTO {
-    private int aboard_seq;
-    private String comment;
-    private String imgLink;
+    private int aboardSeq;
     private String contentId;
-    private String user_id;
+    private String userId;
+    private String imgLink;
+    private String comments;
     private String title;
+    private String regDt;   
+    private String modDt;
     private int readCnt;
-    private Date regDt;   
-    private Date modDt;
-    
  // Getters and Setters
     
     public ReviewDTO() {
@@ -37,20 +36,20 @@ public class ReviewDTO extends DTO {
 		this.title = title;
 	}
 
-	public int getAboard_seq() {
-		return aboard_seq;
+	public int getAboardSeq() {
+		return aboardSeq;
 	}
 
-	public void setAboard_seq(int aboard_seq) {
-		this.aboard_seq = aboard_seq;
+	public void setAboardSeq(int aboardSeq) {
+		this.aboardSeq = aboardSeq;
 	}
 
-	public String getComment() {
-		return comment;
+	public String getComments() {
+		return comments;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
 	public String getImgLink() {
@@ -69,50 +68,53 @@ public class ReviewDTO extends DTO {
 		this.contentId = contentId;
 	}
 
-	public String getUser_id() {
-		return user_id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
-	public Date getRegDt() {
+	public String getRegDt() {
 		return regDt;
 	}
 
-	public void setRegDt(Date regDt) {
+	public void setRegDt(String regDt) {
 		this.regDt = regDt;
 	}
 
-	public Date getModDt() {
+	public String getModDt() {
 		return modDt;
 	}
 
-	public void setModDt(Date modDt) {
-		this.modDt = modDt;
-	}
-	
-	public ReviewDTO(int aboard_seq, String comment, String imgLink, String contentId, String user_id, String title,
-			int readCnt, Date regDt, Date modDt) {
-		super();
-		this.aboard_seq = aboard_seq;
-		this.comment = comment;
-		this.imgLink = imgLink;
-		this.contentId = contentId;
-		this.user_id = user_id;
-		this.title = title;
-		this.readCnt = readCnt;
-		this.regDt = regDt;
+	public void setModDt(String modDt) {
 		this.modDt = modDt;
 	}
 
+	public ReviewDTO(int aboardSeq, String contentId, String userId, String imgLink, String comments, String title,
+			String regDt, String modDt, int readCnt) {
+		super();
+		this.aboardSeq = aboardSeq;
+		this.contentId = contentId;
+		this.userId = userId;
+		this.imgLink = imgLink;
+		this.comments = comments;
+		this.title = title;
+		this.regDt = regDt;
+		this.modDt = modDt;
+		this.readCnt = readCnt;
+	}
+
+
 	@Override
 	public String toString() {
-		return "ReviewDTO [aboard_seq=" + aboard_seq + ", comment=" + comment + ", imgLink=" + imgLink + ", contentId="
-				+ contentId + ", user_id=" + user_id + ", title=" + title + ", readCnt=" + readCnt + ", regDt=" + regDt
-				+ ", modDt=" + modDt + "]";
+		return "ReviewDTO [aboardSeq=" + aboardSeq + ", contentId=" + contentId + ", userId=" + userId + ", imgLink="
+				+ imgLink + ", comments=" + comments + ", title=" + title + ", regDt=" + regDt + ", modDt=" + modDt
+				+ ", readCnt=" + readCnt + ", toString()=" + super.toString() + "]";
 	}
+	
+	
 
 }  
 	

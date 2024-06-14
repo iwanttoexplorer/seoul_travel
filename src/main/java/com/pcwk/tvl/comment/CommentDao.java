@@ -34,7 +34,7 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 		sb.append("    user_id,            \n");
 		sb.append("    content,            \n");
 		sb.append("    reg_dt,              \n");
-		sb.append("    mod_dt,              \n");
+		sb.append("    mod_dt              \n");
 		sb.append(") VALUES (               \n");
 		sb.append("    comment_seq.NEXTVAL, \n");
 		sb.append("    ?,                   \n");
@@ -54,10 +54,10 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 			log.debug("4.pstmt:{}",pstmt);
 			
 			//param 설정
-			//pstmt.setInt(1, param.getSeq());
+			
 			pstmt.setInt(1, param.getAboardSeq());
-			pstmt.setString(2, param.getContent());
-			pstmt.setString(3, param.getUserId());
+			pstmt.setString(2, param.getUserId());
+			pstmt.setString(3, param.getContent());
 			
 			//DML
 			flag = pstmt.executeUpdate();
@@ -94,7 +94,7 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 			log.debug("4.pstmt:{}",pstmt);
 			
 			pstmt.setString(1, param.getContent());
-			pstmt.setString(2, param.getModDt());
+			pstmt.setInt(2, param.getComSeq());
 			
 			flag = pstmt.executeUpdate();
 		} catch (SQLException e) {

@@ -82,11 +82,11 @@ public class UserMain implements PLog {
 	
 	public static void main(String[] args) {
 		UserMain m = new UserMain();
-//		m.doSave();
+		m.doSave();
 //		m.doDelete();
 //		m.doUpdate();
 //		m.doSelectOne();
-		m.doRetrieve();
+//		m.doRetrieve();
 	}
 
 }

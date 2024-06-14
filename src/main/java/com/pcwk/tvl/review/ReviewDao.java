@@ -16,10 +16,10 @@ import com.pcwk.ehr.cmn.DTO;
 import com.pcwk.ehr.cmn.WorkDiv;
 import com.pcwk.ehr.cmn.PLog;
 
-public class ReviewDAO implements WorkDiv<ReviewDTO>, PLog {
+public class ReviewDao implements WorkDiv<ReviewDTO>, PLog {
     private ConnectionMaker connectionMaker;
 
-    public ReviewDAO() {
+    public ReviewDao() {
         connectionMaker = new ConnectionMaker();
     }
 
@@ -35,27 +35,33 @@ public class ReviewDAO implements WorkDiv<ReviewDTO>, PLog {
         sb.append("     contentId,              \n");
         sb.append("     user_id,                \n");
         sb.append("     img_link,               \n");
-        sb.append("     comment,                \n");
+        sb.append("     comments,                \n");
         sb.append("     title,                  \n");
         sb.append("     reg_dt,                 \n");
-        sb.append("     mod_dt)                 \n");
-        sb.append(" VALUES (?, ?, ?, ?, ?, ?, ?, ?)\n");
-
+        sb.append("     mod_dt,                 \n");
+        sb.append("     read_cnt               \n");
+        sb.append(") VALUES (               \n");
+		sb.append("    review_seq.NEXTVAL,   \n");
+		sb.append("    ?,                   \n");
+		sb.append("    ?,                   \n");
+		sb.append("    ?,                   \n");
+		sb.append("    ?,                   \n");
+		sb.append("    ?,                   \n");
+		sb.append("    SYSDATE,             \n");
+		sb.append("    SYSDATE,             \n");
+		sb.append("    0            	    \n");
+		sb.append(")                        \n");
         log.debug("1.sql:{}", sb.toString());
         log.debug("2.conn:{}", conn);
         log.debug("3.param:{}", param);
 
         try {
             pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setInt(1, param.getAboard_seq());
-            pstmt.setString(2, param.getComment());
+            pstmt.setString(1, param.getContentId());
+            pstmt.setString(2, param.getUserId());
             pstmt.setString(3, param.getImgLink());
-            pstmt.setString(4, param.getContentId());
-            pstmt.setString(5, param.getUser_id());
-            pstmt.setString(6, param.getTitle());
-            pstmt.setInt(7, param.getReadCnt());
-            pstmt.setDate(8, new java.sql.Date(param.getRegDt().getTime()));
-            pstmt.setDate(9, new java.sql.Date(param.getModDt().getTime()));
+            pstmt.setString(4, param.getComments());
+            pstmt.setString(5, param.getTitle());
 
             flag = pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -79,7 +85,7 @@ public class ReviewDAO implements WorkDiv<ReviewDTO>, PLog {
         sb.append(" UPDATE v_review SET       \n");
         sb.append("     aboard_seq = ?,       \n");
         sb.append("     title = ?,            \n");
-        sb.append("     contents = ?          \n");
+        sb.append("     comments = ?          \n");
         sb.append(" WHERE aboard_seq = ?      \n");
 
         log.debug("1.sql:{}", sb.toString());
@@ -88,10 +94,10 @@ public class ReviewDAO implements WorkDiv<ReviewDTO>, PLog {
 
         try {
             pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setString(1, param.getComment());
+            pstmt.setInt(1, param.getAboardSeq());
             pstmt.setString(2, param.getTitle());
-            pstmt.setInt(3, param.getAboard_seq());
-
+            pstmt.setString(3, param.getComments());
+            pstmt.setInt(4, param.getAboardSeq());
             flag = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -111,7 +117,7 @@ public class ReviewDAO implements WorkDiv<ReviewDTO>, PLog {
         PreparedStatement pstmt = null;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("DELETE FROM reviews   \n");
+        sb.append("DELETE FROM v_review   \n");
         sb.append("WHERE aboard_seq = ?  \n");
 
         log.debug("1.sql:{}", sb.toString());
@@ -120,7 +126,7 @@ public class ReviewDAO implements WorkDiv<ReviewDTO>, PLog {
 
         try {
             pstmt = conn.prepareStatement(sb.toString());
-            pstmt.setInt(1, param.getAboard_seq());
+            pstmt.setInt(1, param.getAboardSeq());
 
             flag = pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -141,7 +147,7 @@ public class ReviewDAO implements WorkDiv<ReviewDTO>, PLog {
         PreparedStatement pstmt = null;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("UPDATE reviews             \n");
+        sb.append("UPDATE v_review             \n");
         sb.append("SET readCnt = readCnt + 1  \n");
         sb.append("WHERE aboard_seq = ?       \n");
 

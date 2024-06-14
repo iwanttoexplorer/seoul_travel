@@ -8,7 +8,7 @@ public class ConnectionMaker implements PLog {
 	final static String DB_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	// jdbc:oracle:thin:@IP:PORT:전역DB명칭(SID)
 	// "jdbc:oracle:thin:@192.168.0.30:1521:xe"
-	final static String DB_URL = "jdbc:oracle:thin:@192.168.0.30:1521:xe";
+	final static String DB_URL = "jdbc:oracle:thin:@118.33.104.105:1522:xe";
 	final static String DB_USER = "seoul_travel";
 	final static String DB_PASSWORD = "journey";
 	
