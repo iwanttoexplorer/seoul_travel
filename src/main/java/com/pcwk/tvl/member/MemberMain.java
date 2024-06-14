@@ -6,11 +6,11 @@ import com.pcwk.ehr.cmn.PLog;
 import com.pcwk.ehr.cmn.SearchDTO;
 
 public class MemberMain implements PLog {
-	MemberDAO dao;
+	MemberDao dao;
 	MemberDTO member;
 	
 	public MemberMain() {
-		dao = new MemberDAO();
+		dao = new MemberDao();
 		member = new MemberDTO("1kqD993", 1, "이름", "pw123213#2", "emailamc1@na3231ver.kr", "디폴트");
 	}
 	

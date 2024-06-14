@@ -15,11 +15,11 @@ import com.pcwk.ehr.cmn.DTO;
 import com.pcwk.ehr.cmn.SearchDTO;
 import com.pcwk.ehr.cmn.WorkDiv;
 
-public class MemberDAO implements WorkDiv<MemberDTO> {
+public class MemberDao implements WorkDiv<MemberDTO> {
 	private ConnectionMaker connectionMaker;
 	
 	
-	public MemberDAO() {
+	public MemberDao() {
 		connectionMaker = new ConnectionMaker();
 	}
 
