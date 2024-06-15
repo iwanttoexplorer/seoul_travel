@@ -3,14 +3,14 @@ package com.pcwk.tvl.gucode;
 public class GucodeDTO {
 	
 	private String guCode; //구 코드
-	private String gName;  //구 이름
+	private String gname;  //구 이름
 	
 	public GucodeDTO() {}
-	
-	public GucodeDTO(String guCode, String gName) {
+
+	public GucodeDTO(String guCode, String gname) {
 		super();
 		this.guCode = guCode;
-		this.gName = gName;
+		this.gname = gname;
 	}
 
 	public String getGuCode() {
@@ -21,20 +21,18 @@ public class GucodeDTO {
 		this.guCode = guCode;
 	}
 
-	public String getgName() {
-		return gName;
+	public String getGname() {
+		return gname;
 	}
 
-	public void setgName(String gName) {
-		this.gName = gName;
+	public void setGname(String gname) {
+		this.gname = gname;
 	}
 
 	@Override
 	public String toString() {
-		return "GucodeDTO [guCode=" + guCode + ", gName=" + gName + ", toString()=" + super.toString() + "]";
+		return "GucodeDTO [guCode=" + guCode + ", gname=" + gname + ", toString()=" + super.toString() + "]";
 	}
 
-	
-	
 	
 }
