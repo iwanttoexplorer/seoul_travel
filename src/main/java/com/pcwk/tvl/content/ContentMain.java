@@ -1,6 +1,9 @@
 package com.pcwk.tvl.content;
 
+import java.util.List;
+
 import com.pcwk.ehr.cmn.PLog;
+import com.pcwk.ehr.cmn.SearchDTO;
 
 public class ContentMain implements PLog {
 
@@ -37,16 +40,31 @@ public class ContentMain implements PLog {
 		}
 	}
 	
+	public void doRetrieve() {
+		log.debug(" doRetrieve() ");
+		
+		SearchDTO  searchVO = new SearchDTO();
+		
+		searchVO.setPageNo(1);
+		searchVO.setPageSize(10);
+		
+		//검색구분
+		searchVO.setSearchDiv("20");
+		searchVO.setSearchWord("A0201");
+		
+		List<ContentDTO> list=dao.doRetrieve(searchVO);
+		
+		int i=0;
+		for(ContentDTO vo :list) {
+			log.debug("i: {}, vo: {}", ++i, vo);
+		}
+	}
+	
 	public static void main(String[] args) {
 		ContentMain m =new ContentMain();
-		//m.doSave();      => m.addAndGet();
-		//m.doDelete();    => m.addAndGet();
-		//m.doSelectOne(); => m.addAndGet();
-		//m.doUpdate();
-		//m.doRetrieve();
-		//m.addAndGet();
+		m.doRetrieve();
 		//m.doSave();
-		m.doSelectOne();
+		//m.doSelectOne();
 	}
 	
 }

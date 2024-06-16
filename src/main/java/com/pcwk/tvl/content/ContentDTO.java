@@ -1,6 +1,8 @@
 package com.pcwk.tvl.content;
 
-public class ContentDTO {
+import com.pcwk.ehr.cmn.DTO;
+
+public class ContentDTO extends DTO{
 
 	private String contentId; //콘텐츠ID
 	private String category;  //카테고리
@@ -106,6 +108,7 @@ public class ContentDTO {
 				+ ", addr=" + addr + ", imgLink=" + imgLink + ", title=" + title + ", regDt=" + regDt + ", modDt="
 				+ modDt + ", toString()=" + super.toString() + "]";
 	}
+
 
 	
 }
