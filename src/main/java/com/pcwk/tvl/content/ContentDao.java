@@ -156,7 +156,7 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 		sb.append("             tt1.img_link,                                        \n");
 		sb.append("             tt1.title,                                           \n");
 		sb.append("             tt1.reg_dt,                                          \n");
-		sb.append("             tt1.mod_dt                                          \n");
+		sb.append("             tt1.mod_dt                                           \n");
 		sb.append("      FROM (                                                      \n");
 		sb.append("          SELECT ROWNUM AS rnum, T1.*                             \n");
 		sb.append("          FROM (                                                  \n");
