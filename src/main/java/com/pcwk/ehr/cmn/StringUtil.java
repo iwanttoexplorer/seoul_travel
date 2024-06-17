@@ -3,6 +3,10 @@ package com.pcwk.ehr.cmn;
 import java.util.List;
 import java.util.UUID;
 
+import com.pcwk.tvl.category.CategoryDTO;
+import com.pcwk.tvl.content.ContentDTO;
+import com.pcwk.tvl.gucode.GucodeDTO;
+
 
 public class StringUtil implements PLog{
 	
@@ -118,6 +122,60 @@ public class StringUtil implements PLog{
 	}
 	
 	/**
+	 * 
+	 * @param pageCode
+	 * @param selecedVal
+	 * @return
+	 */
+	public static String getCategoryList(List<CategoryDTO> pageCode, String selecedVal) {
+		StringBuilder sb = new StringBuilder(300);
+		
+		if(null != pageCode && pageCode.size()>0){
+     	   for(CategoryDTO code :pageCode){
+     		   String optionValue="";
+     		   
+     		   if(code.getCategory().equals(selecedVal)) {
+     			  optionValue = "<option value='"+code.getCategory()+"' selected>"+code.getCatName()+"</option>";
+     		   } else {
+     			  optionValue = "<option value='"+code.getCategory()+"'>"+code.getCatName()+"</option>";
+     		   }
+     		   
+     		   sb.append(optionValue+"\n");
+     	   }
+     	   log.debug(sb.toString());
+        }
+		
+		return sb.toString();
+	}
+	
+	/**
+	 * 
+	 * @param pageCode
+	 * @param selecedVal
+	 * @return
+	 */
+	public static String getGuCodeList(List<GucodeDTO> pageCode, String selecedVal) {
+		StringBuilder sb = new StringBuilder(300);
+		
+		if(null != pageCode && pageCode.size()>0){
+     	   for(GucodeDTO code :pageCode){
+     		   String optionValue="";
+     		   
+     		   if(code.getGuCode().equals(selecedVal)) {
+     			  optionValue = "<option value='"+code.getGuCode()+"' selected>"+code.getGname()+"</option>";
+     		   } else {
+     			  optionValue = "<option value='"+code.getGuCode()+"'>"+code.getGname()+"</option>";
+     		   }
+     		   
+     		   sb.append(optionValue+"\n");
+     	   }
+     	   log.debug(sb.toString());
+        }
+		
+		return sb.toString();
+	}
+	
+	/**
 	 *  request null처리
 	 * @param request
 	 * @param paramName
@@ -134,13 +192,14 @@ public class StringUtil implements PLog{
 	}
 	
 	/**
-	 * 32bit UUID 생성
-	 * @return
+	 *  32bit UUID 생성
+	 * @return String
 	 */
 	public static String getUUID() {
+		String resultUUID = "";
 		UUID uuidTemp = UUID.randomUUID();
 		
 		return uuidTemp.toString().replaceAll("-", "");
 	}
-
+	
 }
