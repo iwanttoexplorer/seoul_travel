@@ -20,6 +20,10 @@ public class ReviewDTO extends DTO {
     	
     }
     
+    public ReviewDTO(int aboardSeq) {
+        this.aboardSeq = aboardSeq;
+    }
+    
 	public int getReadCnt() {
 		return readCnt;
 	}

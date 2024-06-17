@@ -95,27 +95,7 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 		return flag;
 	}
 
-	@Override
-	public List<ContentDTO> doRetrieve(DTO search) {
-//		1. DriverManager로 데이터 베이스와 연결을 생성
-//		2. Connection: 데이터 베이스와 연결 id/pass 인터페이스
-//		3. Statement/PreparedStatement: SQL문을 실행 인터페이스
-//		4. ResultSet : SQL문의 결과를 저장하고 조회하는 인터페이스
-//		5. 연결종료
-		
-		SearchDTO  searchVO = (SearchDTO) search;
-		
-		//return값
-		List<ContentDTO> list = new ArrayList<ContentDTO>();
-		Connection conn = connectionMaker.getConnection(); //DB연결
-		PreparedStatement pstmt = null;//SQL+PARAM
-		ResultSet         rs    = null;//SQL문의 결과
-		
-		StringBuilder sb=new StringBuilder(1000);
-		
-		return list;
-		
-	}
+	
 	@Override
 	public int doUpdate(ContentDTO param) {
 		// TODO Auto-generated method stub
@@ -127,7 +107,249 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	
+	/**
+	 * 다건 조회
+	 */
+	@Override
+	public List<ContentDTO> doRetrieve(DTO search) {
+//		1. DriverManager로 데이터 베이스와 연결을 생성
+//		2. Connection: 데이터 베이스와 연결 id/pass 인터페이스
+//		3. Statement/PreparedStatement: SQL문을 실행 인터페이스
+//		4. ResultSet : SQL문의 결과를 저장하고 조회하는 인터페이스
+//		5. 연결종료
+		
+		SearchDTO  searchVO = (SearchDTO) search;
+		
+		StringBuilder sbWhere = new StringBuilder(300);
+//		--WHERE title    LIKE :searchWord||'%' "10"
+		
+		if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("10")) {
+			sbWhere.append("WHERE contentid LIKE ?||'%' \n");
+		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("20")) {
+			sbWhere.append("WHERE category LIKE ?||'%' \n");
+		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("30")) {
+			sbWhere.append("WHERE gucode LIKE ?||'%' \n");
+		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("40")) {
+			sbWhere.append("WHERE title LIKE ?||'%' \n");
+			sbWhere.append("OR category LIKE ?||'%' \n");
+		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("50")) {
+			sbWhere.append("WHERE title LIKE ?||'%' \n");
+			sbWhere.append("OR gucode LIKE ?||'%' \n");
+		}
+		
+		List<ContentDTO> list = new ArrayList<ContentDTO>();
+		
+		Connection conn = connectionMaker.getConnection(); //DB연결
+		PreparedStatement pstmt = null;//SQL+PARAM
+		ResultSet         rs    = null;//SQL문의 결과
+		
+		StringBuilder sb=new StringBuilder(300);
+		sb.append("  SELECT A.*,B.*                                                  \n");
+		sb.append("  FROM (                                                          \n");
+		sb.append("      SELECT tt1.rnum AS num,                                     \n");
+		sb.append("             tt1.contentid,                                        \n");
+		sb.append("             tt1.category,                                        \n");
+		sb.append("             tt1.gucode,                                          \n");
+		sb.append("             tt1.tel,                                             \n");
+		sb.append("             tt1.addr,                                            \n");
+		sb.append("             tt1.img_link,                                        \n");
+		sb.append("             tt1.title,                                           \n");
+		sb.append("             tt1.reg_dt,                                          \n");
+		sb.append("             tt1.mod_dt                                          \n");
+		sb.append("      FROM (                                                      \n");
+		sb.append("          SELECT ROWNUM AS rnum, T1.*                             \n");
+		sb.append("          FROM (                                                  \n");
+		sb.append("                  SELECT *                                        \n");
+		sb.append("                    FROM v_content                                \n");
+		sb.append("                   --WHERE조건                                     \n");
+		//--where------------------------------------------------------------------------
+		sb.append(sbWhere.toString());
+		//--where------------------------------------------------------------------------
+		sb.append("                   ORDER BY mod_dt DESC                           \n");
+		sb.append("                                                                  \n");
+		sb.append("          )T1                                                     \n");
+		sb.append("          WHERE ROWNUM <=( ? * (? - 1)+ ?)                        \n");
+		sb.append("      )TT1                                                        \n");
+		sb.append("      WHERE rnum >=(? * ( ? - 1) +1  )                            \n");
+		sb.append("      --WHERE rnum BETWEEN 1 AND 10                               \n");
+		sb.append("      )A,(                                                        \n");
+		sb.append("      SELECT COUNT(*) totalCnt                                    \n");
+		sb.append("        FROM v_content                                            \n");
+		sb.append("      --WHERE조건                                                  \n");
+		sb.append("                                                                  \n");
+		//--where------------------------------------------------------------------------
+		sb.append(sbWhere.toString());
+		//--where------------------------------------------------------------------------
+		sb.append("      )B                                                          \n");
+		
+		
+		log.debug("1.sql: {} \n", sb.toString());
+		log.debug("2.conn: {}",   conn);
+		log.debug("3.search: {} ", search);
+		
+		
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			log.debug("4.pstmt: {} ", pstmt);	
+			
+			//param설정
+			//paging
+			
+			//contentid
+			if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("10")) {
+				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
+				
+				//검색어
+				pstmt.setString(1, searchVO.getSearchWord());
+				
+				//ROWNUM
+				pstmt.setInt(2, searchVO.getPageSize());
+				pstmt.setInt(3, searchVO.getPageNo());
+				pstmt.setInt(4, searchVO.getPageSize());
+				
+				//rnum
+				pstmt.setInt(5, searchVO.getPageSize());
+				pstmt.setInt(6, searchVO.getPageNo());
+				
+				//검색어
+				pstmt.setString(7, searchVO.getSearchWord());
+				
+			//category
+			}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("20")) {
+				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
+				
+				//검색어
+				pstmt.setString(1, searchVO.getSearchWord());
+				
+				//ROWNUM
+				pstmt.setInt(2, searchVO.getPageSize());
+				pstmt.setInt(3, searchVO.getPageNo());
+				pstmt.setInt(4, searchVO.getPageSize());
+				
+				//rnum
+				pstmt.setInt(5, searchVO.getPageSize());
+				pstmt.setInt(6, searchVO.getPageNo());
+				
+				//검색어
+				pstmt.setString(7, searchVO.getSearchWord());
+				
+			//gucode	
+			}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("30")) {
+				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
+				
+				//검색어
+				pstmt.setString(1, searchVO.getSearchWord());
+				
+				//ROWNUM
+				pstmt.setInt(2, searchVO.getPageSize());
+				pstmt.setInt(3, searchVO.getPageNo());
+				pstmt.setInt(4, searchVO.getPageSize());
+				
+				//rnum
+				pstmt.setInt(5, searchVO.getPageSize());
+				pstmt.setInt(6, searchVO.getPageNo());
+				
+				//검색어
+				pstmt.setString(7, searchVO.getSearchWord());
+				
+				//제목+내용
+			}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("40")) {
+				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
+				
+				//검색어
+				pstmt.setString(1, searchVO.getSearchWord());
+				pstmt.setString(2, searchVO.getSearchWord());
+				
+				//ROWNUM
+				pstmt.setInt(3, searchVO.getPageSize());
+				pstmt.setInt(4, searchVO.getPageNo());
+				pstmt.setInt(5, searchVO.getPageSize());
+				
+				//rnum
+				pstmt.setInt(6, searchVO.getPageSize());
+				pstmt.setInt(7, searchVO.getPageNo());
+				
+				//검색어
+				pstmt.setString(8, searchVO.getSearchWord());
+				pstmt.setString(9, searchVO.getSearchWord());
+			
+			//제목+내용
+			}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("50")) {
+				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
+				
+				//검색어
+				pstmt.setString(1, searchVO.getSearchWord());
+				pstmt.setString(2, searchVO.getSearchWord());
+				
+				//ROWNUM
+				pstmt.setInt(3, searchVO.getPageSize());
+				pstmt.setInt(4, searchVO.getPageNo());
+				pstmt.setInt(5, searchVO.getPageSize());
+				
+				//rnum
+				pstmt.setInt(6, searchVO.getPageSize());
+				pstmt.setInt(7, searchVO.getPageNo());
+				
+				//검색어
+				pstmt.setString(8, searchVO.getSearchWord());
+				pstmt.setString(9, searchVO.getSearchWord());
+				
+			
 
+			//전체
+			}else {
+				//ROWNUM
+				pstmt.setInt(1, searchVO.getPageSize());
+				pstmt.setInt(2, searchVO.getPageNo());
+				pstmt.setInt(3, searchVO.getPageSize());
+				
+				//rnum
+				pstmt.setInt(4, searchVO.getPageSize());
+				pstmt.setInt(5, searchVO.getPageNo());
+			}
+			
+			
+			//SELECT실행
+			rs = pstmt.executeQuery();
+			log.debug("5.rs:{}",rs);
+			
+			while(rs.next()) {
+				//건수 최대값만 정해짐 
+				ContentDTO outVO=new ContentDTO();
+				
+				outVO.setContentId(rs.getString("contentId"));
+				outVO.setCategory(rs.getString("category"));
+				outVO.setGucode(rs.getString("gucode"));
+				outVO.setTel(rs.getString("tel"));
+				outVO.setAddr(rs.getString("addr"));
+				outVO.setImgLink(rs.getString("img_link"));
+				outVO.setTitle(rs.getString("title"));
+				outVO.setRegDt(rs.getString("reg_dt"));
+				outVO.setModDt(rs.getString("mod_dt"));
+				
+				outVO.setTotalCnt(rs.getInt("totalCnt"));
+				
+				
+				list.add(outVO);
+			}
+			
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtill.close(conn, pstmt, rs);
+			log.debug("6.finally conn:{} pstmt:{} rs:{}",conn,pstmt,rs);
+		}
+		
+		
+		return list;
+	}
+
+	/**
+	 * 단건 조회
+	 */
 	@Override
 	public ContentDTO doSelectOne(ContentDTO param) {
 //		1. DriverManager로 데이터 베이스와 연결을 생성

@@ -50,7 +50,22 @@ public class LikeDao implements PLog,WorkDiv<LikeDTO>{
             // DML
             flag = pstmt.executeUpdate();
 
+<<<<<<< HEAD
            
+=======
+            // 총 추천수 조회
+            String countSQL = "SELECT COUNT(*) FROM v_like WHERE aboard_seq = ?";
+            PreparedStatement countStmt = conn.prepareStatement(countSQL);
+            countStmt.setInt(1, param.getAboardSeq());
+            ResultSet rs = countStmt.executeQuery();
+            
+            if (rs.next()) {
+                flag = rs.getInt(1);
+            }
+
+            rs.close();
+            countStmt.close();
+>>>>>>> 229e90e9499623fb0dee7b80d20ad385d94343f5
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -63,6 +78,7 @@ public class LikeDao implements PLog,WorkDiv<LikeDTO>{
         return flag;
     }
 	
+<<<<<<< HEAD
     public int doLike(int aboardSeq) {
     	int likeCount=0;
     	Connection conn = connectionMaker.getConnection();
@@ -97,10 +113,36 @@ public class LikeDao implements PLog,WorkDiv<LikeDTO>{
 
         return likeCount;
     }
+=======
+
+>>>>>>> 229e90e9499623fb0dee7b80d20ad385d94343f5
 	@Override
 	public List<LikeDTO> doRetrieve(DTO search) {
 		// TODO Auto-generated method stub
 		return null;
+<<<<<<< HEAD
+=======
+	}
+
+	
+
+	@Override
+	public int doUpdate(LikeDTO param) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int doDelete(LikeDTO param) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public LikeDTO doSelectOne(LikeDTO param) {
+		// TODO Auto-generated method stub
+		return null;
+>>>>>>> 229e90e9499623fb0dee7b80d20ad385d94343f5
 	}
 
 	
