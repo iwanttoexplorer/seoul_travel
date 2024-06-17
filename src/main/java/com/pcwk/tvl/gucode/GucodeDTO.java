@@ -1,6 +1,8 @@
 package com.pcwk.tvl.gucode;
 
-public class GucodeDTO {
+import com.pcwk.ehr.cmn.DTO;
+
+public class GucodeDTO extends DTO{
 	
 	private String guCode; //구 코드
 	private String gname;  //구 이름
