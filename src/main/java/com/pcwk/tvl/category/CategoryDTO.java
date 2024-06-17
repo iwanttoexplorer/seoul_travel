@@ -1,6 +1,8 @@
 package com.pcwk.tvl.category;
 
-public class CategoryDTO {
+import com.pcwk.ehr.cmn.DTO;
+
+public class CategoryDTO extends DTO{
 	
 	private String category; //카테고리
 	private String catName; //케테고리 이름
