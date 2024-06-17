@@ -254,7 +254,7 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 				//검색어
 				pstmt.setString(7, searchVO.getSearchWord());
 				
-				//제목+내용
+			//title+category
 			}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("40")) {
 				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
 				
@@ -275,7 +275,7 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 				pstmt.setString(8, searchVO.getSearchWord());
 				pstmt.setString(9, searchVO.getSearchWord());
 			
-			//제목+내용
+			//title+gucode
 			}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("50")) {
 				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
 				
@@ -296,8 +296,6 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 				pstmt.setString(8, searchVO.getSearchWord());
 				pstmt.setString(9, searchVO.getSearchWord());
 				
-			
-
 			//전체
 			}else {
 				//ROWNUM
