@@ -183,9 +183,5 @@ public class ReviewDao implements WorkDiv<ReviewDTO>, PLog {
 		return null;
 	}
 	
-	// 추천 함수임
-	public int like(int aboardSeq) {
-		String SQL = "Update V_REVIEW set ";
-		return -1;
-	}
+	
 }

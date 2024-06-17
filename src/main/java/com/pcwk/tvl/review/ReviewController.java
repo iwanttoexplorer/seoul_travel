@@ -11,11 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.pcwk.ehr.cmn.ControllerV;
 import com.pcwk.ehr.cmn.JView;
+import com.pcwk.ehr.cmn.PLog;
+import com.pcwk.tvl.like.LikeDTO;
+import com.pcwk.tvl.like.LikeDao;
 
-public class ReviewController extends HttpServlet implements ControllerV {
+public class ReviewController extends HttpServlet implements ControllerV,PLog {
     private static final long serialVersionUID = 1L;
     private ReviewDao reviewDAO = new ReviewDao();
-
+    private LikeDao likeDao = new LikeDao();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doWork(request, response);
@@ -103,7 +106,18 @@ public class ReviewController extends HttpServlet implements ControllerV {
 
     private void likeReview(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
         int aboardSeq = Integer.parseInt(request.getParameter("aboardSeq"));
-        reviewDAO.like(aboardSeq);
-        response.sendRedirect("ReviewController?action=list");
+        String userId = (String)request.getSession().getAttribute("userId");
+        LikeDTO like = new LikeDTO(userId, aboardSeq);
+        int flag = likeDao.doSave(like);
+        if (flag == 1) {
+            // 좋아요 기록이 성공적으로 저장된 경우, 해당 리뷰의 좋아요 수를 업데이트
+            int likeCount = likeDao.doLike(aboardSeq);
+            response.sendRedirect("ReviewController?action=list"); // 리스트 화면으로 리다이렉트
+        } else {
+        	String errorMessage = "추천 실패. 다시 시도해주세요."; // 사용자에게 표시할 메시지
+            log.debug("추천 실패: {}", flag);
+            request.setAttribute("errorMessage", errorMessage);
+            response.sendRedirect("ReviewController?action=list");
+        }
     }
 }
