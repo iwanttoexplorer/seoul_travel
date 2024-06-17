@@ -28,7 +28,7 @@ public class FrontcontrollerV extends HttpServlet implements PLog{
     public FrontcontrollerV() {
     	log.debug("FrontControllerV()");
     	//controllerMap.put("/SEOUL_TRAVEL/connect/connect.journey", new ConnectController());
-	controllerMap.put("/SEOUL_TRAVEL/user/login.do", new LoginController());
+    	controllerMap.put("/SEOUL_TRAVEL/user/login.do", new LoginController());
     	
     }
 

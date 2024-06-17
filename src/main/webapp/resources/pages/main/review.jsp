@@ -34,7 +34,7 @@
 </head>
 <body>
     <header>
-        <div class="logo" onclick="location.href='index.html'">사이트 이름</div>
+        <div class="logo" onclick="location.href='mainpage.html'">사이트 이름</div>
         <a href="signup.html" class="signup">회원가입</a>
     </header>
     <div class="container">

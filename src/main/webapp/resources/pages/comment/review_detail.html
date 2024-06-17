@@ -1,0 +1,73 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>리뷰 상세 페이지</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        header { background: #333; color: #fff; padding: 10px 0; display: flex; justify-content: space-between; align-items: center; }
+        .logo { margin-left: 20px; cursor: pointer; }
+        .nav-links { list-style: none; display: flex; margin: 0; padding: 0; }
+        .nav-links li { margin-right: 15px; }
+        .nav-links li a { color: #fff; text-decoration: none; }
+        .nav-links li a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .review-header h2 { font-size: 24px; margin: 0; }
+        .review-meta { font-size: 14px; color: #555; }
+        .review-content { margin-bottom: 20px; }
+        .comment-form { margin-top: 20px; }
+        .comment-form textarea { width: 100%; min-height: 100px; padding: 10px; margin-bottom: 10px; }
+        .comment-form button { padding: 10px 20px; background-color: #333; color: #fff; border: none; cursor: pointer; }
+        .comment-list { margin-top: 20px; }
+        .comment-item { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; }
+        .comment-item p { font-size: 16px; margin: 0; }
+        .comment-item .comment-meta { font-size: 14px; color: #555; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo" onclick="location.href='src/main/webapp/resources/pages/main/mainpage.html'">SEOUL TRAVEL</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="mainpage.html">홈</a></li>
+                <li><a href="src/main/webapp/resources/pages/main/review.jsp">리뷰 목록</a></li>
+                <!-- 다른 메뉴 항목들 추가 -->
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <div class="review-header">
+            <h2>서울의 매력적인 관광지</h2>
+            <div class="review-meta">
+                <p>작성자: 사용자1 | 작성일: 2024-06-20 | 추천수: 10</p>
+            </div>
+        </div>
+        <div class="review-content">
+            <img src="https://via.placeholder.com/400x250" alt="리뷰 이미지">
+            <p>서울의 아름다운 관광지를 소개합니다. 여행을 계획 중이라면 꼭 방문해보세요!</p>
+        </div>
+        
+        <!-- 댓글 폼 -->
+        <div class="comment-form">
+            <form action="CommentController" method="post">
+                <textarea name="content" placeholder="댓글을 입력하세요..." required></textarea><br>
+                <input type="hidden" name="aboardSeq" value="${review.aboardSeq}">
+                <button type="submit">댓글 달기</button>
+            </form>
+        </div>
+        
+        <!-- 댓글 리스트 -->
+        <div class="comment-list">
+            <c:forEach var="comment" items="${comments}">
+                <div class="comment-item">
+                    <p>${comment.content}</p>
+                    <p class="comment-meta">작성자: ${comment.userId} | 작성일: ${comment.regDt}</p>
+                </div>
+            </c:forEach>
+        </div>
+    </div>
+</body>
+</html>
