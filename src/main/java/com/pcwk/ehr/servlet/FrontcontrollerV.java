@@ -13,11 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import com.pcwk.ehr.cmn.ControllerV;
 import com.pcwk.ehr.cmn.JView;
 import com.pcwk.ehr.cmn.PLog;
+import com.pcwk.tvl.user.LoginController;
 
 /**
  * Servlet implementation class FrontcontrollerV
  */
-@WebServlet(description = "servlet", urlPatterns = { "*.do" })
+@WebServlet("*.do")
 public class FrontcontrollerV extends HttpServlet implements PLog{
 	private static final long serialVersionUID = 1L;
 	private Map<String, ControllerV> controllerMap = new HashMap<String, ControllerV>();

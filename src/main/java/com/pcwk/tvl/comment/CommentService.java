@@ -1,5 +1,8 @@
 package com.pcwk.tvl.comment;
 
+import java.util.List;
+
+import com.pcwk.ehr.cmn.DTO;
 import com.pcwk.ehr.cmn.PLog;
 
 public class CommentService implements PLog{
@@ -20,5 +23,8 @@ public class CommentService implements PLog{
 	}
 	public int doUpdate(CommentDTO param) {
 		return dao.doUpdate(param);
+	}
+	public List<CommentDTO> doRetrieve(DTO search) {
+		return dao.doRetrieve(search);
 	}
 }

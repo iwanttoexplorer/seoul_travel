@@ -1,6 +1,8 @@
 package com.pcwk.tvl.comment;
 
-public class CommentDTO {
+import com.pcwk.ehr.cmn.DTO;
+
+public class CommentDTO extends DTO{
 	private int comSeq;
 	private int aboardSeq;
 	private String userId;

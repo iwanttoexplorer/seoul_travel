@@ -17,9 +17,44 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 
 	@Override
 	public List<CommentDTO> doRetrieve(DTO search) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        List<CommentDTO> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT user_id, content, reg_dt, mod_dt \n");
+        sb.append("FROM v_comment \n");
+        sb.append("WHERE aboard_seq = ? \n");
+        sb.append("ORDER BY reg_dt DESC \n");
+
+        log.debug("1.sql:{}", sb.toString());
+        log.debug("2.param:{}", search);
+        try {
+            conn = connectionMaker.getConnection();
+            pstmt = conn.prepareStatement(sb.toString());
+            pstmt.setInt(1, ((CommentDTO) search).getAboardSeq());
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                CommentDTO comment = new CommentDTO();
+                comment.setUserId(rs.getString("user_id"));
+                comment.setContent(rs.getString("content"));
+                comment.setRegDt(rs.getString("reg_dt"));
+                comment.setModDt(rs.getString("mod_dt"));
+
+                list.add(comment);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtill.close(conn, pstmt, rs);
+        }
+
+        log.debug("3.list:{}", list);
+        return list;
+    }
 
 	@Override
 	public int doSave(CommentDTO param) {
