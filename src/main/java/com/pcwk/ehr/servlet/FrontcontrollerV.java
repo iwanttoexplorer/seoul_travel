@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.pcwk.ehr.cmn.ControllerV;
 import com.pcwk.ehr.cmn.JView;
 import com.pcwk.ehr.cmn.PLog;
-import com.pcwk.test.ConnectController;
-import com.pcwk.test.CookieController;
 
 /**
  * Servlet implementation class FrontcontrollerV
@@ -29,13 +27,8 @@ public class FrontcontrollerV extends HttpServlet implements PLog{
      */
     public FrontcontrollerV() {
     	log.debug("FrontControllerV()");
+    	//controllerMap.put("/SEOUL_TRAVEL/connect/connect.journey", new ConnectController());
     	
-    	//controllerMap.put("/WEB02/board/board.do", new BoardController());
-    	controllerMap.put("/SEOUL_TRAVEL/connect/connect.do", new ConnectController());
-    	
-    	controllerMap.put("/SEOUL_TRAVEL/cookie/cookie.do", new CookieController());
-    	//controllerMap.put("/WEB02/login/login.do", new LoginController());
-        // TODO Auto-generated constructor stub
     }
 
 	/**
