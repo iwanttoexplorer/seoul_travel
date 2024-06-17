@@ -17,7 +17,7 @@ import com.pcwk.ehr.cmn.PLog;
 /**
  * Servlet implementation class FrontcontrollerV
  */
-@WebServlet(description = "servlet", urlPatterns = { "*.journey" })
+@WebServlet(description = "servlet", urlPatterns = { "*.do" })
 public class FrontcontrollerV extends HttpServlet implements PLog{
 	private static final long serialVersionUID = 1L;
 	private Map<String, ControllerV> controllerMap = new HashMap<String, ControllerV>();
@@ -28,6 +28,7 @@ public class FrontcontrollerV extends HttpServlet implements PLog{
     public FrontcontrollerV() {
     	log.debug("FrontControllerV()");
     	//controllerMap.put("/SEOUL_TRAVEL/connect/connect.journey", new ConnectController());
+	controllerMap.put("/SEOUL_TRAVEL/user/login.do", new LoginController());
     	
     }
 
