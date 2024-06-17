@@ -50,18 +50,9 @@ public class LikeDao implements PLog,WorkDiv<LikeDTO>{
             // DML
             flag = pstmt.executeUpdate();
 
-            // 총 추천수 조회
-            String countSQL = "SELECT COUNT(*) FROM v_like WHERE aboard_seq = ?";
-            PreparedStatement countStmt = conn.prepareStatement(countSQL);
-            countStmt.setInt(1, param.getAboardSeq());
-            ResultSet rs = countStmt.executeQuery();
-            
-            if (rs.next()) {
-                flag = rs.getInt(1);
-            }
 
-            rs.close();
-            countStmt.close();
+           
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -74,14 +65,47 @@ public class LikeDao implements PLog,WorkDiv<LikeDTO>{
         return flag;
     }
 	
+    public int doLike(int aboardSeq) {
+    	int likeCount=0;
+    	Connection conn = connectionMaker.getConnection();
+    	PreparedStatement pstmt = null;
+    	ResultSet rs = null;
+    	StringBuilder sb = new StringBuilder();
+    	sb.append("SELECT COUNT(*)               \n");
+        sb.append("FROM v_like                   \n");
+        sb.append("WHERE aboard_seq = ?          \n");
+        log.debug("1.sql:{}", sb.toString());
+        log.debug("2.conn:{}", conn);
+        log.debug("3.aboardSeq:{}", aboardSeq);
+        try {
+            pstmt = conn.prepareCall(sb.toString());
+            log.debug("4.pstmt:{}", pstmt);
+
+            // param 설정
+            pstmt.setInt(1, aboardSeq);
+
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                likeCount = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtill.close(conn, pstmt, rs);
+            log.debug("5.finally conn:{} pstmt:{} rs:{}", conn, pstmt, rs);
+        }
+
+        log.debug("6.likeCount:{}", likeCount);
+
+        return likeCount;
+    }
 
 	@Override
 	public List<LikeDTO> doRetrieve(DTO search) {
 		// TODO Auto-generated method stub
 		return null;
-	}
 
-	
+}
 
 	@Override
 	public int doUpdate(LikeDTO param) {

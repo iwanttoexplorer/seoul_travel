@@ -7,7 +7,8 @@ public class LikeMain implements PLog{
 	LikeDTO like;
 	public LikeMain() {
 		dao = new LikeDao();
-		like = new LikeDTO(null, 0, null);
+		like = new LikeDTO("4kqD945", 1);
+
 	}
 	public void doSave() {
 		log.debug("doSave()");
@@ -18,9 +19,15 @@ public class LikeMain implements PLog{
 			log.debug("저장 실패 :{}",flag);
 		}
 	}
+	public void doLike() {
+		log.debug("doLike()");
+		int likeCount = dao.doLike(like.getAboardSeq());
+		log.debug("추천수: {}",likeCount);
+	}
 	public static void main(String[] args) {
 		LikeMain m = new LikeMain();
-		m.doSave();
+//		m.doSave();
+		m.doLike();
 	}
 
 }

@@ -22,11 +22,11 @@ public class LikeDTO {
 	public void setCrtDt(String crtDt) {
 		this.crtDt = crtDt;
 	}
-	public LikeDTO(String userId, int aboardSeq, String crtDt) {
+	public LikeDTO(String userId, int aboardSeq) {
 		super();
 		this.userId = userId;
 		this.aboardSeq = aboardSeq;
-		this.crtDt = crtDt;
+		
 	}
 
 	

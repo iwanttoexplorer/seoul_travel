@@ -1,8 +1,11 @@
 package com.pcwk.tvl.grade;
 
-public class GradeDTO {
+import com.pcwk.ehr.cmn.DTO;
+
+public class GradeDTO extends DTO{
 	private String grades_seq;
 	private String grade;
+	
 	public GradeDTO() {}
 	public String getGrades_seq() {
 		return grades_seq;
@@ -16,5 +19,12 @@ public class GradeDTO {
 	public void setGrade(String grade) {
 		this.grade = grade;
 	}
+	
+	@Override
+	public String toString() {
+		return "GradeDTO [grades_seq=" + grades_seq + ", grade=" + grade + ", toString()=" + super.toString() + "]";
+	}
+	
+	
 	
 }
