@@ -17,19 +17,41 @@ document.addEventListener("DOMContentLoaded", function(){
 	const workDiv= document.querySelector("#work_div");
 	const content = document.querySelector("#content");
 	const aboardSeq = document.querySelector("#aboardSeq");
-
+	const userId = document.querySelector("#userId");//등록자
+	const doSaveBtn = document.querySelector("#saveComment");
+	
 	doSaveBtn.addEventListener("click",function(){
 		ajaxDoSave();
 	});
 	
 });
+
 function ajaxDoSave(){
-	if(isEmpty(content.value)==true){
-		content.focus();
-		alert('내용을 입력하세요.');
+	if(false==confirm('저장 하시겠습니까?')){
 		return;
 	}
+	$.ajax({
+	    type: "GET", 
+	    url:"/SEOUL_TRAVEL/comment/comment.do",
+	    asyn:"true",  //비동기 통신
+	    dataType:"html",
+	    data:{
+	        "work_div":"ajaxDoSave",
+	        "userId": userId.value,
+	        "contents": contents.value
+	    },
+	    success:function(data){//통신 성공
+	        console.log("success data:"+data);
+	        
+	        
+	        
+	    },
+	    error:function(data){//실패시 처리
+	        console.log("error:"+data);
+	    }
+	});  //ajax end
 }
+
 
 function doSave(){
 	

@@ -67,19 +67,17 @@ public class CommentController extends HttpServlet implements ControllerV,PLog{
         response.setContentType("UTF-8");
         response.setContentType("application/json");
         Gson gson = new Gson();
-        if(flag==1) {
-        	request.setAttribute("message", "댓글이 저장되었습니다."); 
-        }else {
-        	request.setAttribute("message", "댓글 저장 실패");
-        }
-//        if(flag ==1) {
-//        	response.sendRedirect("comment/review_detail?aboard_id=" + aboardSeq);
-//        } else {
-//            request.setAttribute("errorMessage", "댓글 저장에 실패했습니다.");
-//           request.getRequestDispatcher("error.jsp").forward(request, response);
-//        }
         
-		return new JView("/resources/pages/comment/review_detail.jsp");
+        
+        String message = "";
+        if(flag==1) {
+        	message = "등록 성공"; 
+        }else {
+        	message="등록 실패";
+        }
+
+        
+		return null;
 	}
     public JView updateComment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	log.debug("---------------------");

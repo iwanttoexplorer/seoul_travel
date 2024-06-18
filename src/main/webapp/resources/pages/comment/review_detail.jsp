@@ -24,12 +24,98 @@
 <script>
 	document.addEventListener("DOMContentLoaded",function(){
 		console.log("commentUploaded");
+		const workDiv = document.querySelector("#work_div");//작업구분
 		const saveCommentBtn = document.querySelector("#saveComment");
 		const deleteCommentBtn = document.querySelector("#deleteComment");
 		const updateCommentBtn = document.querySelector("#updateComment");
 		const getCommentsBtn = document.querySelector("#getComments");
+		const content = document.querySelector("#content");
+		const aboardSeq = document.querySelector("#aboardSeq");
+		const userId = document.querySelector("#userId");
+		const comSeq = document.querySelector("#comSeq");
+		saveCommentBtn.addEventListener("click",function(){
+			console.log('saveCommentBtn click');
+			let frm = document.getElementById("comment_frm");
+			frm.work_div.value = "saveComment";
+			frm.aboard_Seq.value = "aboardSeq";
+			frm.content.value = "content";
+			console.log("frm.user_id.value: "+frm.user_id.value);
+			console.log("frm.reg_dt.value: "+frm.reg_dt.value);
+			frm.action = "/SEOUL_TRAVEL/comment/comment.do";
+			frm.submit();
+		});
+		deleteCommentBtn.addEventListener("click",function(){
+			ajaxDoDelete();
+		});
+		updateCommentBtn.addEventListener("click",function(){
+			ajaxDoUpdate();
+		});
 		
 	});
+	
+	function ajaxDoSave(){
+		if(isEmpty(content.value)==true){
+			content.focus();
+			alert('댓글을 입력하세요.')
+			return;
+		}
+		if(false==confirm('등록 하시겠습니까?')){
+			return;
+		}
+		$.ajax({
+		    type: "GET", 
+		    url:"/SEOUL_TRAVEL/comment/comment.do",
+		    asyn:"true",  //비동기 통신
+		    dataType:"html",
+		    data:{
+		        "work_div":"saveComment",
+		        "userId": userId.value,
+		        "aboardSeq": aboardSeq.value,
+		        "content": content.value
+		    },
+		    success:function(data){//통신 성공
+		        console.log("success data:"+data);
+		        const messageVO = JSON.parse(data);
+		        console.log("messageId:"+messageVO.messageId);
+		        console.log("msgContents:"+messageVO.msgContents);
+		        
+		        if(message === '등록 성공'){
+		        	alert(data);
+		        	window.location.href ="/SEOUL_TRAVEL/comment/comment.do?work_div=saveComment";
+		        }else{
+		        	alert(data);
+		        }
+		        
+		    },
+		    error:function(data){//실패시 처리
+		        console.log("error:"+data);
+		    }
+		})
+	}
+	function doSave(){
+		console.log("doSave()");
+		let frm = document.getElementById("comment_frm");
+		frm.work_div.value = "saveComment";
+		frm.aboard_Seq.value = "aboardSeq";
+		frm.content.value = "content";
+		console.log("frm.user_id.value: "+frm.user_id.value);
+		console.log("frm.reg_dt.value: "+frm.reg_dt.value);
+		console.log("frm.action: ");
+	}
+	function ajaxDoDelete(){
+		if(false==confirm('삭제 하시겠습니까?')){
+			return;
+		}
+	}
+	function ajaxDoUpdate(){
+		if(false==confirm('수정 하시겠습니까?')){
+			return;
+		}
+	}
+	function ajaxDoGet(){
+		
+	}
+		
 </script>
 </head>
 <body>
