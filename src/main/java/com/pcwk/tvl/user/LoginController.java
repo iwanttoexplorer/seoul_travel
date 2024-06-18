@@ -86,8 +86,6 @@ public class LoginController extends HttpServlet implements ControllerV,PLog{
 		return viewName;
 	}
 
-<<<<<<< HEAD
+
 }
-=======
-}
->>>>>>> 934011f6b584f1d8d6787fb92603d897c832105f
+

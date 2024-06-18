@@ -12,7 +12,7 @@ public class ReviewMain implements PLog{
 	public ReviewMain() {
 		
 		dao = new ReviewDao();
-		review = new ReviewDTO(2, "1605990", "1kqD993", "http://tong.visitkorea.or.kr/cms/resource/88/3077788_image2_1.JPG", "comments", "title", "20240614", "20240614", 1);
+		review = new ReviewDTO( "1605990", "1kqD993", "http://tong.visitkorea.or.kr/cms/resource/88/3077788_image2_1.JPG", "comments", "title", "20240614", "20240614", 1);
 		
 	}
 	

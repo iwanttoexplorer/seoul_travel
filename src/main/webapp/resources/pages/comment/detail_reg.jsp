@@ -16,10 +16,8 @@ document.addEventListener("DOMContentLoaded", function(){
 	console.log('DOMContentLoaded ');
 	const workDiv= document.querySelector("#work_div");
 	const content = document.querySelector("#content");
-	const userId = document.querySelector("#userId");
-	const doSaveBtn = document.querySelector("#doSave");
-	const doDeleteBtn = document.querySelector("#doDelete");
-	const doUpdateBtn = document.querySelector("#doUpdate");
+	const aboardSeq = document.querySelector("#aboardSeq");
+
 	doSaveBtn.addEventListener("click",function(){
 		ajaxDoSave();
 	});

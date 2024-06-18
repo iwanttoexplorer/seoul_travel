@@ -14,6 +14,7 @@ import com.pcwk.ehr.cmn.ControllerV;
 import com.pcwk.ehr.cmn.JView;
 import com.pcwk.ehr.cmn.PLog;
 import com.pcwk.tvl.comment.CommentController;
+import com.pcwk.tvl.review.ReviewController;
 import com.pcwk.tvl.user.LoginController;
 
 /**
@@ -32,6 +33,7 @@ public class FrontcontrollerV extends HttpServlet implements PLog{
     	//controllerMap.put("/SEOUL_TRAVEL/connect/connect.journey", new ConnectController());
     	controllerMap.put("/SEOUL_TRAVEL/user/login.do", new LoginController());
     	controllerMap.put("/SEOUL_TRAVEL/comment/comment.do", new CommentController());
+    	controllerMap.put("/SEOUL_TRAVEL/review/review.do", new ReviewController());
     	
     }
 

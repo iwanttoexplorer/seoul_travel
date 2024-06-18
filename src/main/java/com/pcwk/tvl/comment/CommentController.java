@@ -64,7 +64,14 @@ public class CommentController extends HttpServlet implements ControllerV,PLog{
         log.debug("comment: "+comment);
         int flag = service.doSave(comment);
         log.debug("Save flag: {}", flag);
-        
+        response.setContentType("UTF-8");
+        response.setContentType("application/json");
+        Gson gson = new Gson();
+        if(flag==1) {
+        	request.setAttribute("message", "댓글이 저장되었습니다."); 
+        }else {
+        	request.setAttribute("message", "댓글 저장 실패");
+        }
 //        if(flag ==1) {
 //        	response.sendRedirect("comment/review_detail?aboard_id=" + aboardSeq);
 //        } else {
@@ -72,7 +79,7 @@ public class CommentController extends HttpServlet implements ControllerV,PLog{
 //           request.getRequestDispatcher("error.jsp").forward(request, response);
 //        }
         
-		return null;
+		return new JView("/resources/pages/comment/review_detail.jsp");
 	}
     public JView updateComment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	log.debug("---------------------");
@@ -89,14 +96,14 @@ public class CommentController extends HttpServlet implements ControllerV,PLog{
         log.debug("comment: "+comment);
         int flag = service.doUpdate(comment);
         log.debug("Update flag: {}", flag);
+        if(flag>0) {
+        	request.setAttribute("message", "댓글이 수정되었습니다.");
+        }else {
+            request.setAttribute("message", "댓글 수정 실패.");
+        }
 //
-//        if (flag > 0) {
-//            response.sendRedirect("comment/review_detail?aboard_id=" + comment.getAboardSeq());
-//        } else {
-//            request.setAttribute("errorMessage", "댓글 수정에 실패했습니다.");
-//            request.getRequestDispatcher("error.jsp").forward(request, response);
-//        }
-    	return null;
+//       
+        return new JView("/resources/pages/comment/review_detail.jsp");
     }
     public JView deleteComment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	log.debug("---------------------");
@@ -109,14 +116,13 @@ public class CommentController extends HttpServlet implements ControllerV,PLog{
         log.debug("comment: "+comment);
         int flag = service.doDelete(comment);
         log.debug("Delete flag: {}", flag);
-        
-//        if (flag > 0) {
-//            response.sendRedirect("comment/review_detail?aboard_id=" + comment.getAboardSeq());
-//        } else {
-//            request.setAttribute("errorMessage", "댓글 삭제에 실패했습니다.");
-//            request.getRequestDispatcher("error.jsp").forward(request, response);
-//        }
-    	return null;
+        if (flag > 0) {
+            request.setAttribute("message", "댓글이 삭제되었습니다.");
+        } else {
+            request.setAttribute("message", "댓글 삭제 실패.");
+        }
+
+        return new JView("/resources/pages/comment/review_detail.jsp");
     }
     public JView getComments(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("---------------------");
@@ -130,6 +136,7 @@ public class CommentController extends HttpServlet implements ControllerV,PLog{
         List<CommentDTO> comments = service.doRetrieve(comment);
         log.debug("comments: "+comments);
         request.setAttribute("comments", comments);
+        request.setAttribute("message", "댓글 목록을 불러왔습니다.");
 
         return new JView("/resources/pages/comment/review_detail.jsp");
     }

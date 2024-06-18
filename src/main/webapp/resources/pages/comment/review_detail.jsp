@@ -9,6 +9,7 @@
     String reviewContent = "This is the content of the sample review. It has some details about the review.";
     String reviewAuthor = "Author Name";
     String reviewDate = "2024-06-18";
+    String message = (String) request.getAttribute("message");
 
     List<CommentDTO> comments = (List<CommentDTO>) request.getAttribute("comments");
 %>
@@ -27,6 +28,7 @@
 		const deleteCommentBtn = document.querySelector("#deleteComment");
 		const updateCommentBtn = document.querySelector("#updateComment");
 		const getCommentsBtn = document.querySelector("#getComments");
+		
 	});
 </script>
 </head>
@@ -58,8 +60,17 @@
         <!-- 댓글 시작 -->
         <div class="comment-section mt-5">
             <h2>댓글</h2>
+            <%
+                if (message != null) {
+            %>
+                <div class="alert alert-info" role="alert">
+                    <%= message %>
+                </div>
+            <%
+                }
+            %>
             <div class="comment-form mb-4">
-                <form action="/SEOUL_TRAVEL/comment/add" method="post">
+                <form action="/SEOUL_TRAVEL/comment/comment.do?work_div=saveComment" method="post">
                     <div class="form-group">
                         <label for="commentContent">댓글 내용</label>
                         <textarea id="commentContent" name="content" class="form-control" rows="3"></textarea>

@@ -18,7 +18,6 @@ import com.pcwk.ehr.cmn.SearchDTO;
 /**
  * Servlet implementation class ReviewController
  */
-@WebServlet("/review.do")
 public class ReviewController extends HttpServlet implements ControllerV, PLog {
     private static final long serialVersionUID = 1L;
 
@@ -55,37 +54,17 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         // page_size
         String pageNo = StringUtil.nvl(request.getParameter("pageNo"), "");
         String pageSize = StringUtil.nvl(request.getParameter("pageSize"), "");
-        log.debug("pageNo"+pageNo);
-        log.debug("pageSize"+pageSize);
+        log.debug("pageNo: "+pageNo);
+        log.debug("pageSize: "+pageSize);
         inVO.setPageNo(Integer.parseInt(pageNo));
         inVO.setPageSize(Integer.parseInt(pageSize));
-/*
-        String searchDiv = StringUtil.nvl(request.getParameter("search_div"), "");
-        String searchWord = StringUtil.nvl(request.getParameter("search_word"), "");
-
-        log.debug("pageNo: {}", pageNo);
-        log.debug("pageSize: {}", pageSize);
-        inVO.setPageNo(Integer.parseInt(pageNo));
-        inVO.setPageSize(Integer.parseInt(pageSize));
-
-        inVO.setSearchDiv(searchDiv);
-        inVO.setSearchWord(searchWord);
-
-        log.debug("inVO: {}", inVO);
-
-        // service call
-        List<ReviewDTO> list = reviewService.doRetrieve(inVO);
-
-        int i = 0;
+		List<ReviewDTO> list = reviewService.doRetrieve(inVO);
+		int i = 0;
         for (ReviewDTO vo : list) {
             log.debug("i:{}, vo:{}", ++i, vo);
         }
-
-        // UI 데이터 전달
-        request.setAttribute("list", list);
-        request.setAttribute("vo", inVO);
-*/
-        return null;//viewName = new JView("/review-board.jsp");
+        
+        return null;
     }
 
     @Override

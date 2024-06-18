@@ -95,10 +95,9 @@ public class ReviewDTO extends DTO {
 		this.modDt = modDt;
 	}
 
-	public ReviewDTO(int aboardSeq, String contentId, String userId, String imgLink, String comments, String title,
+	public ReviewDTO(String contentId, String userId, String imgLink, String comments, String title,
 			String regDt, String modDt, int readCnt) {
 		super();
-		this.aboardSeq = aboardSeq;
 		this.contentId = contentId;
 		this.userId = userId;
 		this.imgLink = imgLink;
