@@ -4,3 +4,4 @@
 <%
   //contextPath: /WEB02
 	  String cPath = request.getContextPath();
+	  %>

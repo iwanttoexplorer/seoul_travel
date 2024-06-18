@@ -18,6 +18,7 @@ import com.pcwk.ehr.cmn.SearchDTO;
 /**
  * Servlet implementation class ReviewController
  */
+@WebServlet("/review.do")
 public class ReviewController extends HttpServlet implements ControllerV, PLog {
     private static final long serialVersionUID = 1L;
 
@@ -49,45 +50,18 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         SearchDTO inVO = new SearchDTO();
         
         // JSP viewName 전달
-        JView viewName = null;
+        JView viewName = new JView("/SEOUL_TRAVEL/review/review_list.jsp");
         // page_no
         // page_size
-        String pageNo = StringUtil.nvl(request.getParameter("pageNo"), "");
-        String pageSize = StringUtil.nvl(request.getParameter("pageSize"), "");
-        log.debug("pageNo: "+pageNo);
-        log.debug("pageSize: "+pageSize);
+        String pageNo = StringUtil.nvl(request.getParameter("pageNo"), "1");
+        String pageSize = StringUtil.nvl(request.getParameter("pageSize"), "10");
+        log.debug("pageNo: " + pageNo);
+        log.debug("pageSize: " + pageSize);
         inVO.setPageNo(Integer.parseInt(pageNo));
         inVO.setPageSize(Integer.parseInt(pageSize));
-		List<ReviewDTO> list = reviewService.doRetrieve(inVO);
-		int i = 0;
-        for (ReviewDTO vo : list) {
-            log.debug("i:{}, vo:{}", ++i, vo);
-        }
         
-        return null;
-    }
-
-    @Override
-    public JView doWork(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("---------------------");
-        log.debug("doWork()");
-        log.debug("---------------------");
-
-        JView viewName = null;
-
-        String workDiv = StringUtil.nvl(request.getParameter("work_div"), "");
-        log.debug("workDiv : {}", workDiv);
-
-        switch (workDiv) {
-            case "doRetrieve":
-                viewName = doRetrieve(request, response);
-                break;
-            case "saveReview":
-                viewName = saveReview(request, response);
-                break;
-            default:
-                log.debug("ReviewController work_div를 확인하세요. : {}", workDiv);
-        }
+        List<ReviewDTO> list = reviewService.doRetrieve(inVO);
+        request.setAttribute("reviewList", list);
 
         return viewName;
     }
@@ -98,7 +72,7 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         log.debug("---------------------");
 
         ReviewDTO inVO = new ReviewDTO();
-        String contentId = StringUtil.nvl(request.getParameter("content_id"), "");
+        String contentId = StringUtil.nvl(request.getParameter("contentid"), "");
         String userId = StringUtil.nvl(request.getParameter("user_id"), "");
         String imgLink = StringUtil.nvl(request.getParameter("img_link"), "");
         String comments = StringUtil.nvl(request.getParameter("comments"), "");
@@ -121,5 +95,58 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
 
         response.sendRedirect("review.do?work_div=doRetrieve"); // 저장 후 리뷰 게시판으로 리다이렉트
         return null; // JSP 페이지로 포워딩하지 않기 때문에 null을 반환
+    }
+
+    /*
+    public JView doRetrieveDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("---------------------");
+        log.debug("doRetrieveDetail()");
+        log.debug("---------------------");
+
+        String aboardSeq = StringUtil.nvl(request.getParameter("aboardSeq"), "");
+        ReviewDTO inVO = new ReviewDTO();
+        inVO.setAboardSeq(aboardSeq);
+
+        ReviewDTO outVO = reviewService.doSelectOne(inVO);
+        request.setAttribute("review", outVO);
+
+        JView viewName = new JView("/SEOUL_TRAVEL/review/review_detail.jsp");
+        return viewName;
+    }
+    */
+
+    @Override
+    public JView doWork(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("---------------------");
+        log.debug("doWork()");
+        log.debug("---------------------");
+
+        JView viewName = null;
+
+        String workDiv = StringUtil.nvl(request.getParameter("work_div"), "");
+        log.debug("workDiv : {}", workDiv);
+
+        switch (workDiv) {
+            case "doRetrieve":
+                viewName = doRetrieve(request, response);
+                break;
+            case "saveReview":
+                viewName = saveReview(request, response);
+                break;
+                /*
+            case "doRetrieveDetail":
+                viewName = doRetrieveDetail(request, response);
+                break;
+                */
+            default:
+                log.debug("ReviewController work_div를 확인하세요. : {}", workDiv);
+                break;
+        }
+
+        if (viewName != null) {
+            viewName.render(request, response);
+        }
+        
+        return viewName;
     }
 }

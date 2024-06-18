@@ -1,0 +1,36 @@
+#container {
+  width:800px;  /* 컨테이너 너비 */
+  margin:0 auto;   /* 컨테이너 화면 중앙에 배치 */
+}
+  * {
+    margin: 0;
+    padding: 0;
+  }    
+  
+  table{
+     width: 600px;
+     border-collapse: collapse; 
+  }
+  
+  td,th {
+     border-bottom: 1px solid lightgrey;
+     padding: 5px;
+  }
+  
+  th {
+     background: gray;
+     color: #fff;
+  }
+  
+  .txt_left {
+    text-align: left;
+  }
+  
+  .txt_center{
+    text-align: center;
+  }
+  
+  .txt_right{
+    text-align: right;
+  }
+
