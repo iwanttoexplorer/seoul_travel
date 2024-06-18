@@ -4,31 +4,39 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>동가홍상</title>
+<title>SEOUL_TRAVEL</title>
 <script src="/WEB02/assets/js/jquery_3_7_1.js"></script>
+<style>
+    h4 {
+      font-weight : bold;
+      line-height: 50px;
+    }
+    
+    ul {
+      background-color: #FAFAFA;
+    }
+   
+</style>
 </head>
 <body>
    
-    <ul class="nav justify-content-end">
+    <ul class="nav">
       <nav class="navbar bg-body-tertiary">
 	      <div class="container">
 	        <a class="navbar-brand" href="#">
-	          <img src="/SEOUL_TRAVEL/images/seoul_travel.png" alt="Bootstrap" width="30" height="24">
+	          <img src="/SEOUL_TRAVEL/images/logo.png" alt="Bootstrap" width="60" height="40">
 	        </a>
 	      </div>
       </nav>
 		  <li class="nav-item">
-		    <a class="nav-link active" aria-current="page" href="#">Active</a>
+		    <a class="nav-link active" aria-current="page" href="#"><h4>여행정보</h4></a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="#">Link</a>
+		    <a class="nav-link" href="#"><h4>맛집 소개</h4></a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="#">Link</a>
+		    <a class="nav-link" href="#"><h4>로그인</h4></a>
 		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-      </li>
   </ul>
 </body>
 </html>

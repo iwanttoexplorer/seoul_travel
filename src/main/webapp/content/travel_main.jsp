@@ -13,7 +13,6 @@
 		
 		SearchDTO searchCon = (SearchDTO)request.getAttribute("vo");
 		
-		
  %>
 <!DOCTYPE html>
 <html>
@@ -27,7 +26,7 @@
     }
 </style>
 
-<title>동가홍상</title>
+<title>SEOUL_TRAVEL</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/SEOUL_TRAVEL/assets/css/bootstrap.css">
 <script src="/WEB02/assets/js/jquery_3_7_1.js"></script>
@@ -171,9 +170,6 @@ function doSelectOne(seqValue){
   <jsp:include page="/cmn/menu.jsp"></jsp:include>
   <!-- menu end --------------------------------------------------------------->
   <!-- 제목 -->
-  <div class="page-header mb-4">
-    <h2>여행지</h2>
-  </div>
   
   <img class="img" src="/SEOUL_TRAVEL/images/travel.png" alt="이미지">
   

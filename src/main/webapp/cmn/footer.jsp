@@ -1,12 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<style>
+    
+    
+    
+</style>
 <footer class="py-3 my-4">
-  <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
-    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
-    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
-    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
-    <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
-  </ul>
-  <p class="text-center text-muted">&copy; 2024 3Team SEOUL_TRAVEL, Inc</p>
+<hr/>
+  <nav class="navbar bg-body-tertiary">
+     <div class="container">
+       <a class="navbar-brand" href="#">
+         <img src="/SEOUL_TRAVEL/images/logo.png" id="pos" alt="Bootstrap" width="60" height="40">
+       </a>
+       <p class="text-center text-muted">&copy; 2024 3Team SEOUL_TRAVEL, Inc</p>
+     </div>
+   </nav>
 </footer>
