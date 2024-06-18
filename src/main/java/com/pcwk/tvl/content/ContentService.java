@@ -9,18 +9,21 @@ public class ContentService  implements PLog {
 
 	private ContentDao dao;
 	
-public ContentService() {
-	dao = new ContentDao();
-}
-
-/**
- * 목록 조회
- * @param search
- * @return
- */
-
-public List<ContentDTO> doRetrieve(DTO search) {
-	return dao.doRetrieve(search);
-}
+	public ContentService() {
+		dao = new ContentDao();
+	}
+	
+	public ContentDTO doSelectOne(ContentDTO search) {
+		return dao.doSelectOne(search);
+	}
+	
+	/**
+	 * 목록 조회
+	 * @param search
+	 * @return
+	 */
+	public List<ContentDTO> doRetrieve(DTO search) {
+		return dao.doRetrieve(search);
+	}
 	
 }
