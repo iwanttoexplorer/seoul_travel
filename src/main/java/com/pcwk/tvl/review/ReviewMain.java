@@ -22,7 +22,7 @@ public class ReviewMain implements PLog{
 		if(1==flag) {
 			log.debug("저장 성공: {}",flag);
 		}else {
-			log.debug("저장 실패: {}",flag);
+			log.debug("저장 실패: {}",flag); 	
 		}
 	}
 	public void doDelete() {

@@ -1,6 +1,5 @@
 package com.pcwk.tvl.review;
 
-import java.util.Date;
 
 import com.pcwk.ehr.cmn.DTO;
 

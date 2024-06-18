@@ -1,10 +1,10 @@
 package com.pcwk.tvl.review;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,16 +12,24 @@ import javax.servlet.http.HttpServletResponse;
 import com.pcwk.ehr.cmn.ControllerV;
 import com.pcwk.ehr.cmn.JView;
 import com.pcwk.ehr.cmn.PLog;
-import com.pcwk.tvl.like.LikeDTO;
-import com.pcwk.tvl.like.LikeDao;
+import com.pcwk.ehr.cmn.StringUtil;
+import com.pcwk.ehr.cmn.SearchDTO;
 
-public class ReviewController extends HttpServlet implements ControllerV,PLog {
+/**
+ * Servlet implementation class ReviewController
+ */
+@WebServlet("/review.do")
+public class ReviewController extends HttpServlet implements ControllerV, PLog {
     private static final long serialVersionUID = 1L;
-    private ReviewDao reviewDAO = new ReviewDao();
-    private LikeDao likeDao = new LikeDao();
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doWork(request, response);
+
+    private ReviewService reviewService;
+
+    public ReviewController() {
+        log.debug("---------------------");
+        log.debug("ReviewController()");
+        log.debug("---------------------");
+
+        reviewService = new ReviewService(); // 인스턴스 생성
     }
 
     @Override
@@ -30,94 +38,109 @@ public class ReviewController extends HttpServlet implements ControllerV,PLog {
     }
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doWork(request, response);
+    }
+
+    public JView doRetrieve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("---------------------");
+        log.debug("doRetrieve()");
+        log.debug("---------------------");
+
+        SearchDTO inVO = new SearchDTO();
+        
+        // JSP viewName 전달
+        JView viewName = null;
+        // page_no
+        // page_size
+        String pageNo = StringUtil.nvl(request.getParameter("pageNo"), "");
+        String pageSize = StringUtil.nvl(request.getParameter("pageSize"), "");
+        log.debug("pageNo"+pageNo);
+        log.debug("pageSize"+pageSize);
+        inVO.setPageNo(Integer.parseInt(pageNo));
+        inVO.setPageSize(Integer.parseInt(pageSize));
+/*
+        String searchDiv = StringUtil.nvl(request.getParameter("search_div"), "");
+        String searchWord = StringUtil.nvl(request.getParameter("search_word"), "");
+
+        log.debug("pageNo: {}", pageNo);
+        log.debug("pageSize: {}", pageSize);
+        inVO.setPageNo(Integer.parseInt(pageNo));
+        inVO.setPageSize(Integer.parseInt(pageSize));
+
+        inVO.setSearchDiv(searchDiv);
+        inVO.setSearchWord(searchWord);
+
+        log.debug("inVO: {}", inVO);
+
+        // service call
+        List<ReviewDTO> list = reviewService.doRetrieve(inVO);
+
+        int i = 0;
+        for (ReviewDTO vo : list) {
+            log.debug("i:{}, vo:{}", ++i, vo);
+        }
+
+        // UI 데이터 전달
+        request.setAttribute("list", list);
+        request.setAttribute("vo", inVO);
+*/
+        return null;//viewName = new JView("/review-board.jsp");
+    }
+
+    @Override
     public JView doWork(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        if (action == null) {
-            action = "list";
+        log.debug("---------------------");
+        log.debug("doWork()");
+        log.debug("---------------------");
+
+        JView viewName = null;
+
+        String workDiv = StringUtil.nvl(request.getParameter("work_div"), "");
+        log.debug("workDiv : {}", workDiv);
+
+        switch (workDiv) {
+            case "doRetrieve":
+                viewName = doRetrieve(request, response);
+                break;
+            case "saveReview":
+                viewName = saveReview(request, response);
+                break;
+            default:
+                log.debug("ReviewController work_div를 확인하세요. : {}", workDiv);
         }
 
-        try {
-            switch (action) {
-                case "list":
-                    listReviews(request, response);
-                    break;
-                case "delete":
-                    deleteReview(request, response);
-                    break;
-                case "edit":
-                    showEditForm(request, response);
-                    break;
-                case "update":
-                    updateReview(request, response);
-                    break;
-                case "like":
-                    likeReview(request, response);
-                    break;
-                default:
-                    listReviews(request, response);
-                    break;
-            }
-        } catch (SQLException ex) {
-            throw new ServletException(ex);
-        }
-        return null; // JView 객체를 반환하도록 설계되었지만, JSP 페이지로 포워딩하기 때문에 null 반환
+        return viewName;
     }
 
-    private void listReviews(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-        String category = request.getParameter("category");
-        if (category == null) {
-            category = "all";
-        }
+    public JView saveReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("---------------------");
+        log.debug("saveReview()");
+        log.debug("---------------------");
 
-        ReviewDTO searchParam = new ReviewDTO();
-        searchParam.setContentId(category);
-        List<ReviewDTO> reviews = reviewDAO.doRetrieve(searchParam);
-        request.setAttribute("reviews", reviews);
-        request.getRequestDispatcher("/reviews.jsp").forward(request, response);
-    }
+        ReviewDTO inVO = new ReviewDTO();
+        String contentId = StringUtil.nvl(request.getParameter("content_id"), "");
+        String userId = StringUtil.nvl(request.getParameter("user_id"), "");
+        String imgLink = StringUtil.nvl(request.getParameter("img_link"), "");
+        String comments = StringUtil.nvl(request.getParameter("comments"), "");
+        String title = StringUtil.nvl(request.getParameter("title"), "");
 
-    private void deleteReview(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        int aboardSeq = Integer.parseInt(request.getParameter("aboardSeq"));
-        ReviewDTO review = new ReviewDTO(aboardSeq);
-        reviewDAO.doDelete(review);
-        response.sendRedirect("ReviewController?action=list");
-    }
+        inVO.setContentId(contentId);
+        inVO.setUserId(userId);
+        inVO.setImgLink(imgLink);
+        inVO.setComments(comments);
+        inVO.setTitle(title);
 
-    private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-        int aboardSeq = Integer.parseInt(request.getParameter("aboardSeq"));
-        ReviewDTO existingReview = reviewDAO.doSelectOne(new ReviewDTO(aboardSeq));
-        request.setAttribute("review", existingReview);
-        request.getRequestDispatcher("/review-form.jsp").forward(request, response);
-    }
+        int flag = reviewService.doSave(inVO);
+        log.debug("flag : {}", flag);
 
-    private void updateReview(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        int aboardSeq = Integer.parseInt(request.getParameter("aboardSeq"));
-        String title = request.getParameter("title");
-        String comments = request.getParameter("comments");
-
-        ReviewDTO review = new ReviewDTO();
-        review.setAboardSeq(aboardSeq);
-        review.setTitle(title);
-        review.setComments(comments);
-
-        reviewDAO.doUpdate(review);
-        response.sendRedirect("ReviewController?action=list");
-    }
-
-    private void likeReview(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        int aboardSeq = Integer.parseInt(request.getParameter("aboardSeq"));
-        String userId = (String)request.getSession().getAttribute("userId");
-        LikeDTO like = new LikeDTO(userId, aboardSeq);
-        int flag = likeDao.doSave(like);
         if (flag == 1) {
-            // 좋아요 기록이 성공적으로 저장된 경우, 해당 리뷰의 좋아요 수를 업데이트
-            int likeCount = likeDao.doLike(aboardSeq);
-            response.sendRedirect("ReviewController?action=list"); // 리스트 화면으로 리다이렉트
+            log.debug("Review saved successfully.");
         } else {
-        	String errorMessage = "추천 실패. 다시 시도해주세요."; // 사용자에게 표시할 메시지
-            log.debug("추천 실패: {}", flag);
-            request.setAttribute("errorMessage", errorMessage);
-            response.sendRedirect("ReviewController?action=list");
+            log.debug("Failed to save review.");
         }
+
+        response.sendRedirect("review.do?work_div=doRetrieve"); // 저장 후 리뷰 게시판으로 리다이렉트
+        return null; // JSP 페이지로 포워딩하지 않기 때문에 null을 반환
     }
 }
