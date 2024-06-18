@@ -17,9 +17,8 @@ public class CommentDTO extends DTO{
 				+ content + ", regDt=" + regDt + ", modDt=" + modDt + "]";
 	}
 
-	public CommentDTO(int comSeq, int aboardSeq, String userId, String content, String regDt, String modDt) {
+	public CommentDTO( int aboardSeq, String userId, String content, String regDt, String modDt) {
 		super();
-		this.comSeq = comSeq;
 		this.aboardSeq = aboardSeq;
 		this.userId = userId;
 		this.content = content;

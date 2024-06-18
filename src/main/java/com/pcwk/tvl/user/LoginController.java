@@ -19,15 +19,9 @@ import com.pcwk.ehr.cmn.StringUtil;
  */
 public class LoginController extends HttpServlet implements ControllerV,PLog{
 	private static final long serialVersionUID = 1L;
-<<<<<<< HEAD
-
-	private UserService service;
-
-=======
        
 	private UserService service;
 	
->>>>>>> 18608404195a497d2a72d1030600d649f5d08396
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,17 +29,10 @@ public class LoginController extends HttpServlet implements ControllerV,PLog{
         log.debug("---------------------");
         log.debug("LoginController()");
         log.debug("---------------------");
-<<<<<<< HEAD
-
-        service = new UserService(); 
-    }
-
-=======
         
         service = new UserService(); 
     }
     
->>>>>>> 18608404195a497d2a72d1030600d649f5d08396
     public JView login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	log.debug("---------------------");
         log.debug("login()");
@@ -54,64 +41,37 @@ public class LoginController extends HttpServlet implements ControllerV,PLog{
         String userId = StringUtil.nvl(request.getParameter("user_id"),"");
         String userPw = StringUtil.nvl(request.getParameter("user_pw"),"");
         String viewName = "";
-<<<<<<< HEAD
-
-        inVO.setUserId(userId);
-
-=======
         
         inVO.setUserId(userId);
         
->>>>>>> 18608404195a497d2a72d1030600d649f5d08396
         UserDTO outVO = service.doSelectOne(inVO);
     	log.debug(outVO);
     	if(userId.equals(outVO.getUserId()) && userPw.equals(outVO.getUserPw())) {
     		//세션 객체 생성
     		HttpSession session = request.getSession();
         	log.debug("session : {}",session);
-<<<<<<< HEAD
-
-=======
         	
->>>>>>> 18608404195a497d2a72d1030600d649f5d08396
         	//세션에 데이터 저장
         	session.setAttribute("user", outVO);
         	log.debug("세션 생성");
         	viewName = "";
     	}
-<<<<<<< HEAD
-
-    	return null;
-    }
-
-
-=======
     	
     	return null;
     }
 
     
->>>>>>> 18608404195a497d2a72d1030600d649f5d08396
 	@Override
 	public JView doWork(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.debug("---------------------");
         log.debug("doWork()");
         log.debug("---------------------");
-<<<<<<< HEAD
-
-        JView viewName = null;
-
-        String workDiv = StringUtil.nvl(request.getParameter("work_div"), "");
-    	log.debug("workDiv : {}",workDiv);
-
-=======
         
         JView viewName = null;
         
         String workDiv = StringUtil.nvl(request.getParameter("work_div"), "");
     	log.debug("workDiv : {}",workDiv);
     	
->>>>>>> 18608404195a497d2a72d1030600d649f5d08396
     	switch (workDiv) {
 		case "login":
 			viewName = login(request,response);
@@ -122,16 +82,8 @@ public class LoginController extends HttpServlet implements ControllerV,PLog{
 		default : 
 			log.debug("LoginController work_div를 확인하세요. : {}",workDiv);
     	}
-<<<<<<< HEAD
-
-		return viewName;
-	}
-
-}
-=======
         
 		return viewName;
 	}
 
 }
->>>>>>> 18608404195a497d2a72d1030600d649f5d08396

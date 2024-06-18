@@ -17,6 +17,29 @@ document.addEventListener("DOMContentLoaded", function(){
 	const workDiv= document.querySelector("#work_div");
 	const content = document.querySelector("#content");
 	const userId = document.querySelector("#userId");
+	const doSaveBtn = document.querySelector("#doSave");
+	const doDeleteBtn = document.querySelector("#doDelete");
+	const doUpdateBtn = document.querySelector("#doUpdate");
+	doSaveBtn.addEventListener("click",function(){
+		ajaxDoSave();
+	});
+	
+});
+function ajaxDoSave(){
+	if(isEmpty(content.value)==true){
+		content.focus();
+		alert('내용을 입력하세요.');
+		return;
+	}
+}
+
+function doSave(){
+	
+}
+function doDelete(){
+	
+}
+function doUpdate(){
 	
 }
 </script>
@@ -24,4 +47,5 @@ document.addEventListener("DOMContentLoaded", function(){
 <body>
 
 </body>
+<script src = "/SEOUL_TRAVEL/assets/js/bootstrap.bundle.min.js"></script>
 </html>

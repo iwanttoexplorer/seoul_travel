@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.pcwk.ehr.cmn.ControllerV;
 import com.pcwk.ehr.cmn.JView;
 import com.pcwk.ehr.cmn.PLog;
+import com.pcwk.tvl.comment.CommentController;
 import com.pcwk.tvl.user.LoginController;
 
 /**
@@ -30,6 +31,7 @@ public class FrontcontrollerV extends HttpServlet implements PLog{
     	log.debug("FrontControllerV()");
     	//controllerMap.put("/SEOUL_TRAVEL/connect/connect.journey", new ConnectController());
     	controllerMap.put("/SEOUL_TRAVEL/user/login.do", new LoginController());
+    	controllerMap.put("/SEOUL_TRAVEL/comment/comment.do", new CommentController());
     	
     }
 

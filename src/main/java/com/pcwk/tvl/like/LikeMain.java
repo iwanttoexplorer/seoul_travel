@@ -7,7 +7,7 @@ public class LikeMain implements PLog{
 	LikeDTO like;
 	public LikeMain() {
 		dao = new LikeDao();
-		like = new LikeDTO("4kqD945", 1);
+		like = new LikeDTO("3kqD994", 1);
 
 	}
 	public void doSave() {

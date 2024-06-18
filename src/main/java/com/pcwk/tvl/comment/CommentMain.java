@@ -1,5 +1,7 @@
 package com.pcwk.tvl.comment;
 
+import java.util.List;
+
 import com.pcwk.ehr.cmn.PLog;
 
 public class CommentMain implements PLog{
@@ -7,8 +9,7 @@ public class CommentMain implements PLog{
 	CommentDTO comment;
 	public CommentMain() {
 		dao = new CommentDao();
-		comment = new CommentDTO(1, 1, "1kqD993", "댓글내용", "사용X", "사용X");
-	}
+		comment = new CommentDTO(1, "3kqD994", "댓글내용", "사용X", "사용X");	}
 	public void doSave() {
 		log.debug(" doSave() ");
 		int flag = dao.doSave(comment);
@@ -29,7 +30,7 @@ public class CommentMain implements PLog{
 	}
 	public void doUpdate() {
 		log.debug(" doUpdate() ");
-		String updateStr="_변경";
+		String updateStr="_변경dd";
 		comment.setContent(comment.getContent()+updateStr);
 		int flag = dao.doUpdate(comment);
 		if(1==flag) {
@@ -38,11 +39,23 @@ public class CommentMain implements PLog{
 			log.debug("갱신 실패 :{}",flag);
 		}
 	}
+	public void doRetrieve() {
+		log.debug("doRetrieve()");
+        CommentDTO search = new CommentDTO();
+        search.setAboardSeq(1); // 특정 aboardSeq로 검색
+
+        List<CommentDTO> comments = dao.doRetrieve(search);
+        for (CommentDTO comment : comments) {
+            log.debug("Comment: {}", comment);
+        }
+	}
 	public static void main(String[] args) {
 		CommentMain m = new CommentMain();
 		//m.doSave();
 		//m.doUpdate();
-		m.doDelete();
+		//m.doDelete();
+		m.doRetrieve();
+		
 
 	}
 

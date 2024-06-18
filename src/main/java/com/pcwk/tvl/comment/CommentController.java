@@ -14,11 +14,10 @@ import com.pcwk.ehr.cmn.ControllerV;
 import com.pcwk.ehr.cmn.JView;
 import com.pcwk.ehr.cmn.PLog;
 import com.pcwk.ehr.cmn.StringUtil;
-
+import com.google.gson.Gson;
 /**
  * Servlet implementation class CommentController
  */
-@WebServlet("/CommentController")
 public class CommentController extends HttpServlet implements ControllerV,PLog{
 	private static final long serialVersionUID = 1L;
     CommentService service;
@@ -52,87 +51,115 @@ public class CommentController extends HttpServlet implements ControllerV,PLog{
 		log.debug("---------------------");
         log.debug("saveComment()");
         log.debug("---------------------");
-        String userId = StringUtil.nvl(request.getParameter("user_id"), "");
-        int aboardId = Integer.parseInt(request.getParameter("aboard_id"));
-        String content = StringUtil.nvl(request.getParameter("content"), "");
         CommentDTO comment = new CommentDTO();
+        String userId = StringUtil.nvl(request.getParameter("userId"), "");
+        String aboardSeq = StringUtil.nvl(request.getParameter("aboardSeq"),"");
+        String content = StringUtil.nvl(request.getParameter("content"), "");
+        log.debug("userId: {}",userId);
+		log.debug("aboardSeq: {}",aboardSeq);
+		log.debug("content: {}",content);
         comment.setUserId(userId);
-        comment.setAboardSeq(aboardId);
+        comment.setAboardSeq(Integer.parseInt(aboardSeq));
         comment.setContent(content);
+        log.debug("comment: "+comment);
         int flag = service.doSave(comment);
         log.debug("Save flag: {}", flag);
-        if(flag ==1) {
-        	response.sendRedirect("comment/review_detail?aboard_id=" + aboardId);
-        } else {
-            request.setAttribute("errorMessage", "댓글 저장에 실패했습니다.");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
+        
+//        if(flag ==1) {
+//        	response.sendRedirect("comment/review_detail?aboard_id=" + aboardSeq);
+//        } else {
+//            request.setAttribute("errorMessage", "댓글 저장에 실패했습니다.");
+//           request.getRequestDispatcher("error.jsp").forward(request, response);
+//        }
         
 		return null;
 	}
-    public JView updateComment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+    public JView updateComment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	log.debug("---------------------");
         log.debug("updateComment()");
         log.debug("---------------------");
-        int comSeq = Integer.parseInt(request.getParameter("com_seq"));
+        String comSeq = StringUtil.nvl(request.getParameter("comSeq"),"");
         String content = StringUtil.nvl(request.getParameter("content"), "");
-        
+        log.debug("comSeq: "+comSeq);
+        log.debug("content: "+content);
+          
         CommentDTO comment = new CommentDTO();
-        comment.setComSeq(comSeq);
+        comment.setComSeq(Integer.parseInt(comSeq));
         comment.setContent(content);
+        log.debug("comment: "+comment);
         int flag = service.doUpdate(comment);
         log.debug("Update flag: {}", flag);
-
-        if (flag > 0) {
-            response.sendRedirect("comment/review_detail?aboard_id=" + comment.getAboardSeq());
-        } else {
-            request.setAttribute("errorMessage", "댓글 수정에 실패했습니다.");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
+//
+//        if (flag > 0) {
+//            response.sendRedirect("comment/review_detail?aboard_id=" + comment.getAboardSeq());
+//        } else {
+//            request.setAttribute("errorMessage", "댓글 수정에 실패했습니다.");
+//            request.getRequestDispatcher("error.jsp").forward(request, response);
+//        }
     	return null;
     }
-    public JView deleteComment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+    public JView deleteComment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	log.debug("---------------------");
         log.debug("deleteComment()");
         log.debug("---------------------");
-        int comSeq = Integer.parseInt(request.getParameter("com_seq"));
+        String comSeq = StringUtil.nvl(request.getParameter("comSeq"),"");
+        log.debug("comSeq: "+comSeq);
         CommentDTO comment = new CommentDTO();
-        comment.setComSeq(comSeq);
-        
+        comment.setComSeq(Integer.parseInt(comSeq));
+        log.debug("comment: "+comment);
         int flag = service.doDelete(comment);
         log.debug("Delete flag: {}", flag);
-        if (flag > 0) {
-            response.sendRedirect("comment/review_detail?aboard_id=" + comment.getAboardSeq());
-        } else {
-            request.setAttribute("errorMessage", "댓글 삭제에 실패했습니다.");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-        }
+        
+//        if (flag > 0) {
+//            response.sendRedirect("comment/review_detail?aboard_id=" + comment.getAboardSeq());
+//        } else {
+//            request.setAttribute("errorMessage", "댓글 삭제에 실패했습니다.");
+//            request.getRequestDispatcher("error.jsp").forward(request, response);
+//        }
     	return null;
     }
-    public JView getComments(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+    public JView getComments(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("---------------------");
         log.debug("getComments()");
         log.debug("---------------------");
-
-        int aboardSeq = Integer.parseInt(request.getParameter("aboard_Seq"));
         CommentDTO comment = new CommentDTO();
-        comment.setAboardSeq(aboardSeq);
+        String aboardSeq = StringUtil.nvl(request.getParameter("aboardSeq"),"");
+        log.debug("aboardSeq: {}",aboardSeq);
+        comment.setAboardSeq(Integer.parseInt(aboardSeq));
+        log.debug("comment: {}",comment);
         List<CommentDTO> comments = service.doRetrieve(comment);
+        log.debug("comments: "+comments);
         request.setAttribute("comments", comments);
 
-        return new JView("SEOUL_TRABEL/resources/pages/comment/review_detail.jsp");
+        return new JView("/resources/pages/comment/review_detail.jsp");
     }
 	@Override
-	public JView doWork(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public JView doWork(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		log.debug("---------------------");
         log.debug("doWork()");
         log.debug("---------------------");
 
         JView viewName = null;
-        String workDiv = StringUtil.nvl(request.getParameter("work_div"), "");
+		String workDiv = StringUtil.nvl(request.getParameter("work_div"), "");
     	log.debug("workDiv : {}",workDiv);
-    	
-		return null;
+    	switch(workDiv) {
+		case "getComments":
+			viewName = getComments(request,response);
+			break;
+		case "saveComment":
+			viewName = saveComment(request, response);
+			break;
+		case "deleteComment":
+			viewName = deleteComment(request, response);
+			break;
+		case "updateComment":
+			viewName = updateComment(request, response);
+			break;
+		default:
+			log.debug("작업 구분을 확인하세요. workDiv: {}",workDiv);
+			break;
+		}
+		return viewName;
 	}
 
 }

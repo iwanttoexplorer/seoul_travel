@@ -23,7 +23,7 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
         ResultSet rs = null;
         
         StringBuilder sb = new StringBuilder();
-        sb.append("SELECT user_id, content, reg_dt, mod_dt \n");
+        sb.append("SELECT comseq,aboard_seq,user_id, content, reg_dt, mod_dt \n");
         sb.append("FROM v_comment \n");
         sb.append("WHERE aboard_seq = ? \n");
         sb.append("ORDER BY reg_dt DESC \n");
@@ -39,6 +39,8 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 
             while (rs.next()) {
                 CommentDTO comment = new CommentDTO();
+                comment.setComSeq(rs.getInt("comseq"));
+                comment.setAboardSeq(rs.getInt("aboard_seq"));
                 comment.setUserId(rs.getString("user_id"));
                 comment.setContent(rs.getString("content"));
                 comment.setRegDt(rs.getString("reg_dt"));
