@@ -28,6 +28,7 @@ public class UserService implements PLog {
 	 * @return 성공(1) 실패(0)
 	 */
 	public int doSave(UserDTO param) {
+				
 		return dao.doSave(param);
 	}
 	
@@ -37,11 +38,12 @@ public class UserService implements PLog {
 	 * @return 성공(1) 실패(0)
 	 */
 	public int doUpdate(UserDTO param) {
+			
 		return dao.doUpdate(param);
 	}
 	
 	/**
-	 * 단건 삭제
+	 * 회원 탈퇴
 	 * @param param
 	 * @return 성공(1) 실패(0)
 	 */
@@ -63,5 +65,50 @@ public class UserService implements PLog {
 		return outVO;
 	}
 	
+	/**
+	 * password 밸리데이션
+	 * @param pwd
+	 * @return 문자
+	 */
+	public String checkPassword(String pwd) {
+		return dao.checkPassword(pwd);
+	}
+	
+	/**
+	 * id 밸리데이션
+	 * @param id
+	 * @return 문자
+	 */
+	public String checkId(String id) {
+		return dao.checkId(id);
+	}
+	
+	/**
+	 * 이름 밸리데이션
+	 * @param name
+	 * @return 문자
+	 */
+	public String checkName(String name) {
+		
+		return dao.checkName(name);
+	}
+	/**
+	 * 이메일 밸리데이션
+	 * @param email
+	 * @return 문자
+	 */
+	public String checkEmail(String email) {
+		
+		return dao.checkEmail(email);
+	}
+	
+	/**
+	 * 아이디 찾기 (이메일로)
+	 * @param email
+	 * @return userId
+	 */
+	public String findUserId(String email) {
+		return dao.findUserId(email);
+	}
 	
 }

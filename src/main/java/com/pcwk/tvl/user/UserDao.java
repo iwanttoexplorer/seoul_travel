@@ -227,24 +227,19 @@ public class UserDao implements WorkDiv<UserDTO> {
 	 */
 	@Override
 	public int doSave(UserDTO param) {
-		String checkId = checkId(param.getUserId());
 		String checkPW = checkPassword(param.getUserPw());
 		String checkName = checkName(param.getUserName());
 		String checkEmail = checkEmail(param.getUserEmail());
 		
-		if(!checkId.equals("이상무")) {
-			log.debug("checkId: {} , 아이디자리수 : {}",checkId,param.getUserId().length());
-			return 0;
-		}
-		if(!checkPW.equals("이상무")) {
+		if(!checkPW.equals("사용가능")) {
 			log.debug("checkPW: {} , 비밀번호자리수 : {}",checkPW,param.getUserPw().length());
 			return 0;
 		}
-		if(!checkName.equals("이상무")) {
+		if(!checkName.equals("사용가능")) {
 			log.debug("checkName: {}",checkName);
 			return 0;
 		}
-		if(!checkEmail.equals("이상무")) {
+		if(!checkEmail.equals("사용가능")) {
 			log.debug("checkEmail: {}",checkEmail);
 			return 0;
 		}
@@ -336,15 +331,15 @@ public class UserDao implements WorkDiv<UserDTO> {
 		String checkName = checkName(param.getUserName());
 		String checkEmail = checkEmail(param.getUserEmail());
 		
-		if(!checkPW.equals("이상무")) {
+		if(!checkPW.equals("사용가능")) {
 			log.debug("checkPW: {} , 비밀번호자리수 : {}",checkPW,param.getUserPw().length());
 			return 0;
 		}
-		if(!checkName.equals("이상무")) {
+		if(!checkName.equals("사용가능")) {
 			log.debug("checkName: {}",checkName);
 			return 0;
 		}
-		if(!checkEmail.equals("이상무")) {
+		if(!checkEmail.equals("사용가능")) {
 			log.debug("checkEmail: {}",checkEmail);
 			return 0;
 		}
@@ -463,7 +458,7 @@ public class UserDao implements WorkDiv<UserDTO> {
 			return "비밀번호에 공백은 불가능합니다.";
 		}
 		
-		return "이상무";
+		return "사용가능";
 	}
 	
 	public String checkId(String id) {
@@ -480,12 +475,12 @@ public class UserDao implements WorkDiv<UserDTO> {
 			return "아이디는 4~16자리를 입력하세요.";
 		}
 		
-		int flag = checkUsedId(id);
+		int flag = usedId(id);
 		if(1<=flag) {
 			return "중복된 아이디 입니다.";
 		}
 		
-		return "이상무";
+		return "사용가능";
 	}
 	
 	/**
@@ -493,7 +488,7 @@ public class UserDao implements WorkDiv<UserDTO> {
 	 * @param id
 	 * @return 0: 미중복 , 1: 중복
 	 */
-	public int checkUsedId(String id) {
+	public int usedId(String id) {
 		int flag = 0;
 		
 		Connection conn = connectionMaker.getConnection();
@@ -550,7 +545,7 @@ public class UserDao implements WorkDiv<UserDTO> {
 			return "이름의 글자수가 너무 많습니다.";
 		}
 		
-		return "이상무";
+		return "사용가능";
 	}
 	
 	public String checkEmail(String email) {
@@ -570,8 +565,103 @@ public class UserDao implements WorkDiv<UserDTO> {
 			return "이메일 길이를 확인해주세요.";
 		}
 		
+		int flag = usedEmail(email);
+		if(flag >= 1) return "중복된 이메일 입니다.";
+		
 	
-		return "이상무";
+		return "사용가능";
+	}
+	
+	/**
+	 * 이메일 중복체크 여부
+	 * @param email
+	 * @return 0: 미중복 , 1: 중복
+	 */
+	public int usedEmail(String email) {
+		int flag = 0;
+		
+		Connection conn = connectionMaker.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder(100);
+		
+		sb.append(" SELECT COUNT(*) cnt    \n");
+		sb.append("   FROM v_user          \n");
+		sb.append("  WHERE user_email = ?     \n");
+		
+		log.debug("1.sql:{}",sb.toString());
+		log.debug("2.conn:{}",conn);
+		log.debug("3.id:{}",email);
+		
+		try {
+			pstmt = conn.prepareCall(sb.toString());
+			log.debug("4.pstmt:{}",pstmt);
+			
+			pstmt.setString(1, email);
+			
+			rs = pstmt.executeQuery();
+			log.debug("5.rs:{}",rs);
+			
+			if(rs.next()) {
+				flag = rs.getInt("cnt");
+				log.debug("6.result: {}",flag);
+			}
+			
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtill.close(conn, pstmt, rs);
+			log.debug("6.finally conn:{} pstmt:{} rs:{}",conn,pstmt,rs);
+		}
+		
+		return flag;
+	}
+	
+	/**
+	 * 이메일로 아이디 찾기
+	 * @param email
+	 * @return String id
+	 */
+	public String findUserId(String email) {
+		String userId = "";
+		
+		Connection conn = connectionMaker.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder(100);
+		
+		sb.append(" SELECT user_id            \n");
+		sb.append("   FROM v_user             \n");
+		sb.append("  WHERE user_email = ?     \n");
+		
+		log.debug("1.sql:{}",sb.toString());
+		log.debug("2.conn:{}",conn);
+		log.debug("3.id:{}",email);
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			log.debug("4.pstmt:{}",pstmt);
+			
+			pstmt.setString(1, email);
+			
+			rs = pstmt.executeQuery();
+			log.debug("5.rs:{}",rs);
+			
+			if(rs.next()) {
+				userId = rs.getString("user_id");
+				log.debug("6.userId: {}",userId);
+			}
+			
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtill.close(conn, pstmt, rs);
+			log.debug("6.finally conn:{} pstmt:{} rs:{}",conn,pstmt,rs);
+		}
+		
+		return userId;
 	}
 
 }

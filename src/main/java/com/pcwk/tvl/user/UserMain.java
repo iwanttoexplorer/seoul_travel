@@ -11,7 +11,7 @@ public class UserMain implements PLog {
 	
 	public UserMain() {
 		dao = new UserDao();
-		member = new UserDTO("1kqD993", 1, "이름", "pw123213#2", "emailamc1@na3231ver.kr", "디폴트");
+		member = new UserDTO("test", 1, "이름", "a12345678(", "test@na3231ver.kr", "디폴트");
 	}
 	
 	public void doSave() {
@@ -82,10 +82,10 @@ public class UserMain implements PLog {
 	
 	public static void main(String[] args) {
 		UserMain m = new UserMain();
-//		m.doSave();
+		m.doSave();
 //		m.doDelete();
 //		m.doUpdate();
-		m.doSelectOne();
+//		m.doSelectOne();
 //		m.doRetrieve();
 	}
 
