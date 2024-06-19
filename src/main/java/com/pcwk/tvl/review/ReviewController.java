@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.pcwk.ehr.cmn.ControllerV;
 import com.pcwk.ehr.cmn.JView;
 import com.pcwk.ehr.cmn.PLog;
 import com.pcwk.ehr.cmn.StringUtil;
+import com.pcwk.tvl.comment.CommentDTO;
 import com.pcwk.ehr.cmn.SearchDTO;
 
 /**
@@ -50,20 +52,29 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         SearchDTO inVO = new SearchDTO();
         
         // JSP viewName 전달
-        JView viewName = new JView("/SEOUL_TRAVEL/review/review_list.jsp");
+        //JView viewName = new JView("/SEOUL_TRAVEL/review/review_list.jsp");
         // page_no
         // page_size
-        String pageNo = StringUtil.nvl(request.getParameter("pageNo"), "1");
-        String pageSize = StringUtil.nvl(request.getParameter("pageSize"), "10");
-        log.debug("pageNo: " + pageNo);
-        log.debug("pageSize: " + pageSize);
-        inVO.setPageNo(Integer.parseInt(pageNo));
-        inVO.setPageSize(Integer.parseInt(pageSize));
-        
+        //String pageNo = StringUtil.nvl(request.getParameter("pageNo"), "1");
+        //String pageSize = StringUtil.nvl(request.getParameter("pageSize"), "10");
+//        log.debug("pageNo: " + pageNo);
+//        log.debug("pageSize: " + pageSize);
+//        inVO.setPageNo(Integer.parseInt(pageNo));
+//        inVO.setPageSize(Integer.parseInt(pageSize));
+//        
         List<ReviewDTO> list = reviewService.doRetrieve(inVO);
-        request.setAttribute("reviewList", list);
+        int i = 0;
+        for(ReviewDTO vo : list) {
+        	log.debug("i: {}, vo: {}", i++,vo);
+        }
+        log.debug("list: "+list);
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
 
-        return viewName;
+        return null;
     }
 
     public JView saveReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

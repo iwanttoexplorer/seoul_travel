@@ -69,7 +69,7 @@
 		});
 		function ajaxGetComments(){
 			$.ajax({
-				type: "GET",
+				type: "POST",
 				url: "/SEOUL_TRAVEL/comment/comment.do",
 				dataType:"json",
 				data:{

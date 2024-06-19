@@ -14,6 +14,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="/SEOUL_TRAVEL/assets/css/bootstrap.css">
 <title>리뷰 목록</title>
+<script src="/SEOUL_TRAVEL/assets/js/jquery_3_7_1.js"></script>
+<script>
+		document.addEventListener("DOMContentLoaded",function(){
+			console.log("riviewtUploaded");
+			const workDiv = document.querySelector("#work_div");//작업구분
+			ajaxdoRetrieve();
+		}); // riveiwList end
+		
+		function ajaxdoRetrieve(){
+			$.ajax({
+				type:"POST",
+				url:"/SEOUL_TRAVEL/review/review.do",
+				dataType:"json",
+				data:{
+					"work_div": "doRetrieve"
+				},
+				success:function(response){
+					console.log("success response: ",response);
+				},
+				error:function(error){
+		            console.log("Error:", error);
+
+				}
+					
+			});//ajax end
+		}//ajaxdoRetrieve() end
+</script>
 </head>
 <body>
 <div class="container">

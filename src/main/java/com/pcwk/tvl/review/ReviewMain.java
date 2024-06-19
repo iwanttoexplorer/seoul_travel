@@ -1,6 +1,7 @@
 package com.pcwk.tvl.review;
 
 import java.sql.Connection;
+import java.util.List;
 
 import com.pcwk.ehr.cmn.ConnectionMaker;
 import com.pcwk.ehr.cmn.PLog;
@@ -46,13 +47,20 @@ public class ReviewMain implements PLog{
 			log.debug("수정 실패 :{}",flag);
 		}
 	}
-	
+	public void doRetrieve() {
+		log.debug("doRetrieve()");
+		ReviewDTO search = new ReviewDTO();
+		List<ReviewDTO> reviews = dao.doRetrieve(search);
+		for(ReviewDTO review:reviews) {
+			log.debug("Review: {}",review);
+		}
+	}
 	public static void main(String[] args) {
 		ReviewMain m = new ReviewMain();
 //		m.doSave();
 //		m.doUpdate();
 //		m.doDelete();
-
+		m.doRetrieve();
 	}
 
 }
