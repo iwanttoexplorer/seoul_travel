@@ -66,14 +66,13 @@ public class CommentController extends HttpServlet implements ControllerV,PLog{
         log.debug("Save flag: {}", flag);
         response.setContentType("UTF-8");
         response.setContentType("application/json");
-        Gson gson = new Gson();
         
         
-        String message = "";
-        if(flag==1) {
-        	message = "등록 성공"; 
-        }else {
-        	message="등록 실패";
+        
+        if (flag == 1) {
+            response.getWriter().write("{\"status\":\"success\", \"message\":\"댓글이 성공적으로 등록되었습니다.\"}");
+        } else {
+            response.getWriter().write("{\"status\":\"error\", \"message\":\"댓글 저장에 실패했습니다.\"}");
         }
 
         
@@ -84,13 +83,19 @@ public class CommentController extends HttpServlet implements ControllerV,PLog{
         log.debug("updateComment()");
         log.debug("---------------------");
         String comSeq = StringUtil.nvl(request.getParameter("comSeq"),"");
+        String aboardSeq = StringUtil.nvl(request.getParameter("aboardSeq"),"");
         String content = StringUtil.nvl(request.getParameter("content"), "");
+        String userId = StringUtil.nvl(request.getParameter("userId"), "");
+        
         log.debug("comSeq: "+comSeq);
+        log.debug("aboardSeq: "+aboardSeq);
         log.debug("content: "+content);
-          
+        log.debug("userId: "+userId);  
         CommentDTO comment = new CommentDTO();
         comment.setComSeq(Integer.parseInt(comSeq));
         comment.setContent(content);
+        comment.setAboardSeq(Integer.parseInt(aboardSeq));
+        comment.setUserId(userId);
         log.debug("comment: "+comment);
         int flag = service.doUpdate(comment);
         log.debug("Update flag: {}", flag);
@@ -101,42 +106,54 @@ public class CommentController extends HttpServlet implements ControllerV,PLog{
         }
 //
 //       
-        return new JView("/resources/pages/comment/review_detail.jsp");
+        return null;
     }
     public JView deleteComment(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	log.debug("---------------------");
         log.debug("deleteComment()");
         log.debug("---------------------");
         String comSeq = StringUtil.nvl(request.getParameter("comSeq"),"");
+        String userId = StringUtil.nvl(request.getParameter("userId"),"");
+        String aboardSeq = StringUtil.nvl(request.getParameter("aboardSeq"),"");
         log.debug("comSeq: "+comSeq);
+        log.debug("userId: "+userId);
+        log.debug("aboardSeq: "+aboardSeq);
         CommentDTO comment = new CommentDTO();
         comment.setComSeq(Integer.parseInt(comSeq));
+        comment.setUserId(userId);
+        comment.setAboardSeq(Integer.parseInt(aboardSeq));
+
         log.debug("comment: "+comment);
         int flag = service.doDelete(comment);
         log.debug("Delete flag: {}", flag);
-        if (flag > 0) {
-            request.setAttribute("message", "댓글이 삭제되었습니다.");
-        } else {
-            request.setAttribute("message", "댓글 삭제 실패.");
-        }
-
-        return new JView("/resources/pages/comment/review_detail.jsp");
+        response.setContentType("UTF-8");
+        response.setContentType("application/json");
+        
+        return null;
     }
     public JView getComments(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("---------------------");
         log.debug("getComments()");
         log.debug("---------------------");
+        JView viewName = null;
         CommentDTO comment = new CommentDTO();
         String aboardSeq = StringUtil.nvl(request.getParameter("aboardSeq"),"");
         log.debug("aboardSeq: {}",aboardSeq);
         comment.setAboardSeq(Integer.parseInt(aboardSeq));
         log.debug("comment: {}",comment);
         List<CommentDTO> comments = service.doRetrieve(comment);
+        int i = 0;
+        for(CommentDTO vo : comments) {
+        	log.debug("i: {}, vo: {}", i++,vo);
+        }
         log.debug("comments: "+comments);
-        request.setAttribute("comments", comments);
-        request.setAttribute("message", "댓글 목록을 불러왔습니다.");
-
-        return new JView("/resources/pages/comment/review_detail.jsp");
+        Gson gson = new Gson();
+        String json = gson.toJson(comments);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
+        //response.setHeader("Access-Control-Allow-Origin", "*");
+        return null;
     }
 	@Override
 	public JView doWork(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{

@@ -21,6 +21,11 @@ public class CommentMain implements PLog{
 	}
 	public void doDelete() {
 		log.debug(" doDelete() ");
+		
+		comment.setComSeq(13);
+		comment.setUserId("3kqD994");
+		comment.setAboardSeq(1);
+		
 		int flag = dao.doDelete(comment);
 		if(1==flag) {
 			log.debug("삭제 성공 :{}",flag);
@@ -30,7 +35,7 @@ public class CommentMain implements PLog{
 	}
 	public void doUpdate() {
 		log.debug(" doUpdate() ");
-		String updateStr="_변경dd";
+		String updateStr="_변경dddd";
 		comment.setContent(comment.getContent()+updateStr);
 		int flag = dao.doUpdate(comment);
 		if(1==flag) {
@@ -52,6 +57,7 @@ public class CommentMain implements PLog{
 	public static void main(String[] args) {
 		CommentMain m = new CommentMain();
 		//m.doSave();
+		
 		//m.doUpdate();
 		//m.doDelete();
 		m.doRetrieve();

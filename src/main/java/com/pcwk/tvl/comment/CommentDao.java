@@ -122,6 +122,9 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 		sb.append("     mod_dt = SYSDATE  \n");
 		sb.append(" WHERE                 \n");
 		sb.append("     comseq = ?       \n");
+	    sb.append("     AND aboard_seq = ? \n"); // 추가: aboard_seq 조건
+	    sb.append("     AND user_id = ? \n"); // 추가: aboard_seq 조건
+
 		log.debug("1.sql:{}",sb.toString());
 		log.debug("2.conn:{}",conn);
 		log.debug("3.param:{}",param);
@@ -129,10 +132,12 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 		try {
 			pstmt = conn.prepareStatement(sb.toString());
 			log.debug("4.pstmt:{}",pstmt);
-			
+ 		
 			pstmt.setString(1, param.getContent());
 			pstmt.setInt(2, param.getComSeq());
-			
+	        pstmt.setInt(3, param.getAboardSeq()); // 추가: aboard_seq 설정
+			pstmt.setString(4, param.getUserId());
+
 			flag = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -154,7 +159,7 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("DELETE FROM v_comment \n");
-		sb.append("where comseq=?       \n");
+		sb.append("where comseq=? AND user_id =? AND aboard_seq =?      \n");
 		
 		log.debug("1.sql:{}",sb.toString());
 		log.debug("2.conn:{}",conn);
@@ -168,7 +173,8 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 			
 			//param 설정
 			pstmt.setInt(1, param.getComSeq());
-			
+	        pstmt.setString(2, param.getUserId()); // user_id 설정
+	        pstmt.setInt(3, param.getAboardSeq());
 			
 			//DML
 			flag = pstmt.executeUpdate();
