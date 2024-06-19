@@ -49,7 +49,7 @@ public class ContentMain implements PLog {
 		searchVO.setPageSize(10);
 		
 		//검색구분
-		searchVO.setSearchDiv("20");
+		searchVO.setSearchDiv("40");
 		searchVO.setSearchWord("A0201");
 		
 		List<ContentDTO> list=dao.doRetrieve(searchVO);
