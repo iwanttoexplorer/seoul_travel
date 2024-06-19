@@ -16,18 +16,9 @@ public class ContentDTO extends DTO{
 	
 	public ContentDTO() {}
 
-	public ContentDTO(String contentId, String category, String gucode, String tel, String addr, String imgLink,
-			String title, String regDt, String modDt) {
+	public ContentDTO(String contentId) {
 		super();
 		this.contentId = contentId;
-		this.category = category;
-		this.gucode = gucode;
-		this.tel = tel;
-		this.addr = addr;
-		this.imgLink = imgLink;
-		this.title = title;
-		this.regDt = regDt;
-		this.modDt = modDt;
 	}
 
 	public String getContentId() {

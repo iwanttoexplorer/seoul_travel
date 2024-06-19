@@ -22,7 +22,7 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 	public ContentDao() {
 		connectionMaker = new ConnectionMaker(); //생성자 객체 만들기
 	}
-	
+
 	@Override
 	public int doSave(ContentDTO param) {
 //		1. DriverManager로 데이터 베이스와 연결을 생성
@@ -131,11 +131,8 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("30")) {
 			sbWhere.append("WHERE gucode LIKE ?||'%' \n");
 		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("40")) {
-			sbWhere.append("WHERE title LIKE ?||'%' \n");
-			sbWhere.append("OR category LIKE ?||'%' \n");
-		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("50")) {
-			sbWhere.append("WHERE title LIKE ?||'%' \n");
-			sbWhere.append("OR gucode LIKE ?||'%' \n");
+			sbWhere.append("WHERE category LIKE ?||'%' \n");
+			sbWhere.append("AND gucode LIKE ?||'%' \n");
 		}
 		
 		List<ContentDTO> list = new ArrayList<ContentDTO>();
@@ -145,43 +142,42 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 		ResultSet         rs    = null;//SQL문의 결과
 		
 		StringBuilder sb=new StringBuilder(300);
-		sb.append("  SELECT A.*,B.*                                                  \n");
-		sb.append("  FROM (                                                          \n");
-		sb.append("      SELECT tt1.rnum AS num,                                     \n");
-		sb.append("             tt1.contentid,                                        \n");
-		sb.append("             tt1.category,                                        \n");
-		sb.append("             tt1.gucode,                                          \n");
-		sb.append("             tt1.tel,                                             \n");
-		sb.append("             tt1.addr,                                            \n");
-		sb.append("             tt1.img_link,                                        \n");
-		sb.append("             tt1.title,                                           \n");
-		sb.append("             tt1.reg_dt,                                          \n");
-		sb.append("             tt1.mod_dt                                           \n");
-		sb.append("      FROM (                                                      \n");
-		sb.append("          SELECT ROWNUM AS rnum, T1.*                             \n");
-		sb.append("          FROM (                                                  \n");
-		sb.append("                  SELECT *                                        \n");
-		sb.append("                    FROM v_content                                \n");
-		sb.append("                   --WHERE조건                                     \n");
-		//--where------------------------------------------------------------------------
+		sb.append("  SELECT A.*,B.*                                \n");
+		sb.append("  FROM (                                        \n");
+		sb.append("      SELECT tt1.rnum AS num,                   \n");
+		sb.append("             tt1.contentid,                     \n");
+		sb.append("             tt1.category,                      \n");
+		sb.append("             tt1.gucode,                        \n");
+		sb.append("             tt1.tel,                           \n");
+		sb.append("             tt1.addr,                          \n");
+		sb.append("             tt1.img_link,                      \n");
+		sb.append("             tt1.title,                         \n");
+		sb.append("             tt1.reg_dt,                        \n");
+		sb.append("             tt1.mod_dt                         \n");
+		sb.append("      FROM (                                    \n");
+		sb.append("          SELECT ROWNUM AS rnum, T1.*           \n");
+		sb.append("          FROM (                                \n");
+		sb.append("                  SELECT *                      \n");
+		sb.append("                    FROM v_content              \n");
+		sb.append("                   --WHERE조건                  \n");
+		//--where------------------------------------------------------
 		sb.append(sbWhere.toString());
-		//--where------------------------------------------------------------------------
-		sb.append("                   ORDER BY mod_dt DESC                           \n");
-		sb.append("                                                                  \n");
-		sb.append("          )T1                                                     \n");
-		sb.append("          WHERE ROWNUM <=( ? * (? - 1)+ ?)                        \n");
-		sb.append("      )TT1                                                        \n");
-		sb.append("      WHERE rnum >=(? * ( ? - 1) +1  )                            \n");
-		sb.append("      --WHERE rnum BETWEEN 1 AND 10                               \n");
-		sb.append("      )A,(                                                        \n");
-		sb.append("      SELECT COUNT(*) totalCnt                                    \n");
-		sb.append("        FROM v_content                                            \n");
-		sb.append("      --WHERE조건                                                  \n");
-		sb.append("                                                                  \n");
-		//--where------------------------------------------------------------------------
+		//--where------------------------------------------------------
+		sb.append("                   ORDER BY mod_dt DESC         \n");
+		sb.append("                                                \n");
+		sb.append("          )T1                                   \n");
+		sb.append("          WHERE ROWNUM <=( ? * (? - 1)+ ?)      \n");
+		sb.append("      )TT1                                      \n");
+		sb.append("      WHERE rnum >=(? * ( ? - 1) +1  )          \n");
+		sb.append("      --WHERE rnum BETWEEN 1 AND 10             \n");
+		sb.append("      )A,(                                      \n");
+		sb.append("      SELECT COUNT(*) totalCnt                  \n");
+		sb.append("        FROM v_content                          \n");
+		sb.append("      --WHERE조건                               \n");
+		//--where------------------------------------------------------
 		sb.append(sbWhere.toString());
-		//--where------------------------------------------------------------------------
-		sb.append("      )B                                                          \n");
+		//--where------------------------------------------------------
+		sb.append("      )B                                        \n");
 		
 		
 		log.debug("1.sql: {} \n", sb.toString());
@@ -254,7 +250,7 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 				//검색어
 				pstmt.setString(7, searchVO.getSearchWord());
 				
-			//title+category
+			//category+gucode
 			}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("40")) {
 				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
 				
@@ -275,27 +271,6 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 				pstmt.setString(8, searchVO.getSearchWord());
 				pstmt.setString(9, searchVO.getSearchWord());
 			
-			//title+gucode
-			}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("50")) {
-				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
-				
-				//검색어
-				pstmt.setString(1, searchVO.getSearchWord());
-				pstmt.setString(2, searchVO.getSearchWord());
-				
-				//ROWNUM
-				pstmt.setInt(3, searchVO.getPageSize());
-				pstmt.setInt(4, searchVO.getPageNo());
-				pstmt.setInt(5, searchVO.getPageSize());
-				
-				//rnum
-				pstmt.setInt(6, searchVO.getPageSize());
-				pstmt.setInt(7, searchVO.getPageNo());
-				
-				//검색어
-				pstmt.setString(8, searchVO.getSearchWord());
-				pstmt.setString(9, searchVO.getSearchWord());
-				
 			//전체
 			}else {
 				//ROWNUM
