@@ -14,11 +14,39 @@ public class ContentDTO extends DTO{
 	private String regDt;     //등록일
 	private String modDt;     //수정일
 	
+	private String gName; //구코드 이름
+	private String catName; //카테고리 이름
+	
 	public ContentDTO() {}
 
-	public ContentDTO(String contentId) {
+	public ContentDTO(String contentId, String category, String gucode, String tel, String addr, String imgLink,
+			String title, String regDt, String modDt) {
 		super();
 		this.contentId = contentId;
+		this.category = category;
+		this.gucode = gucode;
+		this.tel = tel;
+		this.addr = addr;
+		this.imgLink = imgLink;
+		this.title = title;
+		this.regDt = regDt;
+		this.modDt = modDt;
+	}
+
+	public ContentDTO(String contentId, String category, String gucode, String tel, String addr, String imgLink,
+			String title, String regDt, String modDt, String gName, String catName) {
+		super();
+		this.contentId = contentId;
+		this.category = category;
+		this.gucode = gucode;
+		this.tel = tel;
+		this.addr = addr;
+		this.imgLink = imgLink;
+		this.title = title;
+		this.regDt = regDt;
+		this.modDt = modDt;
+		this.gName = gName;
+		this.catName = catName;
 	}
 
 	public String getContentId() {
@@ -93,13 +121,29 @@ public class ContentDTO extends DTO{
 		this.modDt = modDt;
 	}
 
+	public String getgName() {
+		return gName;
+	}
+
+	public void setgName(String gName) {
+		this.gName = gName;
+	}
+
+	public String getCatName() {
+		return catName;
+	}
+
+	public void setCatName(String catName) {
+		this.catName = catName;
+	}
+
 	@Override
 	public String toString() {
 		return "ContentDTO [contentId=" + contentId + ", category=" + category + ", gucode=" + gucode + ", tel=" + tel
 				+ ", addr=" + addr + ", imgLink=" + imgLink + ", title=" + title + ", regDt=" + regDt + ", modDt="
-				+ modDt + ", toString()=" + super.toString() + "]";
+				+ modDt + ", gName=" + gName + ", catName=" + catName + ", toString()=" + super.toString() + "]";
 	}
 
-
+	
 	
 }

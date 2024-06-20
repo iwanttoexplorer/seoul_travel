@@ -18,12 +18,21 @@ public class ContentService  implements PLog {
 	}
 	
 	/**
-	 * 목록 조회
+	 * 관광지 목록 조회
 	 * @param search
 	 * @return
 	 */
 	public List<ContentDTO> doRetrieve(DTO search) {
 		return dao.doRetrieve(search);
+	}
+	
+	/**
+	 * 식당 목록 조회
+	 * @param search
+	 * @return
+	 */
+	public List<ContentDTO> doRetrieve2(DTO search) {
+		return dao.doRetrieve2(search);
 	}
 	
 }
