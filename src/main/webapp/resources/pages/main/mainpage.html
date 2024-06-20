@@ -3,33 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>메인 페이지</title>
-     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+    <title>Seoul Travel</title>
+    <link rel="stylesheet" href="/SEOUL_TRAVEL/assets/css/bootstrap.css">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; }
         header { background: #333; color: #fff; padding: 10px 0; display: flex; justify-content: space-between; align-items: center; }
-        .logo { margin-left: 20px; cursor: pointer; }
-        .nav-links { list-style: none; display: flex; margin: 0; padding: 0; }
-        .nav-links li { margin-right: 15px; }
-        .nav-links li a { color: #fff; text-decoration: none; }
-        .nav-links li a:hover { text-decoration: underline; }
+        .logo img { margin-left: 20px; cursor: pointer; }
+        .signup { color: #fff; text-decoration: none; margin-right: 20px; }
         .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
-        .main-section { margin-bottom: 20px; }
-        .main-section h2 { font-size: 24px; margin-bottom: 10px; }
-        .main-section p { font-size: 18px; line-height: 1.6; }
-        .review-list { display: flex; flex-wrap: wrap; }
-        .review-item { flex: 0 0 calc(50% - 20px); margin: 10px; padding: 10px; border: 1px solid #ddd; }
-        .review-item img { width: 100%; height: auto; margin-bottom: 10px; }
-        .review-item h3 { font-size: 18px; margin: 0 0 5px 0; }
-        .review-item .meta { font-size: 14px; color: #555; margin-bottom: 5px; }
-        .review-item p { font-size: 16px; line-height: 1.6; }
+        .welcome { text-align: center; margin: 20px 0; }
+        .slider { overflow: hidden; position: relative; width: 100%; height: 300px; margin-bottom: 20px; }
+        .slides { display: flex; transition: transform 0.5s ease-in-out; }
+        .slide { min-width: 100%; box-sizing: border-box; }
+        .slide img { width: 100%; height: auto; }
+        .sections { display: flex; justify-content: space-around; margin-bottom: 20px; }
+        .section { flex: 1; text-align: center; margin: 0 10px; }
+        .section a { display: block; padding: 20px; background: #f8f9fa; border: 1px solid #ddd; text-decoration: none; color: #333; font-size: 18px; }
+        .section a:hover { background: #e9ecef; }
+        .recommendations, .reviews { margin-bottom: 20px; }
+        .recommendations .item-list, .reviews .item-list { display: flex; flex-wrap: wrap; }
+        .item { flex: 0 0 calc(33.333% - 20px); margin: 10px; padding: 10px; border: 1px solid #ddd; text-align: center; }
+        .item img { width: 100%; height: auto; margin-bottom: 10px; }
+        .item h3 { font-size: 18px; margin-bottom: 5px; }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo" onclick="location.href='mainpage.html'">SEOUL TRAVEL</div>
-        
-        <a href="signup.html" class="signup">회원가입</a>
-    </header>
+<header>
+    <div class="logo" onclick="location.href='mainpage.jsp'">
+        <img src="/SEOUL_TRAVEL/images/logo.png" alt="SEOUL TRAVEL" width="130" height="80">
+    </div>
+    <a href="signup.jsp" class="signup">회원가입</a>
+</header>
     <div class="container">
         <div class="welcome">
             <h1>환영합니다!</h1>
