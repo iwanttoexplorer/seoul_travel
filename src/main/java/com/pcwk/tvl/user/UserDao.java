@@ -664,4 +664,39 @@ public class UserDao implements WorkDiv<UserDTO> {
 		return userId;
 	}
 
+	public List<UserDTO> adminDTO(){
+		int flag = 0;
+		
+		Connection conn = connectionMaker.getConnection();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		StringBuilder sb = new StringBuilder(100);
+		sb.append(" SELECT *     \n");
+		sb.append("   FROM v_user          \n");
+		log.debug("1.sql:{}",sb.toString());
+		log.debug("2.conn:{}",conn);
+		
+		try {
+			pstmt = conn.prepareCall(sb.toString());
+			log.debug("4.pstmt:{}",pstmt);
+			
+			
+			rs = pstmt.executeQuery();
+			log.debug("5.rs:{}",rs);
+			
+			if(rs.next()) {
+				flag = rs.getInt("cnt");
+				log.debug("6.result: {}",flag);
+			}
+			
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtill.close(conn, pstmt, rs);
+			log.debug("6.finally conn:{} pstmt:{} rs:{}",conn,pstmt,rs);
+		}
+		return null;
+	}
+
 }
