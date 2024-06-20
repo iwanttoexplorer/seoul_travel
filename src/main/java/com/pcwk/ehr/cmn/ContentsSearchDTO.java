@@ -97,4 +97,6 @@ public class ContentsSearchDTO extends DTO {
 				+ ", toString()=" + super.toString() + "]";
 	}
 	
+	
+
 }

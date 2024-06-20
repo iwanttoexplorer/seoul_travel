@@ -1,4 +1,4 @@
-package com.pcwk.tvl.contentTest;
+package com.pcwk.tvl.content;
 
 import java.util.List;
 
