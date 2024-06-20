@@ -82,7 +82,6 @@ public class ContentController implements ControllerV, PLog{
 		String pageSize = StringUtil.nvl(request.getParameter("page_size"), "10");
 
 		
-		String searchDiv = StringUtil.nvl(request.getParameter("search_div"), "");
 		String categoryWord = StringUtil.nvl(request.getParameter("category_word"), "");
 		String gNameWord = StringUtil.nvl(request.getParameter("g_name_word"), "");
 		String searchWord = StringUtil.nvl(request.getParameter("search_word"), "");
@@ -90,21 +89,32 @@ public class ContentController implements ControllerV, PLog{
 		log.debug("categoryWord:{}", categoryWord);
 		log.debug("gNameWord:{}", gNameWord);
 		log.debug("searchWord:{}", searchWord);
+		
+		if(categoryWord =="" && gNameWord == "" && searchWord != "" ) {
+			inVO.setSearchDiv("10");
+			inVO.setSearchWord(searchWord);
+		}else if (categoryWord !="" && gNameWord == "" && searchWord == "" ) {
+			inVO.setSearchDiv("20");
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord =="" && gNameWord != "" && searchWord == "" ) {
+			inVO.setSearchDiv("30");
+			inVO.setgNameWord(gNameWord);
+		}else if (categoryWord =="" && gNameWord != "" && searchWord != "" ) {
+			inVO.setSearchDiv("40");
+			inVO.setgNameWord(gNameWord);
+			inVO.setSearchWord(searchWord);
+		}
+		
 
 		log.debug("page_no:{}", pageNo);
 		log.debug("page_size:{}", pageSize);
-		log.debug("searchDiv:{}", searchDiv);
 
 		inVO.setPageNo(Integer.parseInt(pageNo));
 		inVO.setPageSize(Integer.parseInt(pageSize));
-		inVO.setSearchDiv(searchDiv);
 		
-		inVO.setSearchDiv(searchDiv);
 		inVO.setCategoryWord(categoryWord);
 		inVO.setgNameWord(gNameWord);
-		inVO.setSearchDiv(searchWord);
 		
-		log.debug("searchDiv:{}", searchDiv);
 		log.debug("categoryWord:{}", categoryWord);
 		log.debug("gNameWord:{}", gNameWord);
 		log.debug("searchWord:{}", searchWord);
@@ -144,91 +154,9 @@ public class ContentController implements ControllerV, PLog{
 		request.setAttribute("vo", inVO);
 		log.debug("inVO: {}", inVO);
 
-		return viewName = new JView("/content/travel_main.jsp");
+		return viewName = new JView("/resources/pages/content/travel_main.jsp");
 	}
 	
-	public JView doRetrieve2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		log.debug("-----------------");
-		log.debug("doRetrieve()");
-		log.debug("-----------------");
-		
-		HttpSession session = request.getSession();
-		
-		// JSP viewName저장
-		JView viewName = null;
-		
-		ContentsSearchDTO inVO = new ContentsSearchDTO();
-		
-		// page_no
-		// page_size
-		String pageNo = StringUtil.nvl(request.getParameter("page_no"), "1");
-		String pageSize = StringUtil.nvl(request.getParameter("page_size"), "10");
-
-		
-		String searchDiv = StringUtil.nvl(request.getParameter("search_div"), "");
-		String categoryWord = StringUtil.nvl(request.getParameter("category_word"), "");
-		String gNameWord = StringUtil.nvl(request.getParameter("g_name_word"), "");
-		String searchWord = StringUtil.nvl(request.getParameter("search_word"), "");
-		
-		log.debug("categoryWord:{}", categoryWord);
-		log.debug("gNameWord:{}", gNameWord);
-		log.debug("searchWord:{}", searchWord);
-
-		log.debug("page_no:{}", pageNo);
-		log.debug("page_size:{}", pageSize);
-		log.debug("searchDiv:{}", searchDiv);
-
-		inVO.setPageNo(Integer.parseInt(pageNo));
-		inVO.setPageSize(Integer.parseInt(pageSize));
-		inVO.setSearchDiv(searchDiv);
-		
-		inVO.setSearchDiv(searchDiv);
-		inVO.setCategoryWord(categoryWord);
-		inVO.setgNameWord(gNameWord);
-		inVO.setSearchDiv(searchWord);
-		
-		log.debug("searchDiv:{}", searchDiv);
-		log.debug("categoryWord:{}", categoryWord);
-		log.debug("gNameWord:{}", gNameWord);
-		log.debug("searchWord:{}", searchWord);
-
-		log.debug("inVO:{}", inVO);
-
-		// service call
-		List<ContentDTO> list = service.doRetrieve(inVO);
-
-		// return 데이터 확인
-		int i = 0;
-		for (ContentDTO vo : list) {
-			log.debug("i: {}, vo: {}", ++i, vo);
-		}
-
-		// UI 데이터 전달
-		request.setAttribute("list", list);
-		
-		//paging : 총글수 : totalCnt,
-		//currentPageNo   : pagNo
-		//rowPerPage      : pageSize
-		//bottomCount     : 10
-		int bottomCount = 10;
-		int totalCnt = 0; //총 글수
-		
-		if(null != list && list.size() > 0) {
-			ContentDTO pagingVO = list.get(0);
-			totalCnt = pagingVO.getTotalCnt();
-			log.debug("totalCnt: {}", totalCnt);
-			
-			inVO.setTotalCnt(totalCnt);
-		}
-		
-		inVO.setBottomCount(bottomCount);
-		
-		// 검색조건 UI로 전달
-		request.setAttribute("vo", inVO);
-		log.debug("inVO: {}", inVO);
-
-		return viewName = new JView("/content/travel_main.jsp");
-	}
 	
 	@Override
 	public JView doWork(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -245,9 +173,6 @@ public class ContentController implements ControllerV, PLog{
 		switch(workDiv) {
 		case "doRetrieve":
 			viewName = doRetrieve(request, response);
-			break;
-		case "doRetrieve2":
-			viewName = doRetrieve2(request, response);
 			break;
 		case "doSelectOne":
 			viewName = doSelectOne(request, response);

@@ -17,6 +17,7 @@ import com.pcwk.tvl.comment.CommentController;
 import com.pcwk.tvl.content.ContentController;
 import com.pcwk.tvl.review.ReviewController;
 import com.pcwk.tvl.user.LoginController;
+import com.pcwk.tvl.user.UserController;
 
 /**
  * Servlet implementation class FrontcontrollerV
@@ -37,13 +38,6 @@ public class FrontcontrollerV extends HttpServlet implements PLog {
     	controllerMap.put("/SEOUL_TRAVEL/review/review.do", new ReviewController());
     	controllerMap.put("/SEOUL_TRAVEL/content/content.do", new ContentController());
     	controllerMap.put("/SEOUL_TRAVEL/admin/admin.do", new UserController());
-
-
-
-
-
-
-
 
     }
 	/**

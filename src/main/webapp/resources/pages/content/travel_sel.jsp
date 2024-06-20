@@ -15,10 +15,10 @@ document.addEventListener("DOMContentLoaded", function(){
   
   const moveToListBtn = document.querySelector("#moveToList");
   //수정 버튼
-  const doUpdateBtn = document.querySelector("#doUpdate");
+  /* const doUpdateBtn = document.querySelector("#doUpdate");
   //삭제 버튼 
-  const doDeleteBtn = document.querySelector("#doDelete");
-  console.log('doDeleteBtn:'+doDeleteBtn);
+  const doDeleteBtn = document.querySelector("#doDelete"); */
+  /* console.log('doDeleteBtn:'+doDeleteBtn); */
   
   const workDiv = document.querySelector("#work_div");//작업구분
   const seq = document.querySelector("#seq");//seq
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function(){
   function moveToList(){
     console.log('moveToList()');
     alert("게시 목록으로 이동 합니다.");
-    window.location.href= "/WEB02/board/board.do?work_div=doRetrieve";
+    window.location.href= "/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve";
   }
   
   

@@ -38,11 +38,17 @@
 <script src="/SEOUL_TRAVEL/assets/js/jquery_3_7_1.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
+	console.log('DOMContentLoaded');
+	
+	const doRetrieveBtn = document.querySelector('#doRetrieve');
+	console.log('doRetrieveBtn');
+	//id = #이름  class = .이름 querySelector
   //조회 버튼 
-  const doRetrieveBtn = document.querySelector("#doRetrieve");
+  /* const doRetrieveBtn = document.querySelector("#doRetrieve"); */
+  
   
   //html객체를 자바스크리트에서 생성
-  const searchWord = document.querySelector("#search_word");
+  /* const searchWord = document.querySelector("#search_word"); */
   
   
   //table 자식모두 tbody선택
@@ -51,6 +57,23 @@ document.addEventListener("DOMContentLoaded", function(){
   const buttons = document.querySelectorAll(".btn-outline-success") ; 
   
   //이벤트 핸들러
+  doRetrieveBtn.addEventListener('click',function(){
+	  console.log('doRetrieveBtn click');
+	// 폼 객체 생성
+	  const frm = document.querySelector('#board_frm');
+	  console.log(frm);
+	  
+	  // 폼 데이터 설정   //doRetrieve
+	  frm.work_div.value = "doRetrieve";
+	  
+	  // 서버로 보낼 url 설정
+	    frm.action = "/SEOUL_TRAVEL/content/content.do";
+	    
+	    //서버로 폼 전송
+	    frm.submit();
+	  
+  });//doRetrieveBtn
+  
   buttons.forEach(function(button){
     button.addEventListener('click',function(){
       let hiddenInfo = this.getAttribute('data-hidden-info');
@@ -68,26 +91,26 @@ document.addEventListener("DOMContentLoaded", function(){
           let seqValue = this.querySelector('td:last-child').textContent.trim();
           console.log('seqValue:'+seqValue);
           
-          doSelectOne(seqValue);    
+          /* doSelectOne(seqValue);    */ 
         });
         
       });   
   
   
-  doRetrieveBtn.addEventListener("click", function(event){
+  /* doRetrieveBtn.addEventListener("click", function(event){
     console.log('doRetrieveBtn click');
     doRetrieve();
-  }); 
+  });  */
   
-  searchWord.addEventListener("keydown", function(event){
+  /* searchWord.addEventListener("keydown", function(event){
     console.log('keydown');
     
     if(event.keyCode === 13){
       doRetrieve();
     }
-  }); 
+  });  */
   
-});
+}); //DOMContentLoaded
 
 //페이징 조회
 function pageRetrieve(url, pageNo){
@@ -141,7 +164,7 @@ function doSelectOne(seqValue){
     
     // 각 입력 요소 값 출력
     /* console.log("frm.search_div.value: " + frm.search_div.value); */
-    console.log("frm.search_word.value: " + frm.search_word.value);
+    /* console.log("frm.search_word.value: " + frm.search_word.value); */
     console.log("frm.page_size.value: " + frm.page_size.value);
     
     // 서버로 보낼 액션 설정
