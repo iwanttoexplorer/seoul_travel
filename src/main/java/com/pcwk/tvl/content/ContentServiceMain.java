@@ -14,7 +14,7 @@ public class ContentServiceMain implements PLog{
 	public ContentServiceMain() {
 		service = new ContentService();
 		
-		content01 = new ContentDTO("2638475");
+		//content01 = new ContentDTO("");
 	}
 	
 	public void doSelectOne() {

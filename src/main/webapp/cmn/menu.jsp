@@ -32,7 +32,7 @@
 		    <a class="nav-link active" aria-current="page" href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve"><h4>여행정보</h4></a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="/SEOUL_TRAVEL/content/restaurant_main.jsp"><h4>맛집 소개</h4></a>
+		    <a class="nav-link" href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve2"><h4>맛집 소개</h4></a>
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link" href="#"><h4>로그인</h4></a>
