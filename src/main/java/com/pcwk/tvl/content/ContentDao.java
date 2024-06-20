@@ -108,12 +108,7 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	public int doGucodeJoin(ContentDTO param) {
-		return 0;
-	}
-	public int doCategoryJoin(ContentDTO param) {
-		return 0;
-	}
+	
 	/**
 	 * 다건 조회
 	 */
@@ -131,14 +126,24 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 //		--WHERE title    LIKE :searchWord||'%' "10"
 		
 		if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("10")) {
-			sbWhere.append("WHERE contentid LIKE ?||'%' \n");
+			sbWhere.append("WHERE title LIKE ?||'%' \n");
 		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("20")) {
 			sbWhere.append("WHERE category LIKE ?||'%' \n");
 		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("30")) {
 			sbWhere.append("WHERE gucode LIKE ?||'%' \n");
 		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("40")) {
-			sbWhere.append("WHERE category LIKE ?||'%' \n");
-			sbWhere.append("OR gucode LIKE ?||'%' \n");
+			sbWhere.append("WHERE title LIKE ?||'%' \n");
+			sbWhere.append("AND gucode LIKE ?||'%' \n");
+		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("50")) {
+			sbWhere.append("WHERE title LIKE ?||'%' \n");
+			sbWhere.append("AND category LIKE ?||'%' \n");
+		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("60")) {
+			sbWhere.append("WHERE gucode LIKE ?||'%' \n");
+			sbWhere.append("AND category LIKE ?||'%' \n");
+		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("70")) {
+			sbWhere.append("WHERE gucode LIKE ?||'%' \n");
+			sbWhere.append("AND category LIKE ?||'%' \n");
+			sbWhere.append("AND title LIKE ?||'%' \n");
 		}
 		
 		List<ContentDTO> list = new ArrayList<ContentDTO>();
@@ -199,7 +204,7 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 			//param설정
 			//paging
 			
-			//contentid
+			//title
 			if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("10")) {
 				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
 				
@@ -277,6 +282,71 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 				pstmt.setString(8, searchVO.getSearchWord());
 				pstmt.setString(9, searchVO.getSearchWord());
 			
+			//category+title
+			}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("50")) {
+				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
+				
+				//검색어
+				pstmt.setString(1, searchVO.getSearchWord());
+				pstmt.setString(2, searchVO.getSearchWord());
+				
+				//ROWNUM
+				pstmt.setInt(3, searchVO.getPageSize());
+				pstmt.setInt(4, searchVO.getPageNo());
+				pstmt.setInt(5, searchVO.getPageSize());
+				
+				//rnum
+				pstmt.setInt(6, searchVO.getPageSize());
+				pstmt.setInt(7, searchVO.getPageNo());
+				
+				//검색어
+				pstmt.setString(8, searchVO.getSearchWord());
+				pstmt.setString(9, searchVO.getSearchWord());
+			
+			//gucode+title
+			}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("60")) {
+				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
+				
+				//검색어
+				pstmt.setString(1, searchVO.getSearchWord());
+				pstmt.setString(2, searchVO.getSearchWord());
+				
+				//ROWNUM
+				pstmt.setInt(3, searchVO.getPageSize());
+				pstmt.setInt(4, searchVO.getPageNo());
+				pstmt.setInt(5, searchVO.getPageSize());
+				
+				//rnum
+				pstmt.setInt(6, searchVO.getPageSize());
+				pstmt.setInt(7, searchVO.getPageNo());
+				
+				//검색어
+				pstmt.setString(8, searchVO.getSearchWord());
+				pstmt.setString(9, searchVO.getSearchWord());
+				
+			//category+gucode+title
+			}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("70")) {
+				log.debug("4.1 searchDiv: {}", searchVO.getSearchDiv());
+				
+				//검색어
+				pstmt.setString(1, searchVO.getSearchWord());
+				pstmt.setString(2, searchVO.getSearchWord());
+				pstmt.setString(3, searchVO.getSearchWord());
+				
+				//ROWNUM
+				pstmt.setInt(4, searchVO.getPageSize());
+				pstmt.setInt(5, searchVO.getPageNo());
+				pstmt.setInt(6, searchVO.getPageSize());
+				
+				//rnum
+				pstmt.setInt(7, searchVO.getPageSize());
+				pstmt.setInt(8, searchVO.getPageNo());
+				
+				//검색어
+				pstmt.setString(9, searchVO.getSearchWord());
+				pstmt.setString(10, searchVO.getSearchWord());
+				pstmt.setString(11, searchVO.getSearchWord());
+				
 			//전체
 			}else {
 				//ROWNUM

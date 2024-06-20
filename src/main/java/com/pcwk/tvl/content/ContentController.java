@@ -74,9 +74,64 @@ public class ContentController implements ControllerV, PLog{
 		
 		HttpSession session = request.getSession();
 		
+		// JSP viewName저장
+		JView viewName = null;
+		SearchDTO inVO = new SearchDTO();
 		
+		// page_no
+		// page_size
+		String pageNo = StringUtil.nvl(request.getParameter("page_no"), "1");
+		String pageSize = StringUtil.nvl(request.getParameter("page_size"), "10");
+
+		String searchWord = StringUtil.nvl(request.getParameter("search_word"), "");
+		String searchDiv = StringUtil.nvl(request.getParameter("search_div"), "");
+
+		log.debug("page_no:{}", pageNo);
+		log.debug("page_size:{}", pageSize);
+		log.debug("searchWord:{}", searchWord);
+		log.debug("searchDiv:{}", searchDiv);
+
+		inVO.setPageNo(Integer.parseInt(pageNo));
+		inVO.setPageSize(Integer.parseInt(pageSize));
+		inVO.setSearchWord(searchWord);
+		inVO.setSearchDiv(searchDiv);
+
+		log.debug("inVO:{}", inVO);
+
+		// service call
+		List<ContentDTO> list = service.doRetrieve(inVO);
+
+		// return 데이터 확인
+		int i = 0;
+		for (ContentDTO vo : list) {
+			log.debug("i: {}, vo: {}", ++i, vo);
+		}
+
+		// UI 데이터 전달
+		request.setAttribute("list", list);
 		
-		return null;
+		//paging : 총글수 : totalCnt,
+		//currentPageNo   : pagNo
+		//rowPerPage      : pageSize
+		//bottomCount     : 10
+		int bottomCount = 10;
+		int totalCnt = 0; //총 글수
+		
+		if(null != list && list.size() > 0) {
+			ContentDTO pagingVO = list.get(0);
+			totalCnt = pagingVO.getTotalCnt();
+			log.debug("totalCnt: {}", totalCnt);
+			
+			inVO.setTotalCnt(totalCnt);
+		}
+		
+		inVO.setBottomCount(bottomCount);
+		
+		// 검색조건 UI로 전달
+		request.setAttribute("vo", inVO);
+		log.debug("inVO: {}", inVO);
+
+		return viewName = new JView("/content/travel_main.jsp");
 	}
 	
 	@Override
@@ -103,7 +158,7 @@ public class ContentController implements ControllerV, PLog{
 			break;
 		}
 		
-		return null;
+		return viewName;
 	}
 	
 	/**

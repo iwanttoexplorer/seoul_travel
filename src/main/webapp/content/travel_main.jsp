@@ -34,7 +34,7 @@
 document.addEventListener("DOMContentLoaded", function(){
 	  
   //등록 버튼
-  const moveToRegBtn = document.querySelector("#moveToReg");
+  const doSelectOneBtn = document.querySelector("#doSelectOneBtn");
   
   //조회 버튼 
   const doRetrieveBtn = document.querySelector("#doRetrieve");
@@ -280,6 +280,27 @@ function doSelectOne(seqValue){
       </tbody>
   
     </table>
+    <!-- paging -->
+    <nav aria-label="Page navigation example">
+    <%
+        //총글수
+        SearchDTO pageingVO = (SearchDTO)request.getAttribute("vo");
+        int totalCnt = pageingVO.getTotalCnt();
+               
+        //페이지 번호
+        int pageNo = pageingVO.getPageNo();    
+        
+        //페이지 사이즈
+        int pageSize = pageingVO.getPageSize();
+        
+        //바닥 글수      
+        int bottomCnt = pageingVO.getBottomCount();
+        
+        //pageRetrieve(url, 2(페이지 번호))
+        out.print(StringUtil.renderingPaging(totalCnt, pageNo, pageSize, bottomCnt, "/WEB02/board/board.do", "pageRetrieve"));
+    %>
+    </nav>
+    <!-- //paging end ------------------------------------------------------------->
     
     <jsp:include page="/cmn/footer.jsp"></jsp:include>
     
