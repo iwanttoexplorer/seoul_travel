@@ -5,13 +5,17 @@ import java.util.List;
 
 import com.pcwk.ehr.cmn.PLog;
 import com.pcwk.ehr.cmn.SearchDTO;
+import com.pcwk.tvl.like.LikeDTO;
 
 public class ReviewServiceMain implements PLog{
 	ReviewService service;
 	ReviewDTO review;
+	LikeDTO like;
 	public ReviewServiceMain() {
 		service = new ReviewService();
 		review = new ReviewDTO("1605990","1kqD993","http://tong.visitkorea.or.kr/cms/resource/88/3077788_image2_1.JPG","어쩌고","title","20240618","20240618",1);
+		like = new LikeDTO("2kqD993", 1);
+		
 	}
 	public void doSave() {
 		log.debug(" doSave() ");
@@ -34,11 +38,31 @@ public class ReviewServiceMain implements PLog{
 		}
 
 	}
+	public void doLike() {
+		log.debug("doLike()");
+		log.debug("like: "+like);
+		int likeCount = service.doLike(like);
+		if(0<likeCount) {
+			log.debug("추천수가 " + likeCount + "입니다.");
+		}else {
+			log.debug("추천수 :{}",likeCount);
+		}
+	}
+	public void doLikeSave() {
+		log.debug("doLikeSave()");
+		int flag = service.doLikeSave(like);
+		if(1==flag) {
+			log.debug("추천수 저장 성공 :{}",flag);
+		}else {
+			log.debug("추천수 저장 실패 :{}",flag);
+		}
+	}
 	public static void main(String[] args) {
 		ReviewServiceMain m = new ReviewServiceMain();
 		//m.doSave();
-		m.doRetrieve();
-
+		//m.doRetrieve();
+		//m.doLike();
+		m.doLikeSave();
 	}
 
 }

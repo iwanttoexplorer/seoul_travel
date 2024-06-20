@@ -5,11 +5,13 @@ import java.util.List;
 
 import com.pcwk.ehr.cmn.ConnectionMaker;
 import com.pcwk.ehr.cmn.PLog;
+import com.pcwk.tvl.like.LikeDTO;
 
 public class ReviewMain implements PLog{
 	//seq, contentid, userid, img_link, comment, title, regdt,moddt,readcnt
 	ReviewDao dao;
 	ReviewDTO review;
+	LikeDTO like;
 	public ReviewMain() {
 		
 		dao = new ReviewDao();

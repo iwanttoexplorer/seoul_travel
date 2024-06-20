@@ -15,12 +15,13 @@ import com.pcwk.ehr.cmn.JView;
 import com.pcwk.ehr.cmn.PLog;
 import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.tvl.comment.CommentDTO;
+import com.pcwk.tvl.like.LikeDTO;
 import com.pcwk.ehr.cmn.SearchDTO;
 
 /**
  * Servlet implementation class ReviewController
  */
-@WebServlet("/review.do")
+@WebServlet("/review/review.do")
 public class ReviewController extends HttpServlet implements ControllerV, PLog {
     private static final long serialVersionUID = 1L;
 
@@ -30,10 +31,42 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         log.debug("---------------------");
         log.debug("ReviewController()");
         log.debug("---------------------");
-
         reviewService = new ReviewService(); // 인스턴스 생성
     }
-
+    
+    public JView doLikeSave(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	log.debug("---------------------");
+        log.debug("doLikeSave()");
+        log.debug("---------------------");
+        String userId = StringUtil.nvl(request.getParameter("userId"), "");
+        String aboardSeq = StringUtil.nvl(request.getParameter("aboardSeq"),"");
+        log.debug("userId: {}",userId);
+        log.debug("aboardSeq: {}",aboardSeq);
+        LikeDTO like = new LikeDTO();
+        like.setUserId(userId);
+        like.setAboardSeq(Integer.parseInt(aboardSeq));
+        int flag = reviewService.doLikeSave(like);
+        log.debug("save flag:{}", flag);
+        response.setContentType("UTF-8");
+        response.setContentType("application/json");
+       
+    	return null;
+    }
+    public JView doLikeCount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	log.debug("---------------------");
+        log.debug("doLikeCount()");
+        log.debug("---------------------");
+        String aboardSeq = StringUtil.nvl(request.getParameter("aboardSeq"),"");
+        log.debug("aboardSeq: {}",aboardSeq);
+        LikeDTO like = new LikeDTO();
+        like.setAboardSeq(Integer.parseInt(aboardSeq));
+        int flag = reviewService.doLike(like);
+        log.debug("Count flag:{}", flag);
+        response.setContentType("UTF-8");
+        response.setContentType("application/json");
+        
+    	return null;
+    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doWork(request, response);
@@ -144,6 +177,12 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
             case "saveReview":
                 viewName = saveReview(request, response);
                 break;
+            case "doLikeSave":
+                viewName = doLikeSave(request, response);
+                break;
+            case "doLikeCount":
+                viewName = doLikeCount(request, response);
+                break;
                 /*
             case "doRetrieveDetail":
                 viewName = doRetrieveDetail(request, response);
@@ -160,4 +199,5 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         
         return viewName;
     }
+    
 }

@@ -1,13 +1,14 @@
 package com.pcwk.tvl.like;
 
 import com.pcwk.ehr.cmn.PLog;
+import com.pcwk.tvl.review.ReviewDTO;
 
 public class LikeMain implements PLog{
 	LikeDao dao;
 	LikeDTO like;
 	public LikeMain() {
 		dao = new LikeDao();
-		like = new LikeDTO("3kqD994", 1);
+		like = new LikeDTO("5kqD996",1);
 
 	}
 	public void doSave() {
@@ -21,12 +22,12 @@ public class LikeMain implements PLog{
 	}
 	public void doLike() {
 		log.debug("doLike()");
-		int likeCount = dao.doLike(like.getAboardSeq());
+		int likeCount = dao.doLike(like);
 		log.debug("추천수: {}",likeCount);
 	}
 	public static void main(String[] args) {
 		LikeMain m = new LikeMain();
-//		m.doSave();
+		//m.doSave();
 		m.doLike();
 	}
 

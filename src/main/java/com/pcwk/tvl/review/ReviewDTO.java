@@ -19,7 +19,8 @@ public class ReviewDTO extends DTO {
     	
     }
     
-    public ReviewDTO(int aboardSeq) {
+    public ReviewDTO(String userId,int aboardSeq) {
+    	this.userId = userId;
         this.aboardSeq = aboardSeq;
     }
     

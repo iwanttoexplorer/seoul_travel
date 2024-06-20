@@ -7,6 +7,9 @@ public class LikeDTO {
 	public String getUserId() {
 		return userId;
 	}
+	public LikeDTO() {
+		
+	}
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}

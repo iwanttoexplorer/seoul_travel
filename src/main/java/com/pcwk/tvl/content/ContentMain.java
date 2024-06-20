@@ -19,17 +19,7 @@ public class ContentMain implements PLog {
 		log.debug("dao:{}", dao);
 		log.debug("answer01:{}", content01);
 	}
-	
-	public void doSave() {
-		log.debug(" doSave() ");
-		int flag =dao.doSave(content01);
-		if(1==flag) {
-			log.debug("성공 :{}",flag);
-		}else {
-			log.debug("실패 :{}",flag);
-		}
-	}
-	
+
 	public void doSelectOne() {
 		log.debug(" doSelectOne() ");
 		ContentDTO outVO = dao.doSelectOne(content01);

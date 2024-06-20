@@ -107,7 +107,12 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+	public int doGucodeJoin(ContentDTO param) {
+		return 0;
+	}
+	public int doCategoryJoin(ContentDTO param) {
+		return 0;
+	}
 	/**
 	 * 다건 조회
 	 */

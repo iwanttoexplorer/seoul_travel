@@ -10,6 +10,7 @@ import com.pcwk.ehr.cmn.DBUtill;
 import com.pcwk.ehr.cmn.DTO;
 import com.pcwk.ehr.cmn.PLog;
 import com.pcwk.ehr.cmn.WorkDiv;
+import com.pcwk.tvl.review.ReviewDTO;
 
 public class LikeDao implements PLog,WorkDiv<LikeDTO>{
 	
@@ -65,7 +66,7 @@ public class LikeDao implements PLog,WorkDiv<LikeDTO>{
         return flag;
     }
 	
-    public int doLike(int aboardSeq) {
+    public int doLike(LikeDTO param) {
     	int likeCount=0;
     	Connection conn = connectionMaker.getConnection();
     	PreparedStatement pstmt = null;
@@ -76,13 +77,13 @@ public class LikeDao implements PLog,WorkDiv<LikeDTO>{
         sb.append("WHERE aboard_seq = ?          \n");
         log.debug("1.sql:{}", sb.toString());
         log.debug("2.conn:{}", conn);
-        log.debug("3.aboardSeq:{}", aboardSeq);
+        log.debug("3.param:{}", param);
         try {
             pstmt = conn.prepareCall(sb.toString());
             log.debug("4.pstmt:{}", pstmt);
 
             // param 설정
-            pstmt.setInt(1, aboardSeq);
+            pstmt.setInt(1, param.getAboardSeq());
 
             rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -124,4 +125,8 @@ public class LikeDao implements PLog,WorkDiv<LikeDTO>{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+	
 }
