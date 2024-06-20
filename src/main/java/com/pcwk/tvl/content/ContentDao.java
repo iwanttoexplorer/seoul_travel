@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pcwk.ehr.cmn.ConnectionMaker;
+import com.pcwk.ehr.cmn.ContentsSearchDTO;
 import com.pcwk.ehr.cmn.DBUtill;
 import com.pcwk.ehr.cmn.DTO;
 import com.pcwk.ehr.cmn.PLog;
@@ -120,7 +121,7 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 //		4. ResultSet : SQL문의 결과를 저장하고 조회하는 인터페이스
 //		5. 연결종료
 		
-		SearchDTO  searchVO = (SearchDTO) search;
+		ContentsSearchDTO  searchVO = (ContentsSearchDTO) search;
 		
 		StringBuilder sbWhere = new StringBuilder(300);
 //		--WHERE title    LIKE :searchWord||'%' "10"

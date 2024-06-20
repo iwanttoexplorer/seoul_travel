@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
+import com.pcwk.ehr.cmn.ContentsSearchDTO;
 import com.pcwk.ehr.cmn.ControllerV;
 import com.pcwk.ehr.cmn.JView;
 import com.pcwk.ehr.cmn.MessageVO;
@@ -76,7 +77,8 @@ public class ContentController implements ControllerV, PLog{
 		
 		// JSP viewName저장
 		JView viewName = null;
-		SearchDTO inVO = new SearchDTO();
+		
+		ContentsSearchDTO inVO = new ContentsSearchDTO();
 		
 		// page_no
 		// page_size

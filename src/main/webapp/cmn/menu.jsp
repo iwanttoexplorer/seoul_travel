@@ -23,16 +23,16 @@
     <ul class="nav">
       <nav class="navbar bg-body-tertiary">
 	      <div class="container">
-	        <a class="navbar-brand" href="#">
+	        <a class="navbar-brand" href="/SEOUL_TRAVEL/resources/pages/main/mainpage.html">
 	          <img src="/SEOUL_TRAVEL/images/logo.png" alt="Bootstrap" width="60" height="40">
 	        </a>
 	      </div>
       </nav>
 		  <li class="nav-item">
-		    <a class="nav-link active" aria-current="page" href="#"><h4>여행정보</h4></a>
+		    <a class="nav-link active" aria-current="page" href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve"><h4>여행정보</h4></a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="#"><h4>맛집 소개</h4></a>
+		    <a class="nav-link" href="/SEOUL_TRAVEL/content/restaurant_main.jsp"><h4>맛집 소개</h4></a>
 		  </li>
 		  <li class="nav-item">
 		    <a class="nav-link" href="#"><h4>로그인</h4></a>
