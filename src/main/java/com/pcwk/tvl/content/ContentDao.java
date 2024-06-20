@@ -1,4 +1,5 @@
-package com.pcwk.tvl.content;
+
+ package com.pcwk.tvl.content;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -137,7 +138,7 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 			sbWhere.append("WHERE gucode LIKE ?||'%' \n");
 		}else if(null != searchVO.getSearchDiv() && searchVO.getSearchDiv().equals("40")) {
 			sbWhere.append("WHERE category LIKE ?||'%' \n");
-			sbWhere.append("AND gucode LIKE ?||'%' \n");
+			sbWhere.append("OR gucode LIKE ?||'%' \n");
 		}
 		
 		List<ContentDTO> list = new ArrayList<ContentDTO>();
@@ -376,6 +377,7 @@ public class ContentDao implements WorkDiv<ContentDTO>, PLog{
 				outVO.setCategory(rs.getString("category"));
 				outVO.setGucode(rs.getString("gucode"));
 				outVO.setTel(rs.getString("tel"));
+				outVO.setAddr(rs.getString("addr"));
 				outVO.setImgLink(rs.getString("img_link"));
 				outVO.setTitle(rs.getString("title"));
 				

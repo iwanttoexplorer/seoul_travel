@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function(){
   //등록 버튼
   const moveToRegBtn = document.querySelector("#moveToReg");
   
-  //조회 버튼
+  //조회 버튼 
   const doRetrieveBtn = document.querySelector("#doRetrieve");
   
   //html객체를 자바스크리트에서 생성
