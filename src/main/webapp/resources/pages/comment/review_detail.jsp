@@ -277,11 +277,11 @@
 </script>
 </head>
 <body>
+<jsp:include page="/cmn/menu.jsp"></jsp:include>
     <header>
         <div class="logo">SEOUL TRAVEL</div>
         <nav>
             <ul class="nav-links">
-                <li><a href="/SEOUL_TRAVEL/home">홈</a></li>
                 <li><a href="/SEOUL_TRAVEL/reviewList">리뷰 목록</a></li>
                 <!-- 다른 메뉴 항목들 추가 -->
             </ul>
