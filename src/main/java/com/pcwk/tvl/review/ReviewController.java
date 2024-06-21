@@ -1,7 +1,10 @@
 package com.pcwk.tvl.review;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -84,28 +87,37 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
 
         SearchDTO inVO = new SearchDTO();
         
-        // JSP viewName 전달
-        //JView viewName = new JView("/SEOUL_TRAVEL/review/review_list.jsp");
-        // page_no
-        // page_size
-        //String pageNo = StringUtil.nvl(request.getParameter("pageNo"), "1");
-        //String pageSize = StringUtil.nvl(request.getParameter("pageSize"), "10");
-//        log.debug("pageNo: " + pageNo);
-//        log.debug("pageSize: " + pageSize);
-//        inVO.setPageNo(Integer.parseInt(pageNo));
-//        inVO.setPageSize(Integer.parseInt(pageSize));
-//        
-        List<ReviewDTO> list = reviewService.doRetrieve(inVO);
-        int i = 0;
-        for(ReviewDTO vo : list) {
-        	log.debug("i: {}, vo: {}", i++,vo);
+        // 페이지 번호와 페이지 크기 파라미터 추가
+        int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        int pageSize = Integer.parseInt(request.getParameter("pageSize"));
+
+        ReviewDao reviewDAO = new ReviewDao();
+        try {
+            // 페이징된 리뷰 목록과 전체 리뷰 수 가져오기
+            List<ReviewDTO> list = reviewDAO.getReviews(pageNumber, pageSize);
+            int totalReviews = reviewDAO.getTotalReviews();
+
+            // 기존 코드 유지
+            int i = 0;
+            for (ReviewDTO vo : list) {
+                log.debug("i: {}, vo: {}", i++, vo);
+            }
+            log.debug("list: " + list);
+
+            // JSON 응답 준비
+            Map<String, Object> result = new HashMap<>();
+            result.put("reviews", list);
+            result.put("totalReviews", totalReviews);
+
+            Gson gson = new Gson();
+            String json = gson.toJson(result);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-        log.debug("list: "+list);
-        Gson gson = new Gson();
-        String json = gson.toJson(list);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);
 
         return null;
     }

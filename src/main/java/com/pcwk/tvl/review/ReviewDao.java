@@ -207,6 +207,57 @@ public class ReviewDao implements WorkDiv<ReviewDTO>, PLog {
 
         return list;
     }
+    
+ // 특정 페이지의 리뷰 목록을 가져오는 메서드
+    public List<ReviewDTO> getReviews(int pageNumber, int pageSize) throws SQLException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT * FROM ( ");
+        sb.append("SELECT a.*, ROWNUM rnum FROM ( ");
+        sb.append("SELECT * FROM v_review ORDER BY ABOARD_SEQ DESC ");
+        sb.append(") a WHERE ROWNUM <= ? ");
+        sb.append(") WHERE rnum > ?");
+
+        List<ReviewDTO> reviews = new ArrayList<>();
+
+        try (Connection conn = connectionMaker.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sb.toString())) {
+            int endRow = pageNumber * pageSize;
+            int startRow = (pageNumber - 1) * pageSize;
+            pstmt.setInt(1, endRow);
+            pstmt.setInt(2, startRow);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    ReviewDTO review = new ReviewDTO();
+                    review.setAboardSeq(rs.getInt("ABOARD_SEQ"));
+                    review.setContentId(rs.getString("CONTENTID"));
+                    review.setUserId(rs.getString("USER_ID"));
+                    review.setImgLink(rs.getString("IMG_LINK"));
+                    review.setComments(rs.getString("COMMENTS"));
+                    review.setTitle(rs.getString("TITLE"));
+                    review.setRegDt(rs.getString("REG_DT"));
+                    review.setModDt(rs.getString("MOD_DT"));
+                    review.setReadCnt(rs.getInt("READ_CNT"));
+                    reviews.add(review);
+                }
+            }
+        }
+        return reviews;
+    }
+
+    // 전체 리뷰 수를 가져오는 메서드
+    public int getTotalReviews() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM v_review";
+        try (Connection conn = connectionMaker.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+
 
     @Override
     public ReviewDTO doSelectOne(ReviewDTO param) {

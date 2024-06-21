@@ -8,115 +8,172 @@
     List<ReviewDTO> list = (List<ReviewDTO>) request.getAttribute("list");
 %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="/SEOUL_TRAVEL/assets/css/bootstrap.css">
 <title>리뷰 목록</title>
-<style>
-        /* 추가적인 CSS 스타일링 */
-        .comment-section {
-            margin-top: 30px;
-        }
-        .comment-form {
-            margin-bottom: 20px;
-        }
-        .review-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .review-table th, .review-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        .review-table th {
-            background-color: #f2f2f2;
-            text-align: left;
-        }
-</style>
+<link rel="stylesheet" href="/SEOUL_TRAVEL/assets/css/bootstrap.css">
 <script src="/SEOUL_TRAVEL/assets/js/jquery_3_7_1.js"></script>
+<script src="/SEOUL_TRAVEL/assets/js/bootstrap.bundle.min.js"></script>
+<style>
+    .review-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    .review-table th, .review-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    .review-table th {
+        background-color: #f2f2f2;
+        text-align: left;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination a {
+        margin: 0 5px;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        text-decoration: none;
+        color: #007bff;
+    }
+    .pagination a.active {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+</style>
 <script>
-    document.addEventListener("DOMContentLoaded",function(){
-      console.log("reviewtUploaded");
-      ajaxdoRetrieve();
-    }); // riveiwList end
-    
-    function ajaxdoRetrieve(){
-      $.ajax({
-        type:"POST",
-        url:"/SEOUL_TRAVEL/review/review.do",
-        dataType:"json",
-        data:{
-          "work_div": "doRetrieve",
-          "aboardSeq": 1,
-          "ajax": true
-        },
-        success: function(response) {
-            console.log("success response: ", response);
-            var reviewList = $("#review-list tbody");
-            reviewList.empty(); // 기존 리뷰 목록 초기화
+    document.addEventListener("DOMContentLoaded", function(){
+        ajaxdoRetrieve(1); // 첫 페이지 로드
+    });
 
-            // response에서 댓글 목록 배열(rList) 추출
-            var rList = response;
+    function ajaxdoRetrieve(pageNumber) {
+        $.ajax({
+            type: "POST",
+            url: "/SEOUL_TRAVEL/review/review.do",
+            dataType: "json",
+            data: {
+                "work_div": "doRetrieve",
+                "aboardSeq": 1,
+                "ajax": true,
+                "pageNumber": pageNumber,
+                "pageSize": 10 // 한 페이지에 표시할 리뷰 수
+            },
+            success: function(response) {
+                console.log("success response: ", response);
+                var reviewList = $("#review-list tbody");
+                reviewList.empty(); // 기존 리뷰 목록 초기화
 
-            if (rList.length > 0) {
-                rList.forEach(function(review) {
-                    // 리뷰 행 요소 생성
-                    var reviewRow = $("<tr></tr>");
-                    reviewRow.addClass("review-row");
+                var rList = response.reviews;
+                var totalReviews = response.totalReviews;
+                var pageSize = 10;
 
-                    // 작성자 정보 영역 생성
-                    var reviewWriter = $("<td></td>");
-                    reviewWriter.addClass("review-writer");
-                    reviewWriter.text(review.userId);
+                if (rList.length > 0) {
+                    rList.forEach(function(review) {
+                        var reviewRow = $("<tr></tr>");
+                        reviewRow.addClass("review-row");
 
-                    // 작성일 정보 생성
-                    var reviewDate = $("<td></td>");
-                    reviewDate.addClass("review-regDt");
-                    reviewDate.text(review.regDt); // 리뷰 작성일 추가
+                        var reviewTitle = $("<td></td>");
+                        reviewTitle.addClass("review-comments");
+                        reviewTitle.html(review.title); 
 
-                    // 리뷰 내용 정보 생성
-                    var reviewComments = $("<td></td>");
-                    reviewComments.addClass("review-comments");
-                    reviewComments.html(review.comments); // HTML 태그 인식을 위해 html() 사용
+                        var reviewWriter = $("<td></td>");
+                        reviewWriter.addClass("review-writer");
+                        reviewWriter.text(review.userId);
 
-                    // 작성자 정보, 리뷰 내용, 작성일(수정일)을 댓글 행에 추가
-                    reviewRow.append(reviewWriter);
-                    reviewRow.append(reviewComments);
-                    reviewRow.append(reviewDate);
+                        var reviewDate = $("<td></td>");
+                        reviewDate.addClass("review-regDt");
+                        reviewDate.text(review.regDt);
 
-                    // 리뷰 행을 리뷰 목록에 추가
-                    reviewList.append(reviewRow);
-                });
+                        reviewRow.append(reviewTitle);
+                        reviewRow.append(reviewWriter);
+                        reviewRow.append(reviewDate);
+
+                        reviewList.append(reviewRow);
+                    });
+                }
+
+                var totalPages = Math.ceil(totalReviews / pageSize);
+                var pagination = $(".pagination");
+                pagination.empty();
+
+                for (var i = 1; i <= totalPages; i++) {
+                    var pageLink = $("<a></a>");
+                    pageLink.text(i);
+                    pageLink.attr("href", "#");
+                    if (i == pageNumber) {
+                        pageLink.addClass("active");
+                    }
+                    pageLink.on("click", function(e) {
+                        e.preventDefault();
+                        ajaxdoRetrieve($(this).text());
+                    });
+                    pagination.append(pageLink);
+                }
+            },
+            error: function(error) {
+                console.log("Error:", error);
             }
-        },
-        error: function(error) {
-            console.log("Error:", error);
-        }
-        });// ajax end
-        }// ajaxdoRetrieve() end
-
+        });
+    }
 </script>
 </head>
 <body>
-<div class="container">
-    <h2>리뷰 목록</h2>
-    <table id="review-list" class="review-table">
-        <thead>
-            <tr>
-                <th>작성자</th>
-                <th>내용</th>
-                <th>작성일</th>
-                <th>추천수</th>
-                <th>조회수</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- AJAX를 통해 동적으로 댓글이 추가될 영역 -->
-        </tbody>
-    </table>
-</div>
-<script src="/SEOUL_TRAVEL/assets/js/bootstrap.bundle.min.js"></script>
+    <header>
+        <a class="navbar-brand" href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp">
+            <img src="/SEOUL_TRAVEL/images/logo.png" alt="Bootstrap" width="130" height="80">
+        </a>
+        <a href="/SEOUL_TRAVEL/resources/pages/user/login.jsp" class="signup" style="color: #000000; font-size: 30px;text-decoration: none;margin-right: 20px;">회원가입</a>
+    </header>
+
+    <main>
+        <div class="container">
+            <h2>리뷰 목록</h2>
+            <table id="review-list" class="review-table">
+                <thead>
+                    <tr>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- AJAX를 통해 동적으로 댓글이 추가될 영역 -->
+                </tbody>
+            </table>
+            <div class="pagination">
+                <!-- 페이징 링크가 동적으로 추가될 영역 -->
+            </div>
+        </div>
+    </main>
+
+    <jsp:include page="/cmn/footer.jsp"></jsp:include>
+
+    <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlides() {
+            slides.forEach((slide, index) => {
+                slide.style.transform = `translateX(${(index - slideIndex) * 100}%)`;
+            });
+        }
+
+        function nextSlide() {
+            slideIndex = (slideIndex + 1) % totalSlides;
+            showSlides();
+        }
+
+        setInterval(nextSlide, 3000); // 3초마다 슬라이드 넘김
+
+        document.addEventListener('DOMContentLoaded', showSlides);
+    </script>
 </body>
 </html>
