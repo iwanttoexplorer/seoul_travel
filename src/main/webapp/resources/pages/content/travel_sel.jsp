@@ -11,9 +11,7 @@
     
 <%
     List<ContentDTO> list = (List<ContentDTO>)request.getAttribute("list");
-    
     ContentsSearchDTO searchCon = (ContentsSearchDTO)request.getAttribute("vo");
-    
     List<ContentsSearchDTO> pageCode = (List<ContentsSearchDTO>)request.getAttribute("page");
     List<ContentsSearchDTO> searchCode = (List<ContentsSearchDTO>)request.getAttribute("boardSearchList");
     
@@ -83,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function(){
     <div class="row mb-3">
         <label for="imgLink" class="col-sm-2 col-form-label">이미지</label>
         <div class="col-sm-10">
-          <input disabled="disabled" type="text" class="form-control" name="imgLink" id="imgLink"  required="required" value="<c:out value='${outVO.imgLink}' escapeXml='true' />">
+          <img src="<c:url value='${outVO.imgLink}' />" alt="imgLink" />
         </div>      
     </div>
     

@@ -231,7 +231,7 @@ function pageRetrieve(url, pageNo){
          
          %>   
         <tr>
-          <td class="text-center"><%=vo.getImgLink() %></td>
+          <!-- <td class="text-center"><%=vo.getImgLink() %></td> -->
           <td><%=vo.getTitle() %></td>
           <td><%=vo.getAddr() %></td>
           <td style="display: none;"><%=vo.getContentId() %></td>
