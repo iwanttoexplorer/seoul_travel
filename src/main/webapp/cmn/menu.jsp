@@ -55,29 +55,6 @@
     </style>
 </head>
 <body>
-<<<<<<< HEAD
-   
-    <ul class="nav">
-      <nav class="navbar bg-body-tertiary">
-	      <div class="container">
-	        <a class="navbar-brand" href="/SEOUL_TRAVEL/resources/pages/main/mainpage.html">
-	          <img src="/SEOUL_TRAVEL/images/logo.png" alt="Bootstrap" width="60" height="40">
-	        </a>
-	      </div>
-      </nav>
-		  <li class="nav-item">
-		    <a class="nav-link active" aria-current="page" href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve"><h4>여행정보</h4></a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve2"><h4>맛집 소개</h4></a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" href="#"><h4>로그인</h4></a>
-		  </li>
-  </ul>
-</body>
-</html>
-=======
     <nav class="navbar">
         <div class="container">
             <a class="navbar-brand" href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp">
@@ -96,6 +73,5 @@
             </div>
         </div>
     </nav>
-
+</body>
 </html>
->>>>>>> 1eabe9a989eb8afd8037d2f7e58aba1324c588e8
