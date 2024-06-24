@@ -16,8 +16,11 @@
     
     
     
-    UserDTO outVO = (UserDTO) session.getAttribute("user");
-    String userId = outVO.getUserId();
+    String userId = null;
+    if(session.getAttribute("user")!=null){
+        UserDTO outVO = (UserDTO) session.getAttribute("user");
+        userId = outVO.getUserId();
+    }
     
 %>
 <!DOCTYPE html>
@@ -46,9 +49,9 @@
         });
         ajaxGetLikeCount();
         function ajaxDoLike() {
-        	if(!userId){
-        		alert("로그인 후 추천이 가능합니다");
-        		return
+        	if(userId=="null"){
+        		alert("로그인 후 추천이 가능합니다.");
+        		return;
         	}
             $.ajax({
                 type: "POST",
@@ -61,13 +64,16 @@
                     "ajax": true
                 },
                 success: function(response) {
+                	console.log("userId: "+userId);
                     alert('추천하였습니다.');
-                    location.reload();
+                    
+                	
                 },
                 error: function(error) {
                     console.log("Error:", error);
                 }
             });
+        	
         }
         function ajaxGetLikeCount() {
             $.ajax({

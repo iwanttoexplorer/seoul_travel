@@ -203,7 +203,7 @@ public class LoginController extends HttpServlet implements ControllerV,PLog{
         
         request.setAttribute("outVO", result);
     	
-        return new JView("/assets/js/findUserId_result.jsp");
+        return new JView("/resources/pages/user/findUserId_result.jsp");
     }
     
     public JView findUserPw(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -218,9 +218,28 @@ public class LoginController extends HttpServlet implements ControllerV,PLog{
     	
     	UserDTO outVO = service.doSelectOne(inVO);
     	
-    	request.setAttribute("outVO", outVO);
+    	if(outVO!=null) request.setAttribute("outVO", outVO.getUserPw());
     	
-    	return new JView("/assets/js/findUserPw_result.jsp");
+    	return new JView("/resources/pages/user/findUserPw_result.jsp");
+    }
+    
+    public JView logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	log.debug("---------------------");
+        log.debug("logout()");
+        log.debug("---------------------");
+    	
+        
+        String viewName = "";
+        
+		HttpSession session = request.getSession(false);
+		
+		if(session!=null) {
+			log.debug("session : {}",session);
+			session.invalidate(); //세션값 삭제
+			viewName = "/resources/pages/main/mainpage.jsp";
+		}
+		
+		return new JView(viewName);
     }
     
 	@Override
@@ -235,6 +254,9 @@ public class LoginController extends HttpServlet implements ControllerV,PLog{
     	log.debug("workDiv : {}",workDiv);
     	
     	switch (workDiv) {
+    	case "logout":
+    		viewName = logout(request,response);
+    		break;
     	case "findUserPw":
     		viewName = findUserPw(request,response);
     		break;
