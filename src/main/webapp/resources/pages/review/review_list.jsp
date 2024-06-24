@@ -138,10 +138,7 @@
 </head>
 <body>
     <header>
-        <a class="navbar-brand" href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp">
-            <img src="/SEOUL_TRAVEL/images/logo.png" alt="Bootstrap" width="130" height="80">
-        </a>
-        <a href="/SEOUL_TRAVEL/resources/pages/user/login.jsp" class="signup" style="color: #000000; font-size: 30px;text-decoration: none;margin-right: 20px;">회원가입</a>
+        <jsp:include page="/cmn/menu.jsp"></jsp:include>
     </header>
 
     <main>

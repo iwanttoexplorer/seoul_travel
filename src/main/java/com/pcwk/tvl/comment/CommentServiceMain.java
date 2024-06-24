@@ -49,8 +49,8 @@ public class CommentServiceMain implements PLog{
 	public static void main(String[] args) {
 		CommentServiceMain m = new CommentServiceMain();
 		//m.doUpdate();
-		m.doRetrieve();
-		//m.doSave();
+		//m.doRetrieve();
+		m.doSave();
 	}
 
 }

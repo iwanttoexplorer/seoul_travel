@@ -1,6 +1,7 @@
 package com.pcwk.tvl.review;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -50,9 +51,9 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         like.setAboardSeq(Integer.parseInt(aboardSeq));
         int flag = reviewService.doLikeSave(like);
         log.debug("save flag:{}", flag);
-        response.setContentType("UTF-8");
-        response.setContentType("application/json");
-       
+        response.setContentType("text/html; charset=UTF-8");
+        PrintWriter out =  response.getWriter();
+		out.print(flag);
     	return null;
     }
     public JView doLikeCount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,8 +66,10 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         like.setAboardSeq(Integer.parseInt(aboardSeq));
         int flag = reviewService.doLike(like);
         log.debug("Count flag:{}", flag);
-        response.setContentType("UTF-8");
-        response.setContentType("application/json");
+        response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out =  response.getWriter();
+		out.print(flag);
+		
         
     	return null;
     }

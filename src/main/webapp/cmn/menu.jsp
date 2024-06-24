@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>SEOUL_TRAVEL</title>
-    <script src="/WEB02/assets/js/jquery_3_7_1.js"></script>
+    <script src="/SEOUL_TRAVEL/assets/js/jquery_3_7_1.js"></script>
     <style>
         body {
             margin: 0;
@@ -150,5 +150,5 @@ document.addEventListener("DOMContentLoaded", function(){
             <div class="login"></div>
         </div>
     </nav>
-</body>
+
 </html>
