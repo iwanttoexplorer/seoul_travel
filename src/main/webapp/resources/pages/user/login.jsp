@@ -13,12 +13,12 @@
     header { background: #f8f9fa; padding: 10px 20px; border-bottom: 1px solid #dee2e6; display: flex; justify-content: space-between; align-items: center; }
     .logo img { cursor: pointer; }
     .signup { color: #000; text-decoration: none; }
-    .container { max-width: 500px; margin: 50px auto; padding: 20px; background: #fff; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); text-align: center; }
-    .container h2 { margin-bottom: 20px; }
-    .container form { display: flex; flex-direction: column; }
-    .container input[type="text"], .container input[type="password"], .container input[type="button"] { margin-bottom: 10px; padding: 10px; font-size: 16px; }
-    .container a { display: block; margin-top: 10px; color: #007bff; text-decoration: none; }
-    .container a:hover { text-decoration: underline; }
+    .container1 { max-width: 500px; margin: 50px auto; padding: 20px; background: #fff; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); text-align: center; }
+    .container1 h2 { margin-bottom: 20px; }
+    .container1 form { display: flex; flex-direction: column; }
+    .container1 input[type="text"], .container1 input[type="password"], .container1 input[type="button"] { margin-bottom: 10px; padding: 10px; font-size: 16px; }
+    .container1 a { display: block; margin-top: 10px; color: #007bff; text-decoration: none; }
+    .container1 a:hover { text-decoration: underline; }
 </style>
 <script>
     //로딩 완료시 함수 실행.
@@ -78,15 +78,10 @@
         
     }); //DOMContentLoaded
 </script>
+<jsp:include page="/cmn/menu.jsp"></jsp:include>
 </head>
 <body>
-<header>
-    <div class="logo" onclick="location.href='/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp'">
-        <img src="/SEOUL_TRAVEL/images/logo.png" alt="SEOUL TRAVEL" width="130" height="80">
-    </div>
-    <a href="/SEOUL_TRAVEL/resources/pages/user/userSave.jsp" class="signup" style="color: #000000; font-size: 30px;text-decoration: none;margin-right: 20px;">회원가입</a>
-</header>
-<div class="container">
+<div class="container1">
     <h2>회원 로그인</h2>
     <form action="#" method="post" id="login_form">
         <input type="hidden" name="work_div" id="work_div">
@@ -96,7 +91,9 @@
     </form>
     <a href="/SEOUL_TRAVEL/resources/pages/user/findUserId.jsp">아이디 찾기</a>
     <a href="/SEOUL_TRAVEL/resources/pages/user/findUserPw.jsp">비밀번호 찾기</a>
+    <a href="/SEOUL_TRAVEL/resources/pages/user/userSave.jsp">회원 가입</a>
 </div>
 <script src="/SEOUL_TRAVEL/assets/js/bootstrap.bundle.min.js"></script>
 </body>
+<jsp:include page="/cmn/footer.jsp"></jsp:include>
 </html>

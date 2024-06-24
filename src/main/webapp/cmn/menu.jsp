@@ -50,6 +50,11 @@
         }
         .login {
             margin-left: auto;
+            margin-right: 20px;
+            color: inherit;
+        }
+        .user-save {
+            margin-right: 20px;
             color: inherit;
         }
     </style>
@@ -57,12 +62,13 @@
 document.addEventListener("DOMContentLoaded", function(){
 
   <% if(session.getAttribute("user")!=null){ %>
+    //로그 아웃   
 	  let logout = document.createTextNode('로그아웃');
 	  let logoutA = document.createElement("a");
 	  let hrefNode = document.createAttribute("href");
 	  let h4 = document.createElement("h4");
 	  
-	  /* hrefNode.value="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp"; */
+	  hrefNode.value="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp";
 	  logoutA.setAttributeNode(hrefNode);
 	  h4.appendChild(logout);
 	  logoutA.appendChild(h4);
@@ -87,19 +93,24 @@ document.addEventListener("DOMContentLoaded", function(){
             dataType:"html",
             data:{
                 "work_div":"logout"
-        },success:function(data){//통신 성공
-            
-            window.location.href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp";
-                
+        },success:function(data){
+            console.log("success data:"+data);
         },
         error:function(data){
                 console.log("error:"+data);
         }
-        });
+      });
 	    
+            
 	  });//sessionBtn
 	  
   <%}else{ %>
+	  //회원 가입
+	  const userSave = document.querySelector(".user-save");
+	  console.log(userSave);
+	  userSave.innerHTML = ' <a href="/SEOUL_TRAVEL/resources/pages/user/userSave.jsp"><h4>회원가입</h4></a> ';
+  
+	  //로그인
 	  let login = document.createTextNode('로그인');
 	  let loginA = document.createElement("a");
 	  let hrefNode = document.createAttribute("href");
@@ -122,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function(){
 </head>
 <body>
     <nav class="navbar">
+        
         <div class="container">
             <a class="navbar-brand" href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp">
                 <img src="/SEOUL_TRAVEL/images/logo.png" alt="Bootstrap" width="130" height="80" >
@@ -134,6 +146,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     <a class="nav-link" href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve2"><h4>맛집</h4></a>
                 </li>
             </ul>
+            <div class="user-save"></div>
             <div class="login"></div>
         </div>
     </nav>

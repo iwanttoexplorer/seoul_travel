@@ -227,19 +227,16 @@ public class LoginController extends HttpServlet implements ControllerV,PLog{
     	log.debug("---------------------");
         log.debug("logout()");
         log.debug("---------------------");
-    	
-        
-        String viewName = "";
         
 		HttpSession session = request.getSession(false);
 		
 		if(session!=null) {
 			log.debug("session : {}",session);
 			session.invalidate(); //세션값 삭제
-			viewName = "/resources/pages/main/mainpage.jsp";
 		}
 		
-		return new JView(viewName);
+		
+		return null;
     }
     
 	@Override
