@@ -145,6 +145,9 @@ document.addEventListener("DOMContentLoaded", function(){
                 <li class="nav-item">
                     <a class="nav-link" href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve2"><h4>맛집</h4></a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/SEOUL_TRAVEL/resources/pages/review/review_list.jsp"><h4>리뷰</h4></a>
+                </li>
             </ul>
             <div class="user-save"></div>
             <div class="login"></div>

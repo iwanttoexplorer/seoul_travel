@@ -34,7 +34,7 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         log.debug("---------------------");
         log.debug("ReviewController()");
         log.debug("---------------------");
-        reviewService = new ReviewService(); // 인스턴스 생성
+        reviewService = new ReviewService();// 인스턴스 생성
     }
     
     public JView doLikeSave(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -82,9 +82,9 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
 
     public JView getReviews(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("---------------------");
-        log.debug("getReviews()");
+        log.debug("getReviews() + likeCount");
         log.debug("---------------------");
-
+        LikeDTO like = new LikeDTO();
         SearchDTO inVO = new SearchDTO();
         
         // 페이지 번호와 페이지 크기 파라미터 추가
@@ -94,9 +94,23 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         ReviewDao reviewDAO = new ReviewDao();
         try {
             // 페이징된 리뷰 목록과 전체 리뷰 수 가져오기
-            List<ReviewDTO> list = reviewDAO.getReviews(pageNumber, pageSize);
-            int totalReviews = reviewDAO.getTotalReviews();
-
+            List<ReviewDTO> list = reviewService.getReviews(pageNumber, pageSize);
+            int totalReviews = reviewService.getTotalReviews();
+            
+            
+            for (ReviewDTO review : list) {
+                int aboardSeq = review.getAboardSeq(); // 리뷰의 aboardSeq 가져오기
+                log.debug("aboardSeq: "+aboardSeq);
+                LikeDTO likeDTO = new LikeDTO();
+                likeDTO.setAboardSeq(aboardSeq);
+                log.debug("likeDTO: "+likeDTO);
+                int likeCount = reviewService.doLike(aboardSeq);
+                log.debug("likeCount: "+likeCount);
+                // ReviewDTO에 likeCount 설정
+                review.setLikeCount(likeCount);
+            }
+            
+            log.debug("likeCount: "+likeCount);
             // 기존 코드 유지
             int i = 0;
             for (ReviewDTO vo : list) {

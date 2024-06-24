@@ -61,8 +61,9 @@ public class ReviewServiceMain implements PLog{
 		ReviewServiceMain m = new ReviewServiceMain();
 		//m.doSave();
 		//m.doRetrieve();
+		
 		//m.doLike();
-		m.doLikeSave();
+		//m.doLikeSave();
 	}
 
 }

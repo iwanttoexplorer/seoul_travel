@@ -10,7 +10,7 @@
     <style>
     	
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    	header { background: #f8f9fa; padding: 10px 20px; border-bottom: 1px solid #dee2e6; display: flex; justify-content: space-between; align-items: center; }
+    	
         .logo { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); }
         .nav-links { list-style: none; display: flex; margin: 0; padding: 0; }
         .nav-links li { margin-right: 15px; }
@@ -68,10 +68,7 @@ function showSlides() {
 </head>
 <body>
 <header>
-    <a class="navbar-brand" href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp">
-                <img src="/SEOUL_TRAVEL/images/logo.png" alt="Bootstrap" width="130" height="80" >
-            </a>
-    <a href="/SEOUL_TRAVEL/resources/pages/user/login.jsp" class="signup" style="color: #000000; font-size: 30px;text-decoration: none;margin-right: 20px;">회원가입</a>
+    <jsp:include page="/cmn/menu.jsp"></jsp:include>
 </header>
 <div class="container">
     <div class="welcome">
@@ -85,17 +82,7 @@ function showSlides() {
             <div class="slide"><img src="#" alt="Image 3"></div>
         </div>
     </div>
-    <div class="sections">
-        <div class="section">
-            <a href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve2">식당</a>
-        </div>
-        <div class="section">
-            <a href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve">관광지</a>
-        </div>
-        <div class="section">
-            <a href="/SEOUL_TRAVEL/resources/pages/review/review_list.jsp">리뷰</a>
-        </div>
-    </div>
+    
     <div class="recommendations">
         <h2 class="section-title">추천이 가장 많은 게시물</h2>
         <div class="item-list">

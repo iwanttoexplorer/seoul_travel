@@ -44,7 +44,8 @@ public class ReviewMain implements PLog{
 		review.setComments(review.getComments()+updatestr);
 		int flag = dao.doUpdate(review);
 		if(1==flag) {
-			log.debug("수정 성공 :{}",flag);
+			log.debug("수정 성"
+					+ "공 :{}",flag);
 		}else {
 			log.debug("수정 실패 :{}",flag);
 		}

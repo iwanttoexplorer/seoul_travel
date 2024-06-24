@@ -13,6 +13,7 @@ public class ReviewDTO extends DTO {
     private String regDt;   
     private String modDt;
     private int readCnt;
+    private int likeCount;
  // Getters and Setters
     
     public ReviewDTO() {
@@ -23,22 +24,6 @@ public class ReviewDTO extends DTO {
     	this.userId = userId;
         this.aboardSeq = aboardSeq;
     }
-    
-	public int getReadCnt() {
-		return readCnt;
-	}
-	
-	public void setReadCnt(int readCnt) {
-		this.readCnt = readCnt;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
 
 	public int getAboardSeq() {
 		return aboardSeq;
@@ -46,22 +31,6 @@ public class ReviewDTO extends DTO {
 
 	public void setAboardSeq(int aboardSeq) {
 		this.aboardSeq = aboardSeq;
-	}
-
-	public String getComments() {
-		return comments;
-	}
-
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
-
-	public String getImgLink() {
-		return imgLink;
-	}
-
-	public void setImgLink(String imgLink) {
-		this.imgLink = imgLink;
 	}
 
 	public String getContentId() {
@@ -80,6 +49,30 @@ public class ReviewDTO extends DTO {
 		this.userId = userId;
 	}
 
+	public String getImgLink() {
+		return imgLink;
+	}
+
+	public void setImgLink(String imgLink) {
+		this.imgLink = imgLink;
+	}
+
+	public String getComments() {
+		return comments;
+	}
+
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public String getRegDt() {
 		return regDt;
 	}
@@ -96,8 +89,31 @@ public class ReviewDTO extends DTO {
 		this.modDt = modDt;
 	}
 
-	public ReviewDTO(String contentId, String userId, String imgLink, String comments, String title,
-			String regDt, String modDt, int readCnt) {
+	public int getReadCnt() {
+		return readCnt;
+	}
+
+	public void setReadCnt(int readCnt) {
+		this.readCnt = readCnt;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
+	@Override
+	public String toString() {
+		return "ReviewDTO [aboardSeq=" + aboardSeq + ", contentId=" + contentId + ", userId=" + userId + ", imgLink="
+				+ imgLink + ", comments=" + comments + ", title=" + title + ", regDt=" + regDt + ", modDt=" + modDt
+				+ ", readCnt=" + readCnt + ", likeCount=" + likeCount + "]";
+	}
+
+	public ReviewDTO( String contentId, String userId, String imgLink, String comments, String title,
+			String regDt, String modDt,int readCnt) {
 		super();
 		this.contentId = contentId;
 		this.userId = userId;
@@ -106,16 +122,10 @@ public class ReviewDTO extends DTO {
 		this.title = title;
 		this.regDt = regDt;
 		this.modDt = modDt;
-		this.readCnt = readCnt;
+		this.readCnt=readCnt;
 	}
-
-
-	@Override
-	public String toString() {
-		return "ReviewDTO [aboardSeq=" + aboardSeq + ", contentId=" + contentId + ", userId=" + userId + ", imgLink="
-				+ imgLink + ", comments=" + comments + ", title=" + title + ", regDt=" + regDt + ", modDt=" + modDt
-				+ ", readCnt=" + readCnt + ", toString()=" + super.toString() + "]";
-	}
+    
+	
 	
 	
 
