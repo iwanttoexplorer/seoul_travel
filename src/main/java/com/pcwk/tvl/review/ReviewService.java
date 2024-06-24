@@ -53,6 +53,12 @@ public class ReviewService {
     	outVO = reviewDao.doSelectOne(inVO);
         return outVO;
     }
+    public List<ReviewDTO> getReviewsByAboardSeq(int aboardSeq) {
+        return reviewDao.getReviewsByAboardSeq(aboardSeq);
+    }
+    public List<LikeDTO> getTopLikeCounts(){
+    	return reviewDao.getTopLikeCounts();
+    }
 
 	
 }

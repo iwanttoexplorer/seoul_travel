@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.pcwk.ehr.cmn.ConnectionMaker;
 import com.pcwk.ehr.cmn.PLog;
+import com.pcwk.tvl.comment.CommentDTO;
 import com.pcwk.tvl.like.LikeDTO;
 
 public class ReviewMain implements PLog{
@@ -58,12 +59,35 @@ public class ReviewMain implements PLog{
 			log.debug("Review: {}",review);
 		}
 	}
+	public void getTopLikeCounts() {
+		log.debug(" getTopLikeCounts() ");
+		LikeDTO search = new LikeDTO();
+        // 특정 aboardSeq로 검색
+
+        List<LikeDTO> list = dao.getTopLikeCounts();
+        for (LikeDTO like : list) {
+            log.debug("like: {}", like);
+        }
+	}
+	public void getReviewsByAboardSeq() {
+		List<LikeDTO> likes = dao.getTopLikeCounts();
+		log.debug("getReviewsByAboardSeq()");
+		log.debug("likes: {}",likes);
+		for (LikeDTO like : likes) {
+            List<ReviewDTO> reviews = dao.getReviewsByAboardSeq(like.getAboardSeq());
+            for (ReviewDTO review : reviews) {
+                log.debug("Review: {}", review);
+            }
+        }
+	}
 	public static void main(String[] args) {
 		ReviewMain m = new ReviewMain();
 //		m.doSave();
 //		m.doUpdate();
 //		m.doDelete();
-		m.doRetrieve();
+//		m.doRetrieve();
+//		m.getTopLikeCounts();
+		m.getReviewsByAboardSeq();
 	}
 
 }

@@ -83,6 +83,34 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         doWork(request, response);
     }
 
+    public JView TopLikeReviews(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	log.debug("---------------------");
+        log.debug("TopLikeReviews()");
+        log.debug("---------------------");
+
+            // 좋아요가 많은 순으로 정렬된 좋아요 목록을 가져옴
+            List<LikeDTO> likes = reviewService.getTopLikeCounts();
+            // 좋아요 목록을 디버그 로그에 출력
+            log.debug("TopLikeReviews - likes: {}", likes);
+
+            // 각 좋아요에 대한 리뷰 목록을 가져와서 로그에 출력
+            for (LikeDTO like : likes) {
+                int aboardSeq = like.getAboardSeq();
+                List<ReviewDTO> reviews = reviewService.getReviewsByAboardSeq(aboardSeq);
+                for (ReviewDTO review : reviews) {
+                    log.debug("TopLikeReviews - Review: {}", review);
+                }
+            }
+            Map<String, Object> result = new HashMap<>();
+            result.put("reviews", likes);
+
+            Gson gson = new Gson();
+            String json = gson.toJson(result);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+        
+    	return null;
+    }
     public JView getReviews(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("---------------------");
         log.debug("getReviews()");
@@ -208,7 +236,7 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         
         return new JView("/resources/pages/review/review_detail.jsp");
     }
-
+    
     @Override
     public JView doWork(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("---------------------");
@@ -235,6 +263,9 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
                 break;
             case "doSelectOne":
             	viewName = doSelectOne(request, response);
+            	break;
+            case "TopLikeReviews":
+            	viewName = TopLikeReviews(request, response);
             	break;
                 /*
             case "doRetrieveDetail":

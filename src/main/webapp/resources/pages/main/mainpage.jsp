@@ -27,7 +27,7 @@
         .review-item .meta { font-size: 14px; color: #555; margin-bottom: 5px; }
         .review-item p { font-size: 16px; line-height: 1.6; }
     	.welcome { text-align: center; margin: 20px 0; background: #f8f9fa; padding: 20px; border: 1px solid #dee2e6; }
-        .slider { overflow: hidden; position: relative; width: 100%; height: 300px; margin-bottom: 20px; }
+        .slider { overflow: hidden; position: relative; width: 100%; height: 500px; margin-bottom: 20px; }
         .slides { display: flex; transition: transform 0.5s ease-in-out; }
         .slide { min-width: 100%; box-sizing: border-box; }
         .slide img { width: 100%; height: auto; }
@@ -71,15 +71,12 @@ function showSlides() {
     <jsp:include page="/cmn/menu.jsp"></jsp:include>
 </header>
 <div class="container">
-    <div class="welcome">
-        <h1>환영합니다!</h1>
-        <p>우리 사이트에 오신 것을 환영합니다. 즐거운 시간 되세요!</p>
-    </div>
+    
     <div class="slider">
         <div class="slides">
-            <div class="slide"><img src="#" alt="Image 1"></div>
-            <div class="slide"><img src="#" alt="Image 2"></div>
-            <div class="slide"><img src="#" alt="Image 3"></div>
+            <div class="slide"><img src="/SEOUL_TRAVEL/images/0605135722527-65d96ad71c264964979152d462ca2713.png" alt="Image 1"></div>
+            <div class="slide"><img src="/SEOUL_TRAVEL/images/0605135749906-7651c27f72cf4cdd99329f0850ddad35.png" alt="Image 2"></div>
+            <div class="slide"><img src="/SEOUL_TRAVEL/images/0605135818177-97f66dcbc6b8427caaf9f9aeb12d8d87.png" alt="Image 3"></div>
         </div>
     </div>
     
@@ -87,48 +84,26 @@ function showSlides() {
         <h2 class="section-title">추천이 가장 많은 게시물</h2>
         <div class="item-list">
             <div class="item">
-                <img src="/SEOUL_TRAVEL/assets/images/recommendation1.jpg" alt="Recommendation 1">
+                <img src="/SEOUL_TRAVEL/images/recommendation1.jpg" alt="Recommendation 1">
                 <h3>게시물 제목</h3>
                 <p>작성자: 작성자 이름</p>
                 <p>추천수: 15</p>
             </div>
             <div class="item">
-                <img src="/SEOUL_TRAVEL/assets/images/recommendation2.jpg" alt="Recommendation 2">
+                <img src="/SEOUL_TRAVEL/images/recommendation2.jpg" alt="Recommendation 2">
                 <h3>게시물 제목</h3>
                 <p>작성자: 작성자 이름</p>
                 <p>추천수: 12</p>
             </div>
             <div class="item">
-                <img src="/SEOUL_TRAVEL/assets/images/recommendation3.jpg" alt="Recommendation 3">
+                <img src="/SEOUL_TRAVEL/images/recommendation3.jpg" alt="Recommendation 3">
                 <h3>게시물 제목</h3>
                 <p>작성자: 작성자 이름</p>
                 <p>추천수: 10</p>
             </div>
         </div>
     </div>
-    <div class="reviews">
-        <h2 class="section-title">리뷰가 가장 많은 게시물</h2>
-        <div class="item-list">
-            <div class="item">
-                <img src="/SEOUL_TRAVEL/assets/images/review1.jpg" alt="Review 1">
-                <h3>게시물 제목</h3>
-                <p>작성자: 작성자 이름</p>
-                <p>리뷰수: 20</p>
-            </div>
-            <div class="item">
-                <img src="/SEOUL_TRAVEL/assets/images/review2.jpg" alt="Review 2">
-                <h3>게시물 제목</h3>
-                <p>작성자: 작성자 이름</p>
-                <p>리뷰수: 18</p>
-            </div>
-            <div class="item">
-                <img src="/SEOUL_TRAVEL/assets/images/review3.jpg" alt="Review 3">
-                <h3>게시물 제목</h3>
-                <p>작성자: 작성자 이름</p>
-                <p>리뷰수: 15</p>
-            </div>
-        </div>
-    </div>
+    
 </div>
 <jsp:include page="/cmn/footer.jsp"></jsp:include>
 <script>

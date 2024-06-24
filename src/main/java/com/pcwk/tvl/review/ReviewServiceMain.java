@@ -57,6 +57,27 @@ public class ReviewServiceMain implements PLog{
 			log.debug("추천수 저장 실패 :{}",flag);
 		}
 	}
+	public void getTopLikeCounts() {
+		log.debug(" getTopLikeCounts() ");
+		LikeDTO search = new LikeDTO();
+        // 특정 aboardSeq로 검색
+
+        List<LikeDTO> list = service.getTopLikeCounts();
+        for (LikeDTO like : list) {
+            log.debug("like: {}", like);
+        }
+	}
+	public void getReviewsByAboardSeq() {
+		List<LikeDTO> likes = service.getTopLikeCounts();
+		log.debug("getReviewsByAboardSeq()");
+		log.debug("likes: {}",likes);
+		for (LikeDTO like : likes) {
+            List<ReviewDTO> reviews = service.getReviewsByAboardSeq(like.getAboardSeq());
+            for (ReviewDTO review : reviews) {
+                log.debug("Review: {}", review);
+            }
+        }
+	}
 	public static void main(String[] args) {
 		ReviewServiceMain m = new ReviewServiceMain();
 		//m.doSave();
@@ -64,6 +85,7 @@ public class ReviewServiceMain implements PLog{
 		
 		//m.doLike();
 		//m.doLikeSave();
+		m.getReviewsByAboardSeq();
 	}
 
 }

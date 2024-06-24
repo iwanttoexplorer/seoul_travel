@@ -11,6 +11,8 @@ import com.pcwk.ehr.cmn.ConnectionMaker;
 import com.pcwk.ehr.cmn.DBUtill;
 import com.pcwk.ehr.cmn.DTO;
 import com.pcwk.ehr.cmn.WorkDiv;
+import com.pcwk.tvl.comment.CommentDTO;
+import com.pcwk.tvl.like.LikeDTO;
 import com.pcwk.ehr.cmn.PLog;
 import com.pcwk.ehr.cmn.SearchDTO;
 
@@ -23,6 +25,81 @@ public class ReviewDao implements WorkDiv<ReviewDTO>, PLog {
         reviewList = new ArrayList<>();
     }
 
+    
+    public List<LikeDTO> getTopLikeCounts(){
+    	 List<LikeDTO> list = new ArrayList<>();
+         Connection conn = connectionMaker.getConnection();
+         PreparedStatement pstmt = null;
+         ResultSet rs = null;
+         StringBuilder sb = new StringBuilder();
+         sb.append(" SELECT aboard_seq, COUNT(*) AS like_count      \n");
+         sb.append("     FROM v_like              \n");
+         sb.append("     GROUP BY aboard_seq              \n");
+         sb.append("     ORDER BY like_count DESC                \n");
+         sb.append("     FETCH FIRST 3 ROWS ONLY              \n");
+         log.debug("1.sql:{}", sb.toString());
+         log.debug("2.conn:{}", conn);
+         try {
+             conn = connectionMaker.getConnection();
+             pstmt = conn.prepareStatement(sb.toString());
+             rs = pstmt.executeQuery();
+
+             while (rs.next()) {
+            	 LikeDTO like = new LikeDTO();
+                 like.setAboardSeq(rs.getInt("aboard_seq"));
+                 
+
+                 list.add(like);
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+         } finally {
+             DBUtill.close(conn, pstmt, rs);
+         }
+
+         log.debug("3.list:{}", list);
+    	return list;
+    }
+    public List<ReviewDTO> getReviewsByAboardSeq(int aboardSeq){
+    	List<ReviewDTO> reviews = new ArrayList<>();
+    	Connection conn = connectionMaker.getConnection();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        StringBuilder sb = new StringBuilder();
+        sb.append(" SELECT v_review.aboard_seq,v_review.user_id, v_review.contentid, v_review.title, v_review.img_link, \n");
+        sb.append("        (SELECT COUNT(*) FROM v_like WHERE v_like.aboard_seq = v_review.aboard_seq) AS like_count \n");
+        sb.append("   FROM v_review \n");
+        sb.append("  WHERE v_review.aboard_seq = ? \n");
+        log.debug("1.sql:{}", sb.toString());
+        log.debug("2.conn:{}", conn);
+        log.debug("1.sql:{}", sb.toString());
+        log.debug("2.conn:{}", conn);
+        try {
+            conn = connectionMaker.getConnection();
+            pstmt = conn.prepareStatement(sb.toString());
+            pstmt.setInt(1, aboardSeq);
+            rs = pstmt.executeQuery();
+            
+            while (rs.next()) {
+            		ReviewDTO review = new ReviewDTO();
+            		review.setAboardSeq(rs.getInt("aboard_seq"));
+            		review.setUserId(rs.getString("user_id"));
+            		review.setContentId(rs.getString("contentid"));
+            		review.setTitle(rs.getString("title"));
+            		review.setImgLink(rs.getString("img_link"));
+            		review.setLikeCount(rs.getInt("like_count"));
+            		reviews.add(review);
+            	 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtill.close(conn, pstmt, rs);
+        }
+
+        log.debug("3.list:{}", reviews);
+    	return reviews;
+    }
     // 리뷰 등록 메서드
     public int doSave(ReviewDTO param) {
         int flag = 0;

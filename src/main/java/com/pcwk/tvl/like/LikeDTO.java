@@ -31,6 +31,10 @@ public class LikeDTO {
 		this.aboardSeq = aboardSeq;
 		
 	}
+	@Override
+    public String toString() {
+        return "LikeDTO{aboardSeq=" + aboardSeq + '}';
+    }
 
 	
 }
