@@ -21,6 +21,9 @@ public class UserService implements PLog {
 	public List<UserDTO> doRetrieve(DTO search) {
 		return dao.doRetrieve(search);
 	}
+	public List<UserDTO> doRetrieveUser() {
+		return dao.userDTO();
+	}
 	
 	/**
 	 * 저장
