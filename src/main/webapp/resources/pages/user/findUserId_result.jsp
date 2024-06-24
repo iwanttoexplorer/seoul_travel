@@ -32,7 +32,7 @@
         </strong></p>
     </div>
     
-    <form action="/SEOUL_TRAVEL/assets/js/login.jsp">
+    <form action="/SEOUL_TRAVEL/resources/pages/user/login.jsp">
 	    <div class="back-button">
 	        <input type="submit" value="돌아가기">
 	    </div>

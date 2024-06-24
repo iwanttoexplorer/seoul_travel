@@ -65,10 +65,10 @@
     </div>
     <div class="sections">
         <div class="section">
-            <a href="/SEOUL_TRAVEL/resources/pages/content/restaurant_main.jsp">식당</a>
+            <a href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve2">식당</a>
         </div>
         <div class="section">
-            <a href="/SEOUL_TRAVEL/resources/pages/content/travel_main.jsp">관광지</a>
+            <a href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve">관광지</a>
         </div>
         <div class="section">
             <a href="/SEOUL_TRAVEL/resources/pages/review/review_list.jsp">리뷰</a>
