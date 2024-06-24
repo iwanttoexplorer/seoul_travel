@@ -710,4 +710,36 @@ public class UserDao implements WorkDiv<UserDTO> {
 	    return list;
 	}
 
+	public int doDeleteUser(UserDTO param) {
+
+		Connection conn = connectionMaker.getConnection();
+		PreparedStatement pstmt = null;//SQL+PARAM
+		StringBuilder sb=new StringBuilder(200);	
+		sb.append(" DELETE FROM v_user    \n");
+		sb.append(" WHERE                 \n");
+		sb.append("         user_Id = ?    \n");
+		
+		log.debug("1.sql:{}\n",sb.toString());
+		log.debug("2.conn:{}",conn);
+		log.debug("3.param:{}",param);	
+		
+		try {
+			pstmt = conn.prepareStatement(sb.toString());
+			log.debug("4.pstmt:{}",pstmt);
+
+			pstmt.setString(1, param.getUserId());
+			param.setFlag(pstmt.executeUpdate());
+	
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			DBUtill.close(conn, pstmt);
+			
+			log.debug("5.finally conn:{} pstmt:{}",conn,pstmt);
+		}	
+		log.debug("6.param.getFlag():{}",param.getFlag());
+		
+		return param.getFlag();
+	}
+
 }
