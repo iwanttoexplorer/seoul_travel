@@ -43,6 +43,28 @@
     </style>
     <script src="/SEOUL_TRAVEL/assets/js/jquery_3_7_1.js"></script>
     <script src="/SEOUL_TRAVEL/assets/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+	let slideIndex = 0;
+	const slide = document.querySelectorAll(".slide");
+	console.log(slide.length);
+	
+	showSlides();
+	
+// 3초마다 메인 화면 이미지 변경
+function showSlides() {
+	  console.log('showSlides start: ',slideIndex);
+	  
+    for (let i = 0; i < slide.length; i++) {
+    	slide[i].style.display = "none";  
+    }
+    slideIndex++;
+    if (slideIndex > slide.length) {slideIndex = 1}    
+    slide[slideIndex-1].style.display = "block";  
+    setTimeout(showSlides, 3000); // 3초마다 자동으로 호출
+}
+});
+</script>
 </head>
 <body>
 <header>
@@ -58,9 +80,9 @@
     </div>
     <div class="slider">
         <div class="slides">
-            <div class="slide"><img src="/SEOUL_TRAVEL/assets/images/image1.jpg" alt="Image 1"></div>
-            <div class="slide"><img src="/SEOUL_TRAVEL/assets/images/image2.jpg" alt="Image 2"></div>
-            <div class="slide"><img src="/SEOUL_TRAVEL/assets/images/image3.jpg" alt="Image 3"></div>
+            <div class="slide"><img src="#" alt="Image 1"></div>
+            <div class="slide"><img src="#" alt="Image 2"></div>
+            <div class="slide"><img src="#" alt="Image 3"></div>
         </div>
     </div>
     <div class="sections">
