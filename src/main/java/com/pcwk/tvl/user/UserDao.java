@@ -664,4 +664,50 @@ public class UserDao implements WorkDiv<UserDTO> {
 		return userId;
 	}
 
+	public List<UserDTO> userDTO() {
+	    List<UserDTO> list = new ArrayList<UserDTO>();
+	    Connection conn = connectionMaker.getConnection();
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    StringBuilder sb = new StringBuilder(100);
+
+	    sb.append(" SELECT user_id,          \n");
+	    sb.append("        grades_seq,       \n");
+	    sb.append("        user_name,        \n");
+	    sb.append("        user_pw,          \n");
+	    sb.append("        user_email,       \n");
+	    sb.append("        to_char(reg_dt,'yyyy-mm-dd') reg_dt \n");
+	    sb.append("   FROM v_user            \n");
+
+	    log.debug("1.sql:{}", sb.toString());
+	    log.debug("2.conn:{}", conn);
+
+	    try {
+	        pstmt = conn.prepareStatement(sb.toString());
+	        log.debug("3.pstmt:{}", pstmt);
+
+	        rs = pstmt.executeQuery();
+	        log.debug("4.rs:{}", rs);
+
+	        while (rs.next()) {
+	            UserDTO user = new UserDTO();
+	            user.setUserId(rs.getString("user_id"));
+	            user.setGradesSeq(rs.getInt("grades_seq"));
+	            user.setUserName(rs.getString("user_name"));
+	            user.setUserPw(rs.getString("user_pw"));
+	            user.setUserEmail(rs.getString("user_email"));
+	            user.setRegDt(rs.getString("reg_dt"));
+
+	            list.add(user);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        DBUtill.close(conn, pstmt, rs);
+	        log.debug("5.finally conn:{} pstmt:{} rs:{}", conn, pstmt, rs);
+	    }
+
+	    return list;
+	}
+
 }

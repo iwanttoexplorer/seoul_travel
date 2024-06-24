@@ -14,7 +14,11 @@ public class ContentService  implements PLog {
 	}
 	
 	public ContentDTO doSelectOne(ContentDTO search) {
-		return dao.doSelectOne(search);
+		ContentDTO outVO = new ContentDTO();
+		
+		outVO= dao.doSelectOne(search);
+		
+		return outVO;
 	}
 	
 	/**

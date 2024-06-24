@@ -1,7 +1,6 @@
 package com.pcwk.tvl.content;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,18 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
 import com.pcwk.ehr.cmn.ContentsSearchDTO;
 import com.pcwk.ehr.cmn.ControllerV;
+import com.pcwk.ehr.cmn.DTO;
 import com.pcwk.ehr.cmn.JView;
 import com.pcwk.ehr.cmn.MessageVO;
 import com.pcwk.ehr.cmn.PLog;
-import com.pcwk.ehr.cmn.SearchDTO;
 import com.pcwk.ehr.cmn.StringUtil;
-import com.pcwk.tvl.category.CategoryDTO;
 import com.pcwk.tvl.category.CategoryService;
 import com.pcwk.tvl.gucode.GucodeService;
-import com.pcwk.ehr.cmn.DTO;
 
 
 public class ContentController implements ControllerV, PLog{
@@ -45,6 +41,9 @@ public class ContentController implements ControllerV, PLog{
 		log.debug("doSelectOne()");
 		log.debug("-----------------");
 		
+		// JSP viewName저장
+		JView viewName = null;
+		
 		ContentDTO inVO = new ContentDTO();
 		String contentId = StringUtil.nvl(request.getParameter("contentId"), "");
 		log.debug("contentId:" + contentId);
@@ -65,7 +64,48 @@ public class ContentController implements ControllerV, PLog{
 			log.debug("실패 message :{}",  message);
 		}
 		
-		return null;
+		ContentDTO outVO = this.service.doSelectOne(inVO);
+		log.debug("outVO:" + outVO);
+		
+		request.setAttribute("outVO", outVO);
+		
+		return viewName = new JView("/resources/pages/content/travel_sel.jsp");
+	}
+	
+	public JView doSelectOne2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		log.debug("-----------------");
+		log.debug("doSelectOne()");
+		log.debug("-----------------");
+		
+		// JSP viewName저장
+		JView viewName = null;
+		
+		ContentDTO inVO = new ContentDTO();
+		String contentId = StringUtil.nvl(request.getParameter("contentId"), "");
+		log.debug("contentId:" + contentId);
+		
+		inVO.setContentId(contentId);
+		log.debug("inVO:" + inVO);
+		
+		DTO dto = service.doSelectOne(inVO);
+		
+		MessageVO message = new MessageVO();
+		
+		if( dto instanceof ContentDTO) {
+			ContentDTO outVO = (ContentDTO) dto;
+			log.debug("성공 outVO :{}",  outVO);
+			
+		}else {
+			message = (MessageVO) dto;
+			log.debug("실패 message :{}",  message);
+		}
+		
+		ContentDTO outVO = this.service.doSelectOne(inVO);
+		log.debug("outVO:" + outVO);
+		
+		request.setAttribute("outVO", outVO);
+		
+		return viewName = new JView("/resources/pages/content/restaurant_sel.jsp");
 	}
 
 	public JView doRetrieve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -85,18 +125,56 @@ public class ContentController implements ControllerV, PLog{
 		String pageNo = StringUtil.nvl(request.getParameter("page_no"), "1");
 		String pageSize = StringUtil.nvl(request.getParameter("page_size"), "10");
 
+		
+		String categoryWord = StringUtil.nvl(request.getParameter("category_word"), "");
+		String gNameWord = StringUtil.nvl(request.getParameter("g_name_word"), "");
 		String searchWord = StringUtil.nvl(request.getParameter("search_word"), "");
-		String searchDiv = StringUtil.nvl(request.getParameter("search_div"), "");
+		
+		log.debug("categoryWord:{}", categoryWord);
+		log.debug("gNameWord:{}", gNameWord);
+		log.debug("searchWord:{}", searchWord);
+		
+		if(categoryWord == "" && gNameWord == "" && searchWord != "" ) {
+			inVO.setSearchDiv("10");
+			inVO.setSearchWord(searchWord);
+		}else if (categoryWord != "" && gNameWord == "" && searchWord == "" ) {
+			inVO.setSearchDiv("20");
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord == "" && gNameWord != "" && searchWord == "" ) {
+			inVO.setSearchDiv("30");
+			inVO.setgNameWord(gNameWord);
+		}else if (categoryWord == "" && gNameWord != "" && searchWord != "" ) {
+			inVO.setSearchDiv("40");
+			inVO.setSearchWord(searchWord);
+			inVO.setgNameWord(gNameWord);
+		}else if (categoryWord != "" && gNameWord == "" && searchWord != "" ) {
+			inVO.setSearchDiv("50");
+			inVO.setSearchWord(searchWord);
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord != "" && gNameWord != "" && searchWord == "" ) {
+			inVO.setSearchDiv("60");
+			inVO.setgNameWord(gNameWord);
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord != "" && gNameWord != "" && searchWord != "" ) {
+			inVO.setSearchDiv("70");
+			inVO.setgNameWord(gNameWord);
+			inVO.setCategoryWord(categoryWord);
+			inVO.setSearchWord(searchWord);
+		}
+		
 
 		log.debug("page_no:{}", pageNo);
 		log.debug("page_size:{}", pageSize);
-		log.debug("searchWord:{}", searchWord);
-		log.debug("searchDiv:{}", searchDiv);
 
 		inVO.setPageNo(Integer.parseInt(pageNo));
 		inVO.setPageSize(Integer.parseInt(pageSize));
-		inVO.setSearchWord(searchWord);
-		inVO.setSearchDiv(searchDiv);
+		
+		inVO.setCategoryWord(categoryWord);
+		inVO.setgNameWord(gNameWord);
+		
+		log.debug("categoryWord:{}", categoryWord);
+		log.debug("gNameWord:{}", gNameWord);
+		log.debug("searchWord:{}", searchWord);
 
 		log.debug("inVO:{}", inVO);
 
@@ -133,7 +211,109 @@ public class ContentController implements ControllerV, PLog{
 		request.setAttribute("vo", inVO);
 		log.debug("inVO: {}", inVO);
 
-		return viewName = new JView("/content/travel_main.jsp");
+		return viewName = new JView("/resources/pages/content/travel_main.jsp");
+	}
+	
+	public JView doRetrieve2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		log.debug("-----------------");
+		log.debug("doRetrieve2()");
+		log.debug("-----------------");
+		
+		HttpSession session = request.getSession();
+		
+		// JSP viewName저장
+		JView viewName = null;
+		
+		ContentsSearchDTO inVO = new ContentsSearchDTO();
+		
+		// page_no
+		// page_size
+		String pageNo = StringUtil.nvl(request.getParameter("page_no"), "1");
+		String pageSize = StringUtil.nvl(request.getParameter("page_size"), "10");
+
+		
+		String categoryWord = StringUtil.nvl(request.getParameter("category_word"), "");
+		String gNameWord = StringUtil.nvl(request.getParameter("g_name_word"), "");
+		String searchWord = StringUtil.nvl(request.getParameter("search_word"), "");
+		
+		log.debug("categoryWord:{}", categoryWord);
+		log.debug("gNameWord:{}", gNameWord);
+		log.debug("searchWord:{}", searchWord);
+		
+		if(categoryWord == "" && gNameWord == "" && searchWord != "" ) {
+			inVO.setSearchDiv("10");
+			inVO.setSearchWord(searchWord);
+		}else if (categoryWord != "" && gNameWord == "" && searchWord == "" ) {
+			inVO.setSearchDiv("20");
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord == "" && gNameWord != "" && searchWord == "" ) {
+			inVO.setSearchDiv("30");
+			inVO.setgNameWord(gNameWord);
+		}else if (categoryWord == "" && gNameWord != "" && searchWord != "" ) {
+			inVO.setSearchDiv("40");
+			inVO.setSearchWord(searchWord);
+			inVO.setgNameWord(gNameWord);
+		}else if (categoryWord != "" && gNameWord == "" && searchWord != "" ) {
+			inVO.setSearchDiv("50");
+			inVO.setSearchWord(searchWord);
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord != "" && gNameWord != "" && searchWord == "" ) {
+			inVO.setSearchDiv("60");
+			inVO.setgNameWord(gNameWord);
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord != "" && gNameWord != "" && searchWord != "" ) {
+			inVO.setSearchDiv("70");
+			inVO.setgNameWord(gNameWord);
+			inVO.setCategoryWord(categoryWord);
+			inVO.setSearchWord(searchWord);
+		}
+		
+
+		log.debug("page_no:{}", pageNo);
+		log.debug("page_size:{}", pageSize);
+
+		inVO.setPageNo(Integer.parseInt(pageNo));
+		inVO.setPageSize(Integer.parseInt(pageSize));
+		
+		inVO.setCategoryWord(categoryWord);
+		inVO.setgNameWord(gNameWord);
+		
+		log.debug("categoryWord:{}", categoryWord);
+		log.debug("gNameWord:{}", gNameWord);
+		log.debug("searchWord:{}", searchWord);
+
+		log.debug("inVO:{}", inVO);
+
+		// service call
+		List<ContentDTO> list = service.doRetrieve2(inVO);
+
+		// return 데이터 확인
+		int i = 0;
+		for (ContentDTO vo : list) {
+			log.debug("i: {}, vo: {}", ++i, vo);
+		}
+
+		// UI 데이터 전달
+		request.setAttribute("list", list);
+		
+		int bottomCount = 10;
+		int totalCnt = 0; //총 글수
+		
+		if(null != list && list.size() > 0) {
+			ContentDTO pagingVO = list.get(0);
+			totalCnt = pagingVO.getTotalCnt();
+			log.debug("totalCnt: {}", totalCnt);
+			
+			inVO.setTotalCnt(totalCnt);
+		}
+		
+		inVO.setBottomCount(bottomCount);
+		
+		// 검색조건 UI로 전달
+		request.setAttribute("vo", inVO);
+		log.debug("inVO: {}", inVO);
+
+		return viewName = new JView("/resources/pages/content/restaurant_main.jsp");
 	}
 	
 	@Override
@@ -152,8 +332,14 @@ public class ContentController implements ControllerV, PLog{
 		case "doRetrieve":
 			viewName = doRetrieve(request, response);
 			break;
+		case "doRetrieve2":
+			viewName = doRetrieve2(request, response);
+			break;
 		case "doSelectOne":
 			viewName = doSelectOne(request, response);
+			break;
+		case "doSelectOne2":
+			viewName = doSelectOne2(request, response);
 			break;
 		default:
 			log.debug("ContentController을 확인 하세요. workDiv:{}" + workDiv);
@@ -163,28 +349,4 @@ public class ContentController implements ControllerV, PLog{
 		return viewName;
 	}
 	
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		log.debug("-----------------");
-		log.debug("doGet()");
-		log.debug("-----------------");
-		doWork(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		log.debug("-----------------");
-		log.debug("doPost()");
-		log.debug("-----------------");
-		doWork(request, response);
-	}
-
 }

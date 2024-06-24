@@ -23,98 +23,308 @@
 <script src="/SEOUL_TRAVEL/assets/js/jquery_3_7_1.js"></script>
 <script>
 	document.addEventListener("DOMContentLoaded",function(){
-		console.log("commentUploaded");
+		const urlParams = new URLSearchParams(window.location.search);
+		const aboardSeq = urlParams.get('aboardSeq');
 		const workDiv = document.querySelector("#work_div");//작업구분
 		const saveCommentBtn = document.querySelector("#saveComment");
-		const deleteCommentBtn = document.querySelector("#deleteComment");
-		const updateCommentBtn = document.querySelector("#updateComment");
 		const getCommentsBtn = document.querySelector("#getComments");
-		const content = document.querySelector("#content");
+		const comments = document.querySelector("#comments");
 		const aboardSeq = document.querySelector("#aboardSeq");
 		const userId = document.querySelector("#userId");
-		const comSeq = document.querySelector("#comSeq");
-		saveCommentBtn.addEventListener("click",function(){
-			console.log('saveCommentBtn click');
-			let frm = document.getElementById("comment_frm");
-			frm.work_div.value = "saveComment";
-			frm.aboard_Seq.value = "aboardSeq";
-			frm.content.value = "content";
-			console.log("frm.user_id.value: "+frm.user_id.value);
-			console.log("frm.reg_dt.value: "+frm.reg_dt.value);
-			frm.action = "/SEOUL_TRAVEL/comment/comment.do";
-			frm.submit();
-		});
-		deleteCommentBtn.addEventListener("click",function(){
-			ajaxDoDelete();
-		});
-		updateCommentBtn.addEventListener("click",function(){
-			ajaxDoUpdate();
-		});
+		const comSeq = document.querySelector("#comSeq");	
+		ajaxdoSelectOne();
+		// 추천 버튼 클릭 시
+        $("#likeBtn").click(function() {
+            ajaxDoLike();
+        });
+        ajaxGetLikeCount();
+        function ajaxDoLike() {
+            $.ajax({
+                type: "POST",
+                url: "/SEOUL_TRAVEL/review/review.do",
+                data: {
+                    "userId": "<%= userId %>",
+                    "aboardSeq": aboardSeq,
+                    "work_div": "doLikeSave",
+                    "ajax": true
+                },
+                success: function(response) {
+                    alert('추천하였습니다.');
+                    ajaxGetLikeCount();
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                    alert("추천하는 중에 오류가 발생했습니다.");
+                }
+            });
+        }
+        function ajaxGetLikeCount() {
+            $.ajax({
+                type: "POST",
+                url: "/SEOUL_TRAVEL/review/review.do",
+                dataType: "json",
+                data: {
+                    "aboardSeq": aboardSeq,
+                    "work_div": "doLikeCount",
+                    "ajax": true
+                },
+                success: function(response) {
+                	console.log("success:", response);
+                    $("#likeCount").text(response.likeCount);
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                    
+                }
+            });
+        }
+   	 
+		if (saveCommentBtn) {
+	        saveCommentBtn.addEventListener("click", function() {
+	            const userId = document.querySelector("#userId").value;
+	            const commentContent = document.querySelector("#commentContent").value;
+	            ajaxCommentSave(userId, aboardSeq, commentContent);
+	        });
+	    }
+
+	    ajaxGetComments(aboardSeq);
 		
-	});
+		
+	});//document end
+
+	function ajaxGetComments(aboardSeq) {
+	    const data = {
+	        "work_div": "getComments",
+	        "aboardSeq": aboardSeq,
+	        "ajax": true
+	    };
+
+	    if (!validateData(data)) {
+	        alert("댓글 불러오기에 실패했습니다.");
+	        return;
+	    }
+
+	    $.ajax({
+	        type: "POST",
+	        url: "/SEOUL_TRAVEL/comment/comment.do",
+	        dataType: "json",
+	        data: data,
+	        success: function(response) {
+	            console.log("Success response", response);
+	            var replyList = $("#reply-list");
+	            replyList.empty();
+	            var rList = response;
+
+	            if (rList.length > 0) {
+	                rList.forEach(function(reply) {
+	                    var replyRow = $("<li></li>");
+	                    replyRow.addClass("reply-row");
+
+	                    var replyWriter = $("<p></p>");
+	                    replyWriter.addClass("reply-writer");
+	                    replyWriter.text(reply.userId);
+
+	                    var replyDate = $("<p></p>");
+	                    replyDate.addClass("reply-date");
+	                    var dateLabel = reply.modDt ? "수정 " : "";
+	                    var dateValue = reply.modDt ? reply.modDt : reply.regDt;
+	                    replyDate.text(dateLabel + dateValue);
+
+	                    var replyContent = $("<p></p>");
+	                    replyContent.addClass("reply-content");
+	                    replyContent.html(reply.content);
+
+	                    replyRow.append(replyWriter);
+	                    replyRow.append(replyContent);
+	                    replyRow.append(replyDate);
+
+	                    var updateButton = $("<button></button>");
+	                    updateButton.text("수정");
+	                    updateButton.addClass("btn btn-primary update-comment");
+	                    updateButton.on("click", function() {
+	                        if (reply.userId !== "4kqD945") {
+	                            alert("작성자가 아닙니다.");
+	                            return;
+	                        }
+	                        var newContent = prompt("수정할 내용을 입력하세요:", reply.content);
+	                        if (newContent !== null) {
+	                            ajaxUpdateComment(reply.comSeq, newContent, aboardSeq);
+	                        } else {
+	                            alert("취소하였습니다.");
+	                        }
+	                    });
+
+	                    var deleteButton = $("<button></button>");
+	                    deleteButton.text("삭제");
+	                    deleteButton.addClass("btn btn-danger delete-comment");
+	                    deleteButton.on("click", function() {
+	                        if (reply.userId !== "4kqD945") {
+	                            alert("작성자가 아닙니다.");
+	                            return;
+	                        }
+	                        ajaxDeleteComment(reply.comSeq, aboardSeq);
+	                    });
+
+	                    replyRow.append(updateButton);
+	                    replyRow.append(deleteButton);
+	                    replyList.append(replyRow);
+	                });
+	            } else {
+	                replyList.append("<p>댓글이 없습니다. 첫 번째 댓글을 달아보세요!</p>");
+	            }
+	        },
+	        error: function(error) {
+	            console.log("Error:", error);
+	        }
+	    });
+	}
+
+	function ajaxCommentSave(userId, aboardSeq, content) {
+	    if (isEmpty(content)) {
+	        alert('댓글을 입력하세요.');
+	        return;
+	    }
+
+	    if (!confirm('등록 하시겠습니까?')) {
+	        alert("취소하였습니다.");
+	        return;
+	    }
+
+	    const data = {
+	        "work_div": "saveComment",
+	        "userId": userId,
+	        "aboardSeq": aboardSeq,
+	        "content": content
+	    };
+
+	    if (!validateData(data)) {
+	        alert("댓글 저장에 실패했습니다.");
+	        return;
+	    }
+
+	    $.ajax({
+	        type: "POST",
+	        url: "/SEOUL_TRAVEL/comment/comment.do",
+	        dataType: "json",
+	        data: data,
+	        success: function(response) {
+	            alert('댓글이 등록되었습니다.');
+	            location.reload();
+	        },
+	        error: function(error) {
+	            console.log("error:", error);
+	            alert("댓글 저장에 실패했습니다.");
+	        }
+	    });
+	}
+
+	function ajaxUpdateComment(comSeq, newContent, aboardSeq) {
+	    const data = {
+	        "work_div": "updateComment",
+	        "comSeq": comSeq,
+	        "aboardSeq": aboardSeq,
+	        "userId": userId,
+	        "content": newContent,
+	        "ajax": true
+	    };
+
+	    if (!validateData(data)) {
+	        alert("댓글 수정에 실패했습니다.");
+	        return;
+	    }
+
+	    $.ajax({
+	        type: "POST",
+	        url: "/SEOUL_TRAVEL/comment/comment.do",
+	        data: data,
+	        success: function(response) {
+	            alert('수정하였습니다.');
+	            location.reload();
+	        },
+	        error: function(error) {
+	            console.log("Error:", error);
+	            alert("댓글 수정에 실패했습니다.");
+	        }
+	    });
+	}
+
+	function ajaxDeleteComment(comSeq, aboardSeq) {
+	    const data = {
+	        "work_div": "deleteComment",
+	        "comSeq": comSeq,
+	        "userId": userId,
+	        "aboardSeq": aboardSeq,
+	        "ajax": true
+	    };
+
+	    if (!validateData(data)) {
+	        alert("댓글 삭제에 실패했습니다.");
+	        return;
+	    }
+
+	    $.ajax({
+	        type: "POST",
+	        url: "/SEOUL_TRAVEL/comment/comment.do",
+	        dataType: "text",
+	        data: data,
+	        success: function(response) {
+	            alert('삭제하였습니다.');
+	            location.reload();
+	        },
+	        error: function(error) {
+	            console.log("error:", error);
+	            alert("댓글 삭제에 실패했습니다.");
+	        }
+	    });
+	}
+
+	function validateData(data) {
+	    try {
+	        JSON.stringify(data);
+	        return true;
+	    } catch (e) {
+	        console.error("Data structure issue:", e);
+	        return false;
+	    }
+	}
+
+	function isEmpty(str) {
+	    return (!str || str.length === 0);
+	}
 	
-	function ajaxDoSave(){
-		if(isEmpty(content.value)==true){
-			content.focus();
-			alert('댓글을 입력하세요.')
-			return;
-		}
-		if(false==confirm('등록 하시겠습니까?')){
-			return;
-		}
-		$.ajax({
-		    type: "GET", 
-		    url:"/SEOUL_TRAVEL/comment/comment.do",
-		    asyn:"true",  //비동기 통신
-		    dataType:"html",
-		    data:{
-		        "work_div":"saveComment",
-		        "userId": userId.value,
-		        "aboardSeq": aboardSeq.value,
-		        "content": content.value
-		    },
-		    success:function(data){//통신 성공
-		        console.log("success data:"+data);
-		        const messageVO = JSON.parse(data);
-		        console.log("messageId:"+messageVO.messageId);
-		        console.log("msgContents:"+messageVO.msgContents);
-		        
-		        if(message === '등록 성공'){
-		        	alert(data);
-		        	window.location.href ="/SEOUL_TRAVEL/comment/comment.do?work_div=saveComment";
-		        }else{
-		        	alert(data);
-		        }
-		        
-		    },
-		    error:function(data){//실패시 처리
-		        console.log("error:"+data);
-		    }
-		})
-	}
-	function doSave(){
-		console.log("doSave()");
-		let frm = document.getElementById("comment_frm");
-		frm.work_div.value = "saveComment";
-		frm.aboard_Seq.value = "aboardSeq";
-		frm.content.value = "content";
-		console.log("frm.user_id.value: "+frm.user_id.value);
-		console.log("frm.reg_dt.value: "+frm.reg_dt.value);
-		console.log("frm.action: ");
-	}
-	function ajaxDoDelete(){
-		if(false==confirm('삭제 하시겠습니까?')){
-			return;
-		}
-	}
-	function ajaxDoUpdate(){
-		if(false==confirm('수정 하시겠습니까?')){
-			return;
-		}
-	}
-	function ajaxDoGet(){
-		
-	}
+	 function ajaxdoSelectOne(aboardSeq) {
+         $.ajax({
+             type: "POST",
+             url: "/SEOUL_TRAVEL/review/review.do",
+             dataType: "json",
+             data: {
+                 "work_div": "doSelectOne",
+                 "aboardSeq": aboardSeq,
+                 "ajax": true
+             },
+             success: function(response) {
+                 console.log("success response: ", response);
+                 if (response.review) {
+                     var review = response.review;
+
+                     // 폼에 데이터 채우기
+                     $("#userId").val(review.userId);
+                     $("#regDt").val(review.regDt);
+                     $("#title").val(review.title);
+                     $("#comments").val(review.comments);
+                 } else {
+                     console.log("리뷰 데이터를 불러오지 못했습니다.");
+                 }
+             },
+             error: function(error) {
+                 console.log("Error:", error);
+             }
+         });
+     }
+	
+	
+	
+	
 		
 </script>
 </head>
@@ -130,18 +340,52 @@
         </nav>
     </header>
 
-    <!-- 리뷰 내용 시작 -->
-    <div class="container mt-5">
-        <div class="review-header">
-            <h1><%= reviewTitle %></h1>
-            <div class="review-meta">
-                <span>작성자: <%= reviewAuthor %></span>
-                <span>작성일: <%= reviewDate %></span>
-            </div>
-            <div class="review-content mt-4">
-                <p><%= reviewContent %></p>
-            </div>
-        </div>
+   <!-- container -->
+<div class="container">
+  
+  <!-- 제목 -->
+  <div class="page-header  mb-4">
+    <h2>게시-관리</h2>
+  </div>
+  <!--// 제목 end ------------------------------------------------------------->
+  <!-- 버튼 -->
+  <div class="mb-2 d-grid gap-2 d-md-flex justify-content-md-end">
+      <input type="button" value="목록" class="btn btn-primary" onclick="location.href='review_list.jsp'">
+      <input type="button" value="수정" class="btn btn-primary" onclick="location.href='review_write.jsp?userId=${review.userId}'">
+      <input type="button" value="삭제" class="btn btn-primary" onclick="deleteReview(${review.userId})">
+  </div>
+  <!--// 버튼 ----------------------------------------------------------------->
+  
+  <!-- form -->
+  <form action="#" class="form-horizontal">
+
+    <div class="row mb-3">
+        <label for="userId" class="col-sm-2 col-form-label">등록자</label>
+        <div class="col-sm-10">
+          <input type="text" disabled="disabled" class="form-control" name="userId" id="userId" value="${review.getUserId}">        
+        </div>      
+    </div>    
+    <div class="row mb-3">
+        <label for="regDt" class="col-sm-2 col-form-label">등록일</label>
+        <div class="col-sm-10">
+          <input type="text" disabled="disabled" class="form-control" name="regDt" id="regDt" value="${review.getRegDt}">        
+        </div>      
+    </div>        
+   
+    <div class="row mb-3">
+        <label for="title" class="col-sm-2 col-form-label">제목</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="title" id="title" maxlength="75" required="required" value="${review.getTitle}">
+        </div>      
+    </div>     
+    <div class="row mb-3">
+        <label for="comments" class="col-sm-2 col-form-label">내용</label>
+        <div class="col-sm-10">    
+         <textarea style="height: 200px" class="form-control" id="comments" name="comments">${review.getComments}</textarea>
+        </div> 
+    </div>    
+  </form>
+  <!--// form end -->
 
         <!-- 댓글 시작 -->
         <div class="comment-section mt-5">

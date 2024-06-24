@@ -3,8 +3,6 @@
 <%@ include file = "/cmn/common.jsp" %>
 <%@page import="java.util.List"%>
 <%@page import="com.pcwk.tvl.review.ReviewDTO"%>
-<%@page import="com.pcwk.tvl.review.ReviewDao"%>
-<%@page import="com.pcwk.tvl.review.ReviewService" %>
 <%
     // Dummy data for demonstration. Replace with actual data from your servlet/controller.
     List<ReviewDTO> list = (List<ReviewDTO>) request.getAttribute("list");
@@ -80,17 +78,10 @@
                     rList.forEach(function(review) {
                         var reviewRow = $("<tr></tr>");
                         reviewRow.addClass("review-row");
-                        
-                        var reviewSeq = $("<td></td>");
-                        reviewSeq.addClass("review-seq");
-                        reviewSeq.text(review.aboardSeq);
 
                         var reviewTitle = $("<td></td>");
                         reviewTitle.addClass("review-comments");
-                        var reviewLink = $("<a></a>");
-                        reviewLink.attr("href", "review_detail.jsp?aboardSeq=" + review.aboardSeq);
-                        reviewLink.text(review.title);
-                        reviewTitle.append(reviewLink);
+                        reviewTitle.html(review.title); 
 
                         var reviewWriter = $("<td></td>");
                         reviewWriter.addClass("review-writer");
@@ -100,12 +91,9 @@
                         reviewDate.addClass("review-regDt");
                         reviewDate.text(review.regDt);
 
-                        reviewRow.append(reviewSeq);
                         reviewRow.append(reviewTitle);
                         reviewRow.append(reviewWriter);
                         reviewRow.append(reviewDate);
-
-
 
                         reviewList.append(reviewRow);
                     });
@@ -147,22 +135,16 @@
     <main>
         <div class="container">
             <h2>리뷰 목록</h2>
-            
-             <%
-        ReviewService reviewService = new ReviewService();
-        List<ReviewDTO> reviewList = reviewService.getAllReviews();
-    		%>
             <table id="review-list" class="review-table">
                 <thead>
                     <tr>
-                    	<th>번호</th>
                         <th>제목</th>
                         <th>작성자</th>
                         <th>작성일</th>
                     </tr>
                 </thead>
                 <tbody>
-                
+               
                 </tbody>
             </table>
             <div class="pagination">

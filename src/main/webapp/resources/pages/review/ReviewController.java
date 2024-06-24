@@ -182,18 +182,16 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         log.debug("-----------------");
         
         ReviewDTO inVO = new ReviewDTO();
-        String userId = StringUtil.nvl(request.getParameter("userId"), "0");
-        
-        inVO.setUserId(userId);
-        log.debug("inVO:" + inVO);
-        
+        String aboardSeq = StringUtil.nvl(request.getParameter("aboardSeq"), "0");
+
+        inVO.setAboardSeq(Integer.parseInt(aboardSeq));
+        log.debug("inVO:"+inVO);
+
         ReviewDTO outVO = this.reviewService.doSelectOne(inVO);
-        log.debug("outVO:" + outVO);
-        
-        // UI 데이터 전달
+        log.debug("outVO:"+outVO);
+
         request.setAttribute("outVO", outVO);
-        
-        return new JView("/resources/pages/review/review_detail.jsp");
+		return new JView("/review/review_detail.jsp");
     }
 
     @Override
