@@ -53,6 +53,10 @@ public class UserService implements PLog {
 	public int doDelete(UserDTO param) {
 		return dao.doDelete(param);
 	}
+
+	public int doDeleteUser(UserDTO param) {
+		return dao.doDeleteUser(param);
+	}
 	
 	
 	/**
