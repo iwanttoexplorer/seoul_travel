@@ -40,9 +40,9 @@ function doRetrieve() {
             uList.empty(); // 테이블 내용 초기화
 
             // response에서 실제 회원 목록 배열(userList) 추출
-            var userList = response.userList; // userList가 맞는지 확인 필요
+            var userList = response; // 그냥 response 자체가 json 배열로 들어와서 바로 호출하면 돼
 
-            if (userList && userList.length > 0) { // userList가 존재하고 길이가 0보다 큰지 확인
+            if (userList.length > 0) { //하은아 복붙 그만하고 비교해서 확인해봐.....
                 userList.forEach(function(user) {
                     // 각 회원 정보를 테이블에 추가합니다.
                     var userRow = $("<tr></tr>");
@@ -71,11 +71,7 @@ function doRetrieve() {
                     // 리뷰 행을 리뷰 목록에 추가
                     uList.append(userRow);
                 });
-            } else {
-                // 회원이 없을 경우 메시지를 표시합니다.
-                var row = '<tr><td colspan="4">회원이 없습니다.</td></tr>';
-                uList.append(row);
-            }
+            } 
         },
         error: function(data) { // 실패 시 처리
             console.error("error:", data);
