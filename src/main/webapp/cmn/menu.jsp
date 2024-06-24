@@ -62,10 +62,10 @@
             </a>
             <ul class="nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/SEOUL_TRAVEL/resources/pages/content/travel_main.jsp"><h4>관광</h4></a>
+                    <a class="nav-link active" aria-current="page" href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve"><h4>관광</h4></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/SEOUL_TRAVEL/resources/pages/content/restaurant_main.jsp"><h4>맛집</h4></a>
+                    <a class="nav-link" href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve2"><h4>맛집</h4></a>
                 </li>
             </ul>
             <div class="login">
