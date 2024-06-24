@@ -9,16 +9,52 @@
 <script src="/SEOUL_TRAVEL/assets/js/jquery_3_7_1.js"></script>
 <script src="/SEOUL_TRAVEL/assets/js/common.js"></script>
 <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; }
-    header { background: #f8f9fa; padding: 10px 20px; border-bottom: 1px solid #dee2e6; display: flex; justify-content: space-between; align-items: center; }
-    .logo img { cursor: pointer; }
-    .signup { color: #000; text-decoration: none; }
-    .container { max-width: 500px; margin: 50px auto; padding: 20px; background: #fff; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); text-align: center; }
-    .container h2 { margin-bottom: 20px; }
-    .container form { display: flex; flex-direction: column; }
-    .container input[type="email"], .container input[type="button"] { margin-bottom: 10px; padding: 10px; font-size: 16px; }
-    .container a { display: block; margin-top: 10px; color: #007bff; text-decoration: none; }
-    .container a:hover { text-decoration: underline; }
+    body { 
+        font-family: Arial, sans-serif; 
+        margin: 0; 
+        padding: 0; 
+        background-color: #f8f9fa; 
+    }
+    .container1 { 
+        max-width: 500px; 
+        margin: 50px auto; 
+        padding: 20px; 
+        background: #fff; 
+        border: 1px solid #dee2e6; 
+        border-radius: 8px; 
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        text-align: center; 
+    }
+    .container1 h2 { 
+        margin-bottom: 20px; 
+    }
+    .container1 form { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+    }
+    .container1 label { 
+        text-align: left; 
+        margin-bottom: 5px; 
+        width: 100%; /* 레이블의 너비를 100%로 설정하여 왼쪽 정렬을 유지 */
+    }
+    .container1 input[type="email"], 
+    .container1 button { 
+        width: calc(100% - 22px); /* 입력 필드와 버튼의 너비를 계산하여 동일하게 설정 */
+        padding: 10px; 
+        font-size: 16px; 
+        margin-bottom: 10px; 
+        box-sizing: border-box; /* 패딩과 보더를 포함한 전체 너비 설정 */
+    }
+    .container1 button { 
+        background-color: #007bff; 
+        color: white; 
+        border: none; 
+        cursor: pointer; 
+    }
+    .container1 button:hover { 
+        background-color: #0056b3; 
+    }
 </style>
 <script>
   document.addEventListener("DOMContentLoaded", function(){
@@ -59,9 +95,10 @@
 	  
   }); //DOMContentLoaded
 </script>
+<jsp:include page="/cmn/menu.jsp"></jsp:include>
 </head>
 <body>
-    <div class="container">
+    <div class="container1">
     <h2>아이디 찾기</h2>
     <form id="findIdForm">
         <input type="hidden" id="work_div" name="work_div">
@@ -71,7 +108,8 @@
         <button type="button" id="find_id_button" >아이디 찾기</button>
     </form>
 
-</div>
+    </div>
 <script src="/SEOUL_TRAVEL/assets/js/bootstrap.bundle.min.js"></script>
 </body>
+<jsp:include page="/cmn/footer.jsp"></jsp:include>
 </html>

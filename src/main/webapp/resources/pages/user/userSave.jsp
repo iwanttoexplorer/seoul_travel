@@ -167,9 +167,21 @@ document.addEventListener("DOMContentLoaded", function(){
 	
 }); // DOMContentLoaded end
 </script>
+<style>
+	body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; }
+	    .container1 { max-width: 500px; margin: 50px auto; padding: 20px; background: #fff; border: 1px solid #dee2e6; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); text-align: center; }
+	    .container1 h2 { margin-bottom: 10px; }
+	    .container1 form { display: flex; flex-direction: column; }
+	    .container1 label { text-align: left; margin-bottom: 5px; }
+	    .container1 input[type="text"], .container1 input[type="email"], .container1 input[type="password"], .container1 input[type="button"] { margin-bottom: 10px; padding: 10px; font-size: 16px; }
+	    .container1 input[type="button"] { background-color: #007bff; color: white; border: none; cursor: pointer; }
+	    .container1 input[type="button"]:hover { background-color: #0056b3; }
+	    .container1 span { color: red; font-size: 14px; }
+</style>
+<jsp:include page="/cmn/menu.jsp"></jsp:include>
 </head>
 <body>
-	<div class="container">
+	<div class="container1">
     <h2>회원 가입</h2>
     <form action="#" method="post">
       <input type="hidden" id="work_div" name="work_div">
@@ -199,4 +211,5 @@ document.addEventListener("DOMContentLoaded", function(){
   </div>
 <script src="/SEOUL_TRAVEL/assets/js/bootstrap.bundle.min.js"></script>
 </body>
+<jsp:include page="/cmn/footer.jsp"></jsp:include>
 </html>
