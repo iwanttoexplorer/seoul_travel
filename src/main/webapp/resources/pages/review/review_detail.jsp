@@ -1,3 +1,4 @@
+<%@page import="com.pcwk.tvl.user.UserDTO"%>
 <%@page import="com.pcwk.tvl.comment.CommentDTO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -12,6 +13,12 @@
     String message = (String) request.getAttribute("message");
 
     List<CommentDTO> comments = (List<CommentDTO>) request.getAttribute("comments");
+    
+    
+    
+    UserDTO outVO = (UserDTO) session.getAttribute("user");
+    String userId = outVO.getUserId();
+    
 %>
 <!DOCTYPE html>
 <html>
@@ -29,19 +36,24 @@
 		const saveCommentBtn = document.querySelector("#saveComment");
 		const getCommentsBtn = document.querySelector("#getComments");
 		const comments = document.querySelector("#comments");
-		const aboardSeq = document.querySelector("#aboardSeq");
-		const userId = document.querySelector("#userId");
-		const comSeq = document.querySelector("#comSeq");	
+		/* const userId = document.querySelector("#userId"); */
+		const comSeq = document.querySelector("#comSeq");
 		ajaxdoSelectOne();
+		ajaxGetComments(aboardSeq);
 		// 추천 버튼 클릭 시
         $("#likeBtn").click(function() {
             ajaxDoLike();
         });
         ajaxGetLikeCount();
         function ajaxDoLike() {
+        	if(!userId){
+        		alert("로그인 후 추천이 가능합니다");
+        		return
+        	}
             $.ajax({
                 type: "POST",
                 url: "/SEOUL_TRAVEL/review/review.do",
+                dateType:"html",
                 data: {
                     "userId": "<%= userId %>",
                     "aboardSeq": aboardSeq,
@@ -50,11 +62,10 @@
                 },
                 success: function(response) {
                     alert('추천하였습니다.');
-                    ajaxGetLikeCount();
+                    location.reload();
                 },
                 error: function(error) {
                     console.log("Error:", error);
-                    alert("추천하는 중에 오류가 발생했습니다.");
                 }
             });
         }
@@ -62,15 +73,16 @@
             $.ajax({
                 type: "POST",
                 url: "/SEOUL_TRAVEL/review/review.do",
-                dataType: "json",
+                dataType: "html",
                 data: {
+                	"work_div": "doLikeCount",
                     "aboardSeq": aboardSeq,
-                    "work_div": "doLikeCount",
                     "ajax": true
                 },
                 success: function(response) {
                 	console.log("success:", response);
-                    $("#likeCount").text(response.likeCount);
+                	$("#likeCount").text(response);
+                   
                 },
                 error: function(error) {
                     console.log("Error:", error);
@@ -79,15 +91,13 @@
             });
         }
    	 
-		if (saveCommentBtn) {
 	        saveCommentBtn.addEventListener("click", function() {
-	            const userId = document.querySelector("#userId").value;
 	            const commentContent = document.querySelector("#commentContent").value;
 	            ajaxCommentSave(userId, aboardSeq, commentContent);
 	        });
-	    }
+	    
 
-	    ajaxGetComments(aboardSeq);
+	    
 		
 		
 	});//document end
@@ -142,7 +152,7 @@
 	                    updateButton.text("수정");
 	                    updateButton.addClass("btn btn-primary update-comment");
 	                    updateButton.on("click", function() {
-	                        if (reply.userId !== "4kqD945") {
+	                        if (reply.userId !== "<%= userId %>") {
 	                            alert("작성자가 아닙니다.");
 	                            return;
 	                        }
@@ -158,7 +168,7 @@
 	                    deleteButton.text("삭제");
 	                    deleteButton.addClass("btn btn-danger delete-comment");
 	                    deleteButton.on("click", function() {
-	                        if (reply.userId !== "4kqD945") {
+	                        if (reply.userId !== "<%= userId %>") {
 	                            alert("작성자가 아닙니다.");
 	                            return;
 	                        }
@@ -180,7 +190,7 @@
 	}
 
 	function ajaxCommentSave(userId, aboardSeq, content) {
-	    if (isEmpty(content)) {
+		if (isEmpty(content)) {
 	        alert('댓글을 입력하세요.');
 	        return;
 	    }
@@ -192,7 +202,7 @@
 
 	    const data = {
 	        "work_div": "saveComment",
-	        "userId": userId,
+	        "userId": "<%= userId %>",
 	        "aboardSeq": aboardSeq,
 	        "content": content
 	    };
@@ -219,64 +229,60 @@
 	}
 
 	function ajaxUpdateComment(comSeq, newContent, aboardSeq) {
-	    const data = {
-	        "work_div": "updateComment",
-	        "comSeq": comSeq,
-	        "aboardSeq": aboardSeq,
-	        "userId": userId,
-	        "content": newContent,
-	        "ajax": true
-	    };
-
-	    if (!validateData(data)) {
-	        alert("댓글 수정에 실패했습니다.");
-	        return;
-	    }
-
-	    $.ajax({
-	        type: "POST",
-	        url: "/SEOUL_TRAVEL/comment/comment.do",
-	        data: data,
-	        success: function(response) {
-	            alert('수정하였습니다.');
-	            location.reload();
-	        },
-	        error: function(error) {
-	            console.log("Error:", error);
-	            alert("댓글 수정에 실패했습니다.");
-	        }
-	    });
-	}
-
-	function ajaxDeleteComment(comSeq, aboardSeq) {
-	    const data = {
-	        "work_div": "deleteComment",
-	        "comSeq": comSeq,
-	        "userId": userId,
-	        "aboardSeq": aboardSeq,
-	        "ajax": true
-	    };
-
-	    if (!validateData(data)) {
-	        alert("댓글 삭제에 실패했습니다.");
-	        return;
-	    }
-
-	    $.ajax({
-	        type: "POST",
-	        url: "/SEOUL_TRAVEL/comment/comment.do",
-	        dataType: "text",
-	        data: data,
-	        success: function(response) {
-	            alert('삭제하였습니다.');
-	            location.reload();
-	        },
-	        error: function(error) {
-	            console.log("error:", error);
-	            alert("댓글 삭제에 실패했습니다.");
-	        }
-	    });
-	}
+        const data = {
+            "work_div": "updateComment",
+            "comSeq": comSeq,
+            "aboardSeq": aboardSeq,
+            "userId": "<%= userId %>",
+            "content": newContent,
+            "ajax": true
+        };
+        if (!validateData(data)) {
+            alert("댓글 수정에 실패했습니다.");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/SEOUL_TRAVEL/comment/comment.do",
+            data: data,
+            success: function(response) {
+            	
+                alert('수정하였습니다.');
+                location.reload();
+            },
+            error: function(error) {
+                console.log("Error:", error);
+                alert("댓글 수정에 실패했습니다.");
+            }
+        });
+    }
+    function ajaxDeleteComment(comSeq, aboardSeq) {
+        const data = {
+            "work_div": "deleteComment",
+            "comSeq": comSeq,
+            "userId": "<%= userId %>",
+            "aboardSeq": aboardSeq,
+            "ajax": true
+        };
+        if (!validateData(data)) {
+            alert("댓글 삭제에 실패했습니다.");
+            return;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/SEOUL_TRAVEL/comment/comment.do",
+            dataType: "text",
+            data: data,
+            success: function(response) {
+                alert('삭제하였습니다.');
+                location.reload();
+            },
+            error: function(error) {
+                console.log("error:", error);
+                alert("댓글 삭제에 실패했습니다.");
+            }
+        });
+    }
 
 	function validateData(data) {
 	    try {
@@ -330,14 +336,7 @@
 </head>
 <body>
     <header>
-        <div class="logo">SEOUL TRAVEL</div>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="/SEOUL_TRAVEL/home">홈</a></li>
-                <li><a href="/SEOUL_TRAVEL/reviewList">리뷰 목록</a></li>
-                <!-- 다른 메뉴 항목들 추가 -->
-            </ul>
-        </nav>
+        <jsp:include page="/cmn/menu.jsp"></jsp:include>
     </header>
 
    <!-- container -->
@@ -386,10 +385,13 @@
     </div>    
   </form>
   <!--// form end -->
+  	<div>
+		 <button type="button" id="likeBtn" class="btn btn-primary">추천</button>
+		 <span> <span id="likeCount"></span></span>
+    </div>
 
-        <!-- 댓글 시작 -->
+         <!-- 댓글 시작 -->
         <div class="comment-section mt-5">
-            <h2>댓글</h2>
             <%
                 if (message != null) {
             %>
@@ -400,40 +402,21 @@
                 }
             %>
             <div class="comment-form mb-4">
-                <form action="/SEOUL_TRAVEL/comment/comment.do?work_div=saveComment" method="post">
+                <form id="comment_frm" method="post">
                     <div class="form-group">
-                        <label for="commentContent">댓글 내용</label>
+                        <label for="commentContent">댓글</label>
                         <textarea id="commentContent" name="content" class="form-control" rows="3"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-2">댓글 달기</button>
+                    <input type="button" value="댓글 달기" class="btn btn-primary mt-2" id="saveComment">>
                 </form>
+                
             </div>
-
-            <div class="comment-list">
-                <%
-                    if (comments != null && !comments.isEmpty()) {
-                        for (CommentDTO comment : comments) {
-                %>
-                <div class="comment-item mb-3">
-                    <div class="comment-meta">
-                        <span>작성자: <%= comment.getUserId() %></span>
-                        <span>작성일: <%= comment.getRegDt() %></span>
-                    </div>
-                    <div class="comment-content">
-                        <p><%= comment.getContent() %></p>
-                    </div>
-                </div>
-                <%
-                        }
-                    } else {
-                %>
-                <p>댓글이 없습니다. 첫 번째 댓글을 달아보세요!</p>
-                <%
-                    }
-                %>
-            </div>
-        </div>
-        <!-- //댓글 끝 -------------------------------------------->
+	        <!-- 댓글 목록 -->
+	             <ul id="reply-list" class="list-unstyled">
+	                <!-- AJAX를 통해 동적으로 댓글이 추가될 영역 -->
+	            </ul>
+	        </div>
+	        <!-- //댓글 끝 -------------------------------------------->
     <jsp:include page="/cmn/footer.jsp"></jsp:include>
     </div>
     <!-- //리뷰 내용 끝 -->

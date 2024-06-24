@@ -56,11 +56,11 @@ public class CommentMain implements PLog{
 	}
 	public static void main(String[] args) {
 		CommentMain m = new CommentMain();
-		//m.doSave();
+		m.doSave();
 		
 		//m.doUpdate();
 		//m.doDelete();
-		m.doRetrieve();
+		//m.doRetrieve();
 		
 
 	}

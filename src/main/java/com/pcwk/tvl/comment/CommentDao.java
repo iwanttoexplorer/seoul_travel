@@ -78,7 +78,7 @@ public class CommentDao implements WorkDiv<CommentDTO>, PLog{
 		sb.append("    ?,                   \n");
 		sb.append("    ?,                   \n");
 		sb.append("    SYSDATE,             \n");
-		sb.append("    SYSDATE              \n");
+		sb.append("    null              \n");
 		sb.append(")                        \n");
 		log.debug("1.sql:{}",sb.toString());
 		log.debug("2.conn:{}",conn);

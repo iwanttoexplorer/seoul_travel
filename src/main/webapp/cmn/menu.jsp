@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>SEOUL_TRAVEL</title>
-    <script src="/WEB02/assets/js/jquery_3_7_1.js"></script>
+    <script src="/SEOUL_TRAVEL/assets/js/jquery_3_7_1.js"></script>
     <style>
         body {
             margin: 0;
@@ -44,7 +44,7 @@
             font-weight: bold;
             margin: 0;
         }
-        .nav-link {
+        a {
             text-decoration: none;
             color: inherit;
         }
@@ -53,37 +53,74 @@
             color: inherit;
         }
     </style>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  <% if(session.getAttribute("user")!=null){ %>
+	  let logout = document.createTextNode('로그아웃');
+	  let logoutA = document.createElement("a");
+	  let hrefNode = document.createAttribute("href");
+	  let h4 = document.createElement("h4");
+	  
+	  /* hrefNode.value="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp"; */
+	  logoutA.setAttributeNode(hrefNode);
+	  h4.appendChild(logout);
+	  logoutA.appendChild(h4);
+	  
+	  document.querySelector(".login").appendChild(logoutA);
+	  
+	  const sessionBtn = document.querySelector(".login a");
+	  console.log('sessionBtn');
+	  
+	  //이벤트
+	  sessionBtn.addEventListener('click',function(){
+	    console.log('sessionBtn click');
+	    
+	    if(false==confirm('로그아웃 하시겠습니까?')){
+	    	return;
+	    }
+	    
+	    $.ajax({
+            type: "POST", 
+            url:"/SEOUL_TRAVEL/user/login.do",
+            asyn:"true",
+            dataType:"html",
+            data:{
+                "work_div":"logout"
+        },success:function(data){//통신 성공
+            
+            window.location.href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp";
+                
+        },
+        error:function(data){
+                console.log("error:"+data);
+        }
+        });
+	    
+	  });//sessionBtn
+	  
+  <%}else{ %>
+	  let login = document.createTextNode('로그인');
+	  let loginA = document.createElement("a");
+	  let hrefNode = document.createAttribute("href");
+	  let h4 = document.createElement("h4");
+	  
+	  hrefNode.value="/SEOUL_TRAVEL/resources/pages/user/login.jsp";
+	  loginA.setAttributeNode(hrefNode);
+	  h4.appendChild(login);
+	  loginA.appendChild(h4);
+	  
+	  document.querySelector(".login").appendChild(loginA);
+	  
+  <% }%> 
+  
+  
+  
+  
+}); //DOM
+</script>
 </head>
 <body>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-   
-    <ul class="nav">
-      <nav class="navbar bg-body-tertiary">
-	      <div class="container">
-	        <a class="navbar-brand" href="/SEOUL_TRAVEL/resources/pages/main/mainpage.html">
-	          <img src="/SEOUL_TRAVEL/images/logo.png" alt="Bootstrap" width="60" height="40">
-	        </a>
-	      </div>
-      </nav>
-		  <li class="nav-item">
-		    <a class="nav-link active" aria-current="page" href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve"><h4>여행정보</h4></a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" href="/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve2"><h4>맛집 소개</h4></a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" href="#"><h4>로그인</h4></a>
-		  </li>
-  </ul>
-</body>
-</html>
-=======
->>>>>>> 49e3a9af40ee40f7b09eb164ee32c77dbef2ec44
-=======
->>>>>>> refs/remotes/origin/main
     <nav class="navbar">
         <div class="container">
             <a class="navbar-brand" href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp">
@@ -97,20 +134,8 @@
                     <a class="nav-link" href="/SEOUL_TRAVEL/resources/pages/content/restaurant_main.jsp"><h4>맛집</h4></a>
                 </li>
             </ul>
-            <div class="login">
-                <a class="nav-link" href="/SEOUL_TRAVEL/resources/pages/user/login.jsp"><h4>로그인</h4></a>
-            </div>
+            <div class="login"></div>
         </div>
     </nav>
-<<<<<<< HEAD
 
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 1eabe9a989eb8afd8037d2f7e58aba1324c588e8
->>>>>>> 49e3a9af40ee40f7b09eb164ee32c77dbef2ec44
-=======
-</body>
-</html>
->>>>>>> refs/remotes/origin/main
