@@ -59,7 +59,8 @@
                 console.log("success data:"+data);
                 
                 if(data == '성공'){
-                    window.location.href="/SEOUL_TRAVEL/resources/pages/main/mainpage.html";                    
+                	  
+                    window.location.href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp";
                     
                 }else if(data == ''){
                   alert('아이디를 확인하세요.');
@@ -83,7 +84,7 @@
     <div class="logo" onclick="location.href='/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp'">
         <img src="/SEOUL_TRAVEL/images/logo.png" alt="SEOUL TRAVEL" width="130" height="80">
     </div>
-    <a href="/SEOUL_TRAVEL/resources/pages/user/login.jsp" class="signup" style="color: #000000; font-size: 30px;text-decoration: none;margin-right: 20px;">회원가입</a>
+    <a href="/SEOUL_TRAVEL/resources/pages/user/userSave.jsp" class="signup" style="color: #000000; font-size: 30px;text-decoration: none;margin-right: 20px;">회원가입</a>
 </header>
 <div class="container">
     <h2>회원 로그인</h2>
@@ -93,8 +94,8 @@
         <input type="password" id="user_pw" name="user_pw" required placeholder="비밀번호"><br>
         <input type="button" value="로그인" id="login">
     </form>
-    <a href="/SEOUL_TRAVEL/assets/js/findUserId.jsp">아이디 찾기</a>
-    <a href="/SEOUL_TRAVEL/assets/js/findUserPw.jsp">비밀번호 찾기</a>
+    <a href="/SEOUL_TRAVEL/resources/pages/user/findUserId.jsp">아이디 찾기</a>
+    <a href="/SEOUL_TRAVEL/resources/pages/user/findUserPw.jsp">비밀번호 찾기</a>
 </div>
 <script src="/SEOUL_TRAVEL/assets/js/bootstrap.bundle.min.js"></script>
 </body>

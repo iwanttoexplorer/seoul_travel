@@ -44,7 +44,7 @@
             font-weight: bold;
             margin: 0;
         }
-        .nav-link {
+        a {
             text-decoration: none;
             color: inherit;
         }
@@ -53,6 +53,72 @@
             color: inherit;
         }
     </style>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  <% if(session.getAttribute("user")!=null){ %>
+	  let logout = document.createTextNode('로그아웃');
+	  let logoutA = document.createElement("a");
+	  let hrefNode = document.createAttribute("href");
+	  let h4 = document.createElement("h4");
+	  
+	  /* hrefNode.value="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp"; */
+	  logoutA.setAttributeNode(hrefNode);
+	  h4.appendChild(logout);
+	  logoutA.appendChild(h4);
+	  
+	  document.querySelector(".login").appendChild(logoutA);
+	  
+	  const sessionBtn = document.querySelector(".login a");
+	  console.log('sessionBtn');
+	  
+	  //이벤트
+	  sessionBtn.addEventListener('click',function(){
+	    console.log('sessionBtn click');
+	    
+	    if(false==confirm('로그아웃 하시겠습니까?')){
+	    	return;
+	    }
+	    
+	    $.ajax({
+            type: "POST", 
+            url:"/SEOUL_TRAVEL/user/login.do",
+            asyn:"true",
+            dataType:"html",
+            data:{
+                "work_div":"logout"
+        },success:function(data){//통신 성공
+            
+            window.location.href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp";
+                
+        },
+        error:function(data){
+                console.log("error:"+data);
+        }
+        });
+	    
+	  });//sessionBtn
+	  
+  <%}else{ %>
+	  let login = document.createTextNode('로그인');
+	  let loginA = document.createElement("a");
+	  let hrefNode = document.createAttribute("href");
+	  let h4 = document.createElement("h4");
+	  
+	  hrefNode.value="/SEOUL_TRAVEL/resources/pages/user/login.jsp";
+	  loginA.setAttributeNode(hrefNode);
+	  h4.appendChild(login);
+	  loginA.appendChild(h4);
+	  
+	  document.querySelector(".login").appendChild(loginA);
+	  
+  <% }%> 
+  
+  
+  
+  
+}); //DOM
+</script>
 </head>
 <body>
     <nav class="navbar">
@@ -68,9 +134,7 @@
                     <a class="nav-link" href="/SEOUL_TRAVEL/resources/pages/content/restaurant_main.jsp"><h4>맛집</h4></a>
                 </li>
             </ul>
-            <div class="login">
-                <a class="nav-link" href="/SEOUL_TRAVEL/resources/pages/user/login.jsp"><h4>로그인</h4></a>
-            </div>
+            <div class="login"></div>
         </div>
     </nav>
 

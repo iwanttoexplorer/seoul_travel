@@ -23,9 +23,9 @@
     <div class="result">
         <p>당신의 비밀번호: <strong id="usernameDisplay">
         <%
-          UserDTO outVO = (UserDTO)request.getAttribute("outVO");
-          if(outVO != null){
-        	  out.print(outVO.getUserPw());
+          String resultPw = (String)request.getAttribute("outVO");
+          if(resultPw != null){
+        	  out.print(resultPw);
           }else{
         	  out.print("없는 아이디 입니다.");
           }
@@ -33,9 +33,9 @@
         </strong></p>
     </div>
     
-    <form action="/SEOUL_TRAVEL/assets/js/login.jsp">
+    <form action="/SEOUL_TRAVEL/resources/pages/user/login.jsp">
 	    <div class="back-button">
-	        <input type="submit" value="돌아가기" src="/SEOUL_TRAVEL/assets/js/login.jsp">
+	        <input type="submit" value="돌아가기" >
 	    </div>
     </form>
 <script src="/SEOUL_TRAVEL/assets/js/bootstrap.bundle.min.js"></script>
