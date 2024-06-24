@@ -31,11 +31,17 @@
 document.addEventListener("DOMContentLoaded", function(){
   console.log('DOMContentLoaded---');
   
+  
+  const workDiv = document.querySelector("#work_div");//작업구분
+  const imgLink = document.querySelector("#imgLink");  //imgLink
+  const title = document.querySelector("#title");      //title
+  const addr = document.querySelector("#addr");        //addr
+  
   //목록 버튼
   const moveToListBtn = document.querySelector("#moveToList");
-  const workDiv = document.querySelector("#work_div");//작업구분
-  const title = document.querySelector("#title");//title
-  const contents = document.querySelector("#contents");//contents
+  
+  //리뷰로 가기 버튼
+  const moveToReviewBtn = document.querySelector("#moveToReview");
   
   //이벤트 핸들러 등록
   moveToListBtn.addEventListener("click", function(event){
@@ -43,12 +49,25 @@ document.addEventListener("DOMContentLoaded", function(){
     moveToList();
   });
   
+  //이벤트 핸들러 등록
+  moveToReviewBtn.addEventListener("click", function(event){
+    console.log('moveToReviewBtn click event'+event);
+    moveToReview();
+  });
+  
   //--------------------------------------------------------
+  
   function moveToList(){
     console.log('moveToList()');
     alert("게시 목록으로 이동 합니다.");
     window.location.href= "/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve2";
   }
+  
+  function moveToReview(){
+	   console.log('moveToReview()');
+	   alert("리뷰 쓰기로 이동 합니다.");
+	   window.location.href= "/SEOUL_TRAVEL/resources/pages/review/review_write.jsp";
+	 }
   
   initMap();
   
@@ -104,7 +123,7 @@ function initMap() {
   <!-- menu end --------------------------------------------------------------->
   <!-- 제목 -->
   <div class="page-header  mb-4">
-    <h2>맛집 정보</h2>
+    <h4>맛집 정보</h4>
   </div>
   <!--// 제목 end ------------------------------------------------------------->
   
@@ -113,6 +132,7 @@ function initMap() {
   <!-- 버튼 -->
   <div class="mb-2 d-grid gap-2 d-md-flex justify-content-md-end">
       <input type="button" value="목록" class="btn btn-primary" id="moveToList">
+      <input type="button" value="리뷰" class="btn btn-primary" id="moveToReview">
   </div>
   <!--// 버튼 ----------------------------------------------------------------->
   
@@ -138,7 +158,7 @@ function initMap() {
         <div class="col-sm-10">
           <input type="text" disabled="disabled" class="form-control" name="addr" id="addr" required="required" value="<c:out value='${outVO.addr}' escapeXml='true' />">        
         </div>      
-    </div>  
+    </div> 
     
     <div class="row mb-3">
         <label for="addr" class="col-sm-2 col-form-label">지도</label>

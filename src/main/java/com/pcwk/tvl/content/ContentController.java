@@ -74,7 +74,7 @@ public class ContentController implements ControllerV, PLog{
 	
 	public JView doSelectOne2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.debug("-----------------");
-		log.debug("doSelectOne()");
+		log.debug("doSelectOne2()");
 		log.debug("-----------------");
 		
 		// JSP viewName저장
@@ -106,6 +106,42 @@ public class ContentController implements ControllerV, PLog{
 		request.setAttribute("outVO", outVO);
 		
 		return viewName = new JView("/resources/pages/content/restaurant_sel.jsp");
+	}
+	
+	public JView moveToReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		log.debug("-----------------");
+		log.debug("moveToReview()");
+		log.debug("-----------------");
+		
+		// JSP viewName저장
+		JView viewName = null;
+		
+		ContentDTO inVO = new ContentDTO();
+		String contentId = StringUtil.nvl(request.getParameter("contentId"), "");
+		log.debug("contentId:" + contentId);
+		
+		inVO.setContentId(contentId);
+		log.debug("inVO:" + inVO);
+		
+		DTO dto = service.doSelectOne(inVO);
+		
+		MessageVO message = new MessageVO();
+		
+		if( dto instanceof ContentDTO) {
+			ContentDTO outVO = (ContentDTO) dto;
+			log.debug("성공 outVO :{}",  outVO);
+			
+		}else {
+			message = (MessageVO) dto;
+			log.debug("실패 message :{}",  message);
+		}
+		
+		ContentDTO outVO = this.service.doSelectOne(inVO);
+		log.debug("outVO:" + outVO);
+		
+		request.setAttribute("outVO", outVO);
+		
+		return viewName = new JView("/SEOUL_TRAVEL/resources/pages/review/review_write.jsp");
 	}
 
 	public JView doRetrieve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -340,6 +376,9 @@ public class ContentController implements ControllerV, PLog{
 			break;
 		case "doSelectOne2":
 			viewName = doSelectOne2(request, response);
+			break;
+		case "moveToReview":
+			viewName = moveToReview(request, response);
 			break;
 		default:
 			log.debug("ContentController을 확인 하세요. workDiv:{}" + workDiv);

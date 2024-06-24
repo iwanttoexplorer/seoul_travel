@@ -27,7 +27,6 @@
            object-fit: cover;
     }
     
-    
 </style>
 
 <title>SEOUL_TRAVEL</title>
@@ -191,7 +190,7 @@ function doSelectOne(seqValue){
           <input type="hidden" name="page_no"   id="page_no"    placeholder="페이지 번호">        
           <input type="hidden" name="page_size" id="page_size"  placeholder="페이지 사이즈">        
           <input type="hidden" name="contentId" id="contentId"  placeholder="콘텐츠 아이디">
-          <input type="button" align="right" value="조회" class="btn btn-primary" id="doRetrieve" >
+          <input type=button   value="조회" class="btn btn-primary" id="doRetrieve" >
         </div>
 
         <div class="col-sm-2">
@@ -236,8 +235,7 @@ function doSelectOne(seqValue){
           </select>  
         </div>
         <div class="col-sm-2">
-          <input type="search"  class="form-control" name="search_word" id="search_word" placeholder="검색어" 
-                 >
+          <input type="search"  class="form-control" name="search_word" id="search_word" placeholder="검색어" >
         </div>
           
     </form>

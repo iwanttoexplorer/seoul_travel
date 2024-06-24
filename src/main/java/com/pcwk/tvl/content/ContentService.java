@@ -13,6 +13,7 @@ public class ContentService  implements PLog {
 		dao = new ContentDao();
 	}
 	
+	
 	public ContentDTO doSelectOne(ContentDTO search) {
 		ContentDTO outVO = new ContentDTO();
 		
@@ -20,6 +21,8 @@ public class ContentService  implements PLog {
 		
 		return outVO;
 	}
+	
+	
 	
 	/**
 	 * 관광지 목록 조회

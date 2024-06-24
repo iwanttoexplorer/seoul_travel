@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file = "/cmn/common.jsp" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="CP" value="${pageContext.request.contextPath }" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -55,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function(){
     <form id="reviewForm">
         <div class="mb-3">
             <label for="contentid" class="form-label">Content ID</label>
-            <input type="text" class="form-control" id="contentid" name="contentid">
+             <input disabled="disabled" type="text" class="form-control" name="contentid" id="contentid"  value="${outVO.getContentId}">
         </div>
         <div class="mb-3">
             <label for="user_id" class="form-label">User ID</label>

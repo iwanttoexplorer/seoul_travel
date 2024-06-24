@@ -14,7 +14,6 @@
     ContentsSearchDTO searchCon = (ContentsSearchDTO)request.getAttribute("vo");
     List<ContentsSearchDTO> pageCode = (List<ContentsSearchDTO>)request.getAttribute("page");
     List<ContentsSearchDTO> searchCode = (List<ContentsSearchDTO>)request.getAttribute("boardSearchList");
-    
  %>
 <!DOCTYPE html>
 <html>
@@ -40,10 +39,23 @@ document.addEventListener("DOMContentLoaded", function(){
   const doRetrieve2Btn = document.querySelector("#doRetrieve2");
   console.log('doRetrieve2Btn');
   
+  //엔터 눌렀을때 이벤트 발생
+  const input = document.querySelector("#search_word");
+  
   //table 자식모두 tbody선택
   const rows = document.querySelectorAll("#boardList tbody tr");
 
   const buttons = document.querySelectorAll(".btn-outline-success") ; 
+  
+  //이벤트 헨들러
+  input.addEventListener("keydown", function(event){
+    console.log("keydown ",event.key, event.keyCode);
+    
+    if(event.keyCode == 13){
+      console.log(`input.value:${input.value}`);
+    }
+    
+  });
   
   //이벤트 핸들러
   doRetrieve2Btn.addEventListener('click',function(){
@@ -56,10 +68,10 @@ document.addEventListener("DOMContentLoaded", function(){
     frm.work_div.value = "doRetrieve2";
     
     // 서버로 보낼 url 설정
-      frm.action = "/SEOUL_TRAVEL/content/content.do";
+    frm.action = "/SEOUL_TRAVEL/content/content.do";
       
-      //서버로 폼 전송
-      frm.submit();
+    //서버로 폼 전송
+    frm.submit();
     
   });//doRetrieve2Btn end -------
   
@@ -97,7 +109,6 @@ document.addEventListener("DOMContentLoaded", function(){
       });
       
     });   
-  
   
 }); //DOMContentLoaded
 
@@ -169,7 +180,7 @@ function pageRetrieve(url, pageNo){
           <input type="hidden" name="page_no"   id="page_no"  placeholder="페이지 번호">        
           <input type="hidden" name="page_size"   id="page_size"  placeholder="페이지 사이즈">        
           <input type="hidden" name="contentId" id="contentId"  placeholder="콘텐츠 아이디">
-          <input type="button" align="right" value="조회" class="btn btn-primary" id="doRetrieve2" >
+          <input type="button" value="조회" class="btn btn-primary" id="doRetrieve2">
         </div>
 
         <div class="col-sm-2">
@@ -214,8 +225,7 @@ function pageRetrieve(url, pageNo){
           </select>  
         </div>
         <div class="col-sm-2">
-          <input type="search"  class="form-control" name="search_word" id="search_word" placeholder="검색어" 
-                 >
+          <input type="search"  class="form-control" name="search_word" id="search_word" placeholder="검색어">
         </div>
           
     </form>
@@ -241,7 +251,7 @@ function pageRetrieve(url, pageNo){
          }//--if 
         %> 
       </tbody>
-  
+      
     </table>
     <!-- paging -->
     <nav aria-label="Page navigation example">

@@ -32,6 +32,9 @@ document.addEventListener("DOMContentLoaded", function(){
   //목록 버튼
   const moveToListBtn = document.querySelector("#moveToList");
   
+  //리뷰로 가기 버튼
+  const moveToReviewBtn = document.querySelector("#moveToReview");
+  
   const workDiv = document.querySelector("#work_div"); //작업구분
   const imgLink = document.querySelector("#imgLink");  //imgLink
   const title = document.querySelector("#title");      //title
@@ -43,11 +46,45 @@ document.addEventListener("DOMContentLoaded", function(){
     moveToList();
   });
   
+  //이벤트 핸들러 등록
+  moveToReviewBtn.addEventListener("click", function(event){
+    console.log('moveToReviewBtn click event'+event);
+    moveToReview();
+  });
+  
   //--------------------------------------------------------
   function moveToList(){
     console.log('moveToList()');
     alert("게시 목록으로 이동 합니다.");
     window.location.href= "/SEOUL_TRAVEL/content/content.do?work_div=doRetrieve";
+  }
+  
+  function moveToReview(){
+    console.log('moveToReview()');
+    alert("리뷰 쓰기로 이동 합니다.");
+    console.log(${outVO.contentId});
+   
+    $.ajax({
+        type: "POST", 
+        url:"/SEOUL_TRAVEL/content/content.do",
+        dataType:"json",
+        data:{
+            "contentId": document.querySelector("#contentId").value
+        },
+        success:function(response){
+            if(response.success){
+                alert("리뷰 쓰기로 이동 되었습니다.");
+                window.location.href= "/SEOUL_TRAVEL/resources/pages/review/review_write.jsp";
+            } else {
+                alert("리뷰 쓰기로 이동 실패.");
+            }
+        },
+        error:function(){
+            alert("오류가 발생했습니다.");
+        }
+    });
+    
+    //window.location.href= "/SEOUL_TRAVEL/resources/pages/review/review_write.jsp";
   }
   
   initMap();
@@ -103,7 +140,7 @@ function initMap() {
   <!-- menu end --------------------------------------------------------------->
   <!-- 제목 -->
   <div class="page-header  mb-4">
-    <h2>여행지 정보</h2>
+    <h4>여행지 정보</h4>
   </div>
   <!--// 제목 end ------------------------------------------------------------->
   
@@ -112,6 +149,7 @@ function initMap() {
   <!-- 버튼 -->
   <div class="mb-2 d-grid gap-2 d-md-flex justify-content-md-end">
       <input type="button" value="목록" class="btn btn-primary" id="moveToList">
+      <input type="button" value="리뷰" class="btn btn-primary" id="moveToReview">
   </div>
   <!--// 버튼 ----------------------------------------------------------------->
   
@@ -132,6 +170,7 @@ function initMap() {
         </div>      
     </div>
     
+    
     <div class="row mb-3">
         <label for="addr" class="col-sm-2 col-form-label">주소</label>
         <div class="col-sm-10">
@@ -143,6 +182,13 @@ function initMap() {
         <label for="addr" class="col-sm-2 col-form-label">지도</label>
         <div class="col-sm-10">
             <div id="map" style="width:100%;height:350px;"></div>
+        </div>      
+    </div>
+    
+    <div class="row mb-3" style="display: none;">
+        <label for="contentId" class="col-sm-2 col-form-label">ContentId</label>
+        <div class="col-sm-10">
+          <input type="text" disabled="disabled" class="form-control" name="contentId" id="contentId" required="required" value="<c:out value='${outVO.contentId}' escapeXml='true' />">        
         </div>      
     </div>
     
