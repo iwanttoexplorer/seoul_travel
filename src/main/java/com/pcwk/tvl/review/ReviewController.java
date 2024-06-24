@@ -94,18 +94,28 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
         int pageSize = Integer.parseInt(request.getParameter("pageSize"));
 
-        ReviewDao reviewDAO = new ReviewDao();
         try {
             // 페이징된 리뷰 목록과 전체 리뷰 수 가져오기
-            List<ReviewDTO> list = reviewDAO.getReviews(pageNumber, pageSize);
-            int totalReviews = reviewDAO.getTotalReviews();
-
-            // 기존 코드 유지
-            int i = 0;
-            for (ReviewDTO vo : list) {
-                log.debug("i: {}, vo: {}", i++, vo);
+            List<ReviewDTO> list = reviewService.getReviews(pageNumber, pageSize);
+            int totalReviews = reviewService.getTotalReviews();
+            for (ReviewDTO review : list) {
+                int aboardSeq = review.getAboardSeq(); // 리뷰의 aboardSeq 가져오기
+                log.debug("aboardSeq: "+aboardSeq);
+                LikeDTO likeDTO = new LikeDTO();
+                likeDTO.setAboardSeq(aboardSeq);
+                
+                int likeCount = reviewService.doLike(likeDTO);
+                log.debug("likeCount: "+likeCount);
+                // ReviewDTO에 likeCount 설정
+                review.setLikeCount(likeCount);
+                log.debug("review: "+review);
+                
             }
-            log.debug("list: " + list);
+            
+            
+            
+            
+            
 
             // JSON 응답 준비
             Map<String, Object> result = new HashMap<>();

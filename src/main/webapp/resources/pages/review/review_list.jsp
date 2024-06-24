@@ -99,12 +99,15 @@
                         var reviewDate = $("<td></td>");
                         reviewDate.addClass("review-regDt");
                         reviewDate.text(review.regDt);
+                        var reviewLikes = $("<td></td>");
+                        reviewLikes.addClass("review-likes");
+                        reviewLikes.text(review.likeCount || 0); // 추천 수 표시
 
                         reviewRow.append(reviewSeq);
                         reviewRow.append(reviewTitle);
                         reviewRow.append(reviewWriter);
                         reviewRow.append(reviewDate);
-
+                        reviewRow.append(reviewLikes); // 추천 수 추가
 
 
                         reviewList.append(reviewRow);
@@ -134,6 +137,26 @@
             }
         });
     }
+    function ajaxGetLikeCount(aboardSeq) {
+        return $.ajax({
+            type: "POST",
+            url: "/SEOUL_TRAVEL/review/review.do",
+            dataType: "html",
+            data: {
+                "work_div": "doLikeCount",
+                "aboardSeq": aboardSeq,
+                "ajax": true
+            },
+            success: function(response) {
+                console.log("success:", response);
+                return response;
+            },
+            error: function(error) {
+                console.log("Error:", error);
+                return 0;
+            }
+        });
+    }
 </script>
 </head>
 <body>
@@ -156,6 +179,7 @@
                         <th>제목</th>
                         <th>작성자</th>
                         <th>작성일</th>
+                        <th>추천수</th>
                     </tr>
                 </thead>
                 <tbody>
