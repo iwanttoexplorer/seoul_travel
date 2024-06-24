@@ -29,7 +29,7 @@
 		const deleteCommentBtn = document.querySelector("#deleteComment");
 		const updateCommentBtn = document.querySelector("#updateComment");
 		const getCommentsBtn = document.querySelector("#getComments");
-		const content = document.querySelector("#content");
+		const comments = document.querySelector("#comments");
 		const aboardSeq = document.querySelector("#aboardSeq");
 		const userId = document.querySelector("#userId");
 		const comSeq = document.querySelector("#comSeq");
@@ -38,9 +38,9 @@
 			let frm = document.getElementById("comment_frm");
 			frm.work_div.value = "saveComment";
 			frm.aboard_Seq.value = "aboardSeq";
-			frm.content.value = "content";
-			console.log("frm.user_id.value: "+frm.user_id.value);
-			console.log("frm.reg_dt.value: "+frm.reg_dt.value);
+			frm.comments.value = "comments";
+			console.log("frm.userId.value: "+frm.userId.value);
+			console.log("frm.regDt.value: "+frm.regDt.value);
 			frm.action = "/SEOUL_TRAVEL/comment/comment.do";
 			frm.submit();
 		});
@@ -130,18 +130,52 @@
         </nav>
     </header>
 
-    <!-- 리뷰 내용 시작 -->
-    <div class="container mt-5">
-        <div class="review-header">
-            <h1><%= reviewTitle %></h1>
-            <div class="review-meta">
-                <span>작성자: <%= reviewAuthor %></span>
-                <span>작성일: <%= reviewDate %></span>
-            </div>
-            <div class="review-content mt-4">
-                <p><%= reviewContent %></p>
-            </div>
-        </div>
+   <!-- container -->
+<div class="container">
+  
+  <!-- 제목 -->
+  <div class="page-header  mb-4">
+    <h2>게시-관리</h2>
+  </div>
+  <!--// 제목 end ------------------------------------------------------------->
+  <!-- 버튼 -->
+  <div class="mb-2 d-grid gap-2 d-md-flex justify-content-md-end">
+      <input type="button" value="목록" class="btn btn-primary" onclick="location.href='review_list.jsp'">
+      <input type="button" value="수정" class="btn btn-primary" onclick="location.href='review_write.jsp?userId=${review.userId}'">
+      <input type="button" value="삭제" class="btn btn-primary" onclick="deleteReview(${review.userId})">
+  </div>
+  <!--// 버튼 ----------------------------------------------------------------->
+  
+  <!-- form -->
+  <form action="#" class="form-horizontal">
+
+    <div class="row mb-3">
+        <label for="userId" class="col-sm-2 col-form-label">등록자</label>
+        <div class="col-sm-10">
+          <input type="text" disabled="disabled" class="form-control" name="userId" id="userId" value="${review.getUserId}">        
+        </div>      
+    </div>    
+    <div class="row mb-3">
+        <label for="regDt" class="col-sm-2 col-form-label">등록일</label>
+        <div class="col-sm-10">
+          <input type="text" disabled="disabled" class="form-control" name="regDt" id="regDt" value="${review.getRegDt}">        
+        </div>      
+    </div>        
+   
+    <div class="row mb-3">
+        <label for="title" class="col-sm-2 col-form-label">제목</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="title" id="title" maxlength="75" required="required" value="${review.getTitle}">
+        </div>      
+    </div>     
+    <div class="row mb-3">
+        <label for="comments" class="col-sm-2 col-form-label">내용</label>
+        <div class="col-sm-10">    
+         <textarea style="height: 200px" class="form-control" id="comments" name="comments">${review.getComments}</textarea>
+        </div> 
+    </div>    
+  </form>
+  <!--// form end -->
 
         <!-- 댓글 시작 -->
         <div class="comment-section mt-5">

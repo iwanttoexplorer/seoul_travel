@@ -28,31 +28,12 @@ public class UserController extends HttpServlet implements ControllerV,PLog{
 	
     public UserController() {
     	log.debug("-----------------");
-		log.debug("UserController()");
-		log.debug("-----------------");
-		
-		service = new UserService();
+	log.debug("UserController()");
+	log.debug("-----------------");
+	
+	service = new UserService();
        
     }
-    
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doWork(request, response);
-        /*
-        if (jview != null) {
-            request.getRequestDispatcher(jview.getViewName()).forward(request, response);
-        } else {
-            log.debug("jview is null");
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        }
-        */
-    }
-    
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doWork(request, response);
-    }
-
     
     public JView doRetrieve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("-----------------");
@@ -62,7 +43,7 @@ public class UserController extends HttpServlet implements ControllerV,PLog{
 		/*
 		 * // JSP viewName저장 JView viewName = null;
 		 */
-
+       
         SearchDTO inVO = new SearchDTO();
         
         String pageNo = StringUtil.nvl(request.getParameter("page_no"), "1");
@@ -98,7 +79,7 @@ public class UserController extends HttpServlet implements ControllerV,PLog{
         }
 
         // UI 데이터 전달
-        //request.setAttribute("list", list);
+        request.setAttribute("userList", list);
 
         
         int totalCnt = 0; // 총글수
@@ -135,11 +116,10 @@ public class UserController extends HttpServlet implements ControllerV,PLog{
 		
 		switch (workDiv) {
 		case "doRetrieve":
-			viewName = doRetrieve(request, response);
+			viewName = doRetrieve(request,response);
 			break;
 		default:
 			log.debug("작업구분을 확인 하세요. workDiv : {} ", workDiv);
-			break;
 		}
 		
 		return viewName;

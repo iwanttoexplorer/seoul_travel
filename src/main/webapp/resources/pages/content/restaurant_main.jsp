@@ -11,9 +11,7 @@
 <%@ include file="/cmn/common.jsp" %>    
 <%
     List<ContentDTO> list = (List<ContentDTO>)request.getAttribute("list");
-    
     ContentsSearchDTO searchCon = (ContentsSearchDTO)request.getAttribute("vo");
-    
     List<ContentsSearchDTO> pageCode = (List<ContentsSearchDTO>)request.getAttribute("page");
     List<ContentsSearchDTO> searchCode = (List<ContentsSearchDTO>)request.getAttribute("boardSearchList");
     
@@ -28,8 +26,6 @@
            height: 200px; 
            object-fit: cover;
     }
-    
-    
 </style>
 
 <title>SEOUL_TRAVEL</title>
@@ -38,12 +34,11 @@
 <script src="/SEOUL_TRAVEL/assets/js/jquery_3_7_1.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
+  console.log('DOMContentLoaded');
+  
   //조회 버튼 
-  const doRetrieveBtn = document.querySelector("#doRetrieve");
-  
-  //html객체를 자바스크리트에서 생성
-  const searchWord = document.querySelector("#search_word");
-  
+  const doRetrieve2Btn = document.querySelector("#doRetrieve2");
+  console.log('doRetrieve2Btn');
   
   //table 자식모두 tbody선택
   const rows = document.querySelectorAll("#boardList tbody tr");
@@ -51,6 +46,23 @@ document.addEventListener("DOMContentLoaded", function(){
   const buttons = document.querySelectorAll(".btn-outline-success") ; 
   
   //이벤트 핸들러
+  doRetrieve2Btn.addEventListener('click',function(){
+    console.log('doRetrieve2Btn click');
+  // 폼 객체 생성
+    const frm = document.querySelector('#board_frm');
+    console.log(frm);
+    
+    // 폼 데이터 설정   //doRetrieve2
+    frm.work_div.value = "doRetrieve2";
+    
+    // 서버로 보낼 url 설정
+      frm.action = "/SEOUL_TRAVEL/content/content.do";
+      
+      //서버로 폼 전송
+      frm.submit();
+    
+  });//doRetrieve2Btn end -------
+  
   buttons.forEach(function(button){
     button.addEventListener('click',function(){
       let hiddenInfo = this.getAttribute('data-hidden-info');
@@ -59,35 +71,35 @@ document.addEventListener("DOMContentLoaded", function(){
     });
     
   }); 
-
-    rows.forEach(function(row){
-        //double click
-        row.addEventListener('dblclick',function(){
-          console.log('row click');
-          //this(tr) 자식 (td: 마지막 위치)
-          let seqValue = this.querySelector('td:last-child').textContent.trim();
-          console.log('seqValue:'+seqValue);
-          
-          doSelectOne(seqValue);    
-        });
+  
+  //이벤트 헨들러(더블 클릭시 이동)
+  rows.forEach(function(row){
+      //double click
+      row.addEventListener('dblclick',function(){
+        console.log('row click');
+        //this(tr) 자식 (td: 마지막 위치)
+        let contentIdValue = this.querySelector('td:last-child').textContent.trim();
+        console.log('contentIdValue:'+contentIdValue);
         
-      });   
+        //폼 요소 선택
+        let frm = document.getElementById("board_frm");
+        
+        //폼 데이터 설정
+        frm.work_div.value = "doSelectOne2";
+        
+        //contentId
+        frm.contentId.value = contentIdValue;
+        frm.action = "<%=cPath%>" + "/content/content.do";
+        
+        // 폼 제출
+        frm.submit();
+        
+      });
+      
+    });   
   
   
-  doRetrieveBtn.addEventListener("click", function(event){
-    console.log('doRetrieveBtn click');
-    doRetrieve();
-  }); 
-  
-  searchWord.addEventListener("keydown", function(event){
-    console.log('keydown');
-    
-    if(event.keyCode === 13){
-      doRetrieve();
-    }
-  }); 
-  
-});
+}); //DOMContentLoaded
 
 //페이징 조회
 function pageRetrieve(url, pageNo){
@@ -96,7 +108,7 @@ function pageRetrieve(url, pageNo){
     
       // 폼 요소 선택
       let frm = document.getElementById("board_frm");
-      frm.work_div.value = "doRetrieve";
+      frm.work_div.value = "doRetrieve2";
       
       // 폼 데이터 설정
       frm.page_no.value = pageNo;
@@ -110,38 +122,20 @@ function pageRetrieve(url, pageNo){
 } 
 
 
-function doSelectOne(seqValue){
-  
-    // 폼 요소 선택
-    let frm = document.getElementById("board_frm");
-    // 폼 데이터 설정
-    frm.work_div.value = "doSelectOne";  
-    
-    //seq
-    frm.seq.value = seqValue;
-    frm.action = "<%=cPath%>" + "/content/content.do";
-    
-    // 폼 제출
-    frm.submit();   
-}
-
- function doRetrieve() {
-    console.log("doRetrieve()");
+ function doRetrieve2() {
+    console.log("doRetrieve2()");
     
     // 폼 요소 선택
     let frm = document.getElementById("board_frm");
     
-    //조건문 (if (frm.category_word.value = "전체") work_div = '10'
-    
-    
     // 폼 데이터 설정
-    frm.work_div.value = "doRetrieve";
+    frm.work_div.value = "doRetrieve2";
     frm.page_no.value = "1";
     frm.page_size.value = "10";
     
     // 각 입력 요소 값 출력
     /* console.log("frm.search_div.value: " + frm.search_div.value); */
-    console.log("frm.search_word.value: " + frm.search_word.value);
+    /* console.log("frm.search_word.value: " + frm.search_word.value); */
     console.log("frm.page_size.value: " + frm.page_size.value);
     
     // 서버로 보낼 액션 설정
@@ -174,19 +168,19 @@ function doSelectOne(seqValue){
           <input type="hidden" name="work_div"  id="work_div" placeholder="작업구분">
           <input type="hidden" name="page_no"   id="page_no"  placeholder="페이지 번호">        
           <input type="hidden" name="page_size"   id="page_size"  placeholder="페이지 사이즈">        
-          <input type="hidden" name="seq"       id="seq"      placeholder="순번">
-          <input type="button" align="right" value="조회" class="btn btn-primary" id="doRetrieve" >
+          <input type="hidden" name="contentId" id="contentId"  placeholder="콘텐츠 아이디">
+          <input type="button" align="right" value="조회" class="btn btn-primary" id="doRetrieve2" >
         </div>
 
         <div class="col-sm-2">
           <select name="category_word" id="category_word"  class="form-control">
             <option value="">전체</option>
-            <option value="자연관광지">자연관광지</option>
-            <option value="역사관광지">역사관광지</option>
-            <option value="휴양관광지">휴양관광지</option>
-            <option value="체험관광지">체험관광지</option>
-            <option value="산업관광지">산업관광지</option>
-            <option value="건축/조형물">건축/조형물</option>
+            <option value="한식">한식</option>
+            <option value="서양식">서양식</option>
+            <option value="일식">일식</option>
+            <option value="중식">중식</option>
+            <option value="카페">카페</option>
+            <option value="이색음식점">이색음식점</option>
           </select>  
         </div>
         <div class="col-sm-2">
@@ -237,11 +231,10 @@ function doSelectOne(seqValue){
          
          %>   
         <tr>
-          <td><%=vo.getCategory() %></td>
-          <td><%=vo.getGucode() %></td>
-          <td class="text-center"><%=vo.getImgLink() %></td>
+          <!-- <td class="text-center"><%=vo.getImgLink() %></td> -->
           <td><%=vo.getTitle() %></td>
           <td><%=vo.getAddr() %></td>
+          <td style="display: none;"><%=vo.getContentId() %></td>
         </tr>     
         <%  
             }//for

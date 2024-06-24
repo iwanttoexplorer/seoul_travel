@@ -56,6 +56,7 @@
 </head>
 <body>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
    
@@ -81,6 +82,8 @@
 </html>
 =======
 >>>>>>> 49e3a9af40ee40f7b09eb164ee32c77dbef2ec44
+=======
+>>>>>>> refs/remotes/origin/main
     <nav class="navbar">
         <div class="container">
             <a class="navbar-brand" href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp">
@@ -99,6 +102,7 @@
             </div>
         </div>
     </nav>
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 </html>
@@ -106,3 +110,7 @@
 </html>
 >>>>>>> 1eabe9a989eb8afd8037d2f7e58aba1324c588e8
 >>>>>>> 49e3a9af40ee40f7b09eb164ee32c77dbef2ec44
+=======
+</body>
+</html>
+>>>>>>> refs/remotes/origin/main

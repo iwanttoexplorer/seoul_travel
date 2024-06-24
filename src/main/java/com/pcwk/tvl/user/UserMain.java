@@ -80,13 +80,30 @@ public class UserMain implements PLog {
 		}
 	}
 	
+	public void userDTO() {
+            log.debug("doRetrieve()");
+	    SearchDTO searchVO = new SearchDTO();
+	    searchVO.setPageNo(1);
+	    // 모든 데이터를 가져오기 위해 매우 큰 값을 설정
+	    searchVO.setPageSize(Integer.MAX_VALUE);
+	    // 검색 조건 비활성화
+	    searchVO.setSearchDiv("");
+	    searchVO.setSearchWord("");
+		List<UserDTO> list = dao.doRetrieve(searchVO);
+		int i = 0;
+		for(UserDTO vo : list) {
+			log.debug("i:{}, vo: {}",++i,vo);
+		}
+	}
+	
 	public static void main(String[] args) {
 		UserMain m = new UserMain();
-		m.doSave();
+///		m.doSave();
 //		m.doDelete();
 //		m.doUpdate();
 //		m.doSelectOne();
 //		m.doRetrieve();
+//		m.userDTO();
 	}
 
 }

@@ -93,8 +93,8 @@
         <input type="password" id="user_pw" name="user_pw" required placeholder="비밀번호"><br>
         <input type="button" value="로그인" id="login">
     </form>
-    <a href="/SEOUL_TRAVEL/assets/js/findUserId.jsp">아이디 찾기</a>
-    <a href="/SEOUL_TRAVEL/assets/js/findUserPw.jsp">비밀번호 찾기</a>
+    <a href="/SEOUL_TRAVEL/resources/pages/user/findUserId.jsp">아이디 찾기</a>
+    <a href="/SEOUL_TRAVEL/resources/pages/user/findUserPw.jsp">비밀번호 찾기</a>
 </div>
 <script src="/SEOUL_TRAVEL/assets/js/bootstrap.bundle.min.js"></script>
 </body>

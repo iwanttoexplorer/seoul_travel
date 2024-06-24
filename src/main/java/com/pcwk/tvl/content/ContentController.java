@@ -41,6 +41,9 @@ public class ContentController implements ControllerV, PLog{
 		log.debug("doSelectOne()");
 		log.debug("-----------------");
 		
+		// JSP viewName저장
+		JView viewName = null;
+		
 		ContentDTO inVO = new ContentDTO();
 		String contentId = StringUtil.nvl(request.getParameter("contentId"), "");
 		log.debug("contentId:" + contentId);
@@ -61,7 +64,48 @@ public class ContentController implements ControllerV, PLog{
 			log.debug("실패 message :{}",  message);
 		}
 		
-		return null;
+		ContentDTO outVO = this.service.doSelectOne(inVO);
+		log.debug("outVO:" + outVO);
+		
+		request.setAttribute("outVO", outVO);
+		
+		return viewName = new JView("/resources/pages/content/travel_sel.jsp");
+	}
+	
+	public JView doSelectOne2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		log.debug("-----------------");
+		log.debug("doSelectOne()");
+		log.debug("-----------------");
+		
+		// JSP viewName저장
+		JView viewName = null;
+		
+		ContentDTO inVO = new ContentDTO();
+		String contentId = StringUtil.nvl(request.getParameter("contentId"), "");
+		log.debug("contentId:" + contentId);
+		
+		inVO.setContentId(contentId);
+		log.debug("inVO:" + inVO);
+		
+		DTO dto = service.doSelectOne(inVO);
+		
+		MessageVO message = new MessageVO();
+		
+		if( dto instanceof ContentDTO) {
+			ContentDTO outVO = (ContentDTO) dto;
+			log.debug("성공 outVO :{}",  outVO);
+			
+		}else {
+			message = (MessageVO) dto;
+			log.debug("실패 message :{}",  message);
+		}
+		
+		ContentDTO outVO = this.service.doSelectOne(inVO);
+		log.debug("outVO:" + outVO);
+		
+		request.setAttribute("outVO", outVO);
+		
+		return viewName = new JView("/resources/pages/content/restaurant_sel.jsp");
 	}
 
 	public JView doRetrieve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -82,7 +126,6 @@ public class ContentController implements ControllerV, PLog{
 		String pageSize = StringUtil.nvl(request.getParameter("page_size"), "10");
 
 		
-		String searchDiv = StringUtil.nvl(request.getParameter("search_div"), "");
 		String categoryWord = StringUtil.nvl(request.getParameter("category_word"), "");
 		String gNameWord = StringUtil.nvl(request.getParameter("g_name_word"), "");
 		String searchWord = StringUtil.nvl(request.getParameter("search_word"), "");
@@ -90,21 +133,45 @@ public class ContentController implements ControllerV, PLog{
 		log.debug("categoryWord:{}", categoryWord);
 		log.debug("gNameWord:{}", gNameWord);
 		log.debug("searchWord:{}", searchWord);
+		
+		if(categoryWord == "" && gNameWord == "" && searchWord != "" ) {
+			inVO.setSearchDiv("10");
+			inVO.setSearchWord(searchWord);
+		}else if (categoryWord != "" && gNameWord == "" && searchWord == "" ) {
+			inVO.setSearchDiv("20");
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord == "" && gNameWord != "" && searchWord == "" ) {
+			inVO.setSearchDiv("30");
+			inVO.setgNameWord(gNameWord);
+		}else if (categoryWord == "" && gNameWord != "" && searchWord != "" ) {
+			inVO.setSearchDiv("40");
+			inVO.setSearchWord(searchWord);
+			inVO.setgNameWord(gNameWord);
+		}else if (categoryWord != "" && gNameWord == "" && searchWord != "" ) {
+			inVO.setSearchDiv("50");
+			inVO.setSearchWord(searchWord);
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord != "" && gNameWord != "" && searchWord == "" ) {
+			inVO.setSearchDiv("60");
+			inVO.setgNameWord(gNameWord);
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord != "" && gNameWord != "" && searchWord != "" ) {
+			inVO.setSearchDiv("70");
+			inVO.setgNameWord(gNameWord);
+			inVO.setCategoryWord(categoryWord);
+			inVO.setSearchWord(searchWord);
+		}
+		
 
 		log.debug("page_no:{}", pageNo);
 		log.debug("page_size:{}", pageSize);
-		log.debug("searchDiv:{}", searchDiv);
 
 		inVO.setPageNo(Integer.parseInt(pageNo));
 		inVO.setPageSize(Integer.parseInt(pageSize));
-		inVO.setSearchDiv(searchDiv);
 		
-		inVO.setSearchDiv(searchDiv);
 		inVO.setCategoryWord(categoryWord);
 		inVO.setgNameWord(gNameWord);
-		inVO.setSearchDiv(searchWord);
 		
-		log.debug("searchDiv:{}", searchDiv);
 		log.debug("categoryWord:{}", categoryWord);
 		log.debug("gNameWord:{}", gNameWord);
 		log.debug("searchWord:{}", searchWord);
@@ -144,12 +211,12 @@ public class ContentController implements ControllerV, PLog{
 		request.setAttribute("vo", inVO);
 		log.debug("inVO: {}", inVO);
 
-		return viewName = new JView("/content/travel_main.jsp");
+		return viewName = new JView("/resources/pages/content/travel_main.jsp");
 	}
 	
 	public JView doRetrieve2(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		log.debug("-----------------");
-		log.debug("doRetrieve()");
+		log.debug("doRetrieve2()");
 		log.debug("-----------------");
 		
 		HttpSession session = request.getSession();
@@ -165,7 +232,6 @@ public class ContentController implements ControllerV, PLog{
 		String pageSize = StringUtil.nvl(request.getParameter("page_size"), "10");
 
 		
-		String searchDiv = StringUtil.nvl(request.getParameter("search_div"), "");
 		String categoryWord = StringUtil.nvl(request.getParameter("category_word"), "");
 		String gNameWord = StringUtil.nvl(request.getParameter("g_name_word"), "");
 		String searchWord = StringUtil.nvl(request.getParameter("search_word"), "");
@@ -173,21 +239,45 @@ public class ContentController implements ControllerV, PLog{
 		log.debug("categoryWord:{}", categoryWord);
 		log.debug("gNameWord:{}", gNameWord);
 		log.debug("searchWord:{}", searchWord);
+		
+		if(categoryWord == "" && gNameWord == "" && searchWord != "" ) {
+			inVO.setSearchDiv("10");
+			inVO.setSearchWord(searchWord);
+		}else if (categoryWord != "" && gNameWord == "" && searchWord == "" ) {
+			inVO.setSearchDiv("20");
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord == "" && gNameWord != "" && searchWord == "" ) {
+			inVO.setSearchDiv("30");
+			inVO.setgNameWord(gNameWord);
+		}else if (categoryWord == "" && gNameWord != "" && searchWord != "" ) {
+			inVO.setSearchDiv("40");
+			inVO.setSearchWord(searchWord);
+			inVO.setgNameWord(gNameWord);
+		}else if (categoryWord != "" && gNameWord == "" && searchWord != "" ) {
+			inVO.setSearchDiv("50");
+			inVO.setSearchWord(searchWord);
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord != "" && gNameWord != "" && searchWord == "" ) {
+			inVO.setSearchDiv("60");
+			inVO.setgNameWord(gNameWord);
+			inVO.setCategoryWord(categoryWord);
+		}else if (categoryWord != "" && gNameWord != "" && searchWord != "" ) {
+			inVO.setSearchDiv("70");
+			inVO.setgNameWord(gNameWord);
+			inVO.setCategoryWord(categoryWord);
+			inVO.setSearchWord(searchWord);
+		}
+		
 
 		log.debug("page_no:{}", pageNo);
 		log.debug("page_size:{}", pageSize);
-		log.debug("searchDiv:{}", searchDiv);
 
 		inVO.setPageNo(Integer.parseInt(pageNo));
 		inVO.setPageSize(Integer.parseInt(pageSize));
-		inVO.setSearchDiv(searchDiv);
 		
-		inVO.setSearchDiv(searchDiv);
 		inVO.setCategoryWord(categoryWord);
 		inVO.setgNameWord(gNameWord);
-		inVO.setSearchDiv(searchWord);
 		
-		log.debug("searchDiv:{}", searchDiv);
 		log.debug("categoryWord:{}", categoryWord);
 		log.debug("gNameWord:{}", gNameWord);
 		log.debug("searchWord:{}", searchWord);
@@ -195,7 +285,7 @@ public class ContentController implements ControllerV, PLog{
 		log.debug("inVO:{}", inVO);
 
 		// service call
-		List<ContentDTO> list = service.doRetrieve(inVO);
+		List<ContentDTO> list = service.doRetrieve2(inVO);
 
 		// return 데이터 확인
 		int i = 0;
@@ -206,10 +296,6 @@ public class ContentController implements ControllerV, PLog{
 		// UI 데이터 전달
 		request.setAttribute("list", list);
 		
-		//paging : 총글수 : totalCnt,
-		//currentPageNo   : pagNo
-		//rowPerPage      : pageSize
-		//bottomCount     : 10
 		int bottomCount = 10;
 		int totalCnt = 0; //총 글수
 		
@@ -227,7 +313,7 @@ public class ContentController implements ControllerV, PLog{
 		request.setAttribute("vo", inVO);
 		log.debug("inVO: {}", inVO);
 
-		return viewName = new JView("/content/travel_main.jsp");
+		return viewName = new JView("/resources/pages/content/restaurant_main.jsp");
 	}
 	
 	@Override
@@ -251,6 +337,9 @@ public class ContentController implements ControllerV, PLog{
 			break;
 		case "doSelectOne":
 			viewName = doSelectOne(request, response);
+			break;
+		case "doSelectOne2":
+			viewName = doSelectOne2(request, response);
 			break;
 		default:
 			log.debug("ContentController을 확인 하세요. workDiv:{}" + workDiv);
