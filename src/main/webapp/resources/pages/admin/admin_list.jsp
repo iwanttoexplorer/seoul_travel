@@ -9,7 +9,6 @@
 <%
     List<UserDTO> list = (List<UserDTO>)request.getAttribute("userList");
 %>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,8 +69,8 @@ function doRetrieve() {
                     var userPw = $("<td></td>").addClass("userPw").html(user.userPw);
                     var regDt = $("<td></td>").addClass("regDt").html(user.regDt);
 
-                    var editButton = $("<button>수정</button>").addClass("btn btn-primary btn-sm ml-1");
-                    editButton.click(function() {
+                    var updateButton = $("<button>수정</button>").addClass("btn btn-primary btn-sm ml-1");
+                    updateButton.click(function() {
                         // 편집 동작 구현
                         doUpdate(user.userId); 
                     });
@@ -79,10 +78,10 @@ function doRetrieve() {
                     var deleteButton = $("<button>삭제</button>").addClass("btn btn-danger btn-sm ml-1");
                     deleteButton.click(function() {
                         // 삭제 동작 구현
-                        doDelete(user.userId); 
+                        doDeleteUser(user.userId); 
                     });
 
-                    var buttonCell = $("<td></td>").append(editButton).append(deleteButton);
+                    var buttonCell = $("<td></td>").append(updateButton).append(deleteButton);
 
                     userRow.append(userName, userEmail, userId, userPw, regDt, buttonCell);
                     uList.append(userRow);
@@ -98,7 +97,7 @@ function doRetrieve() {
     });
 }
 
-function doUpdate(userId){
+/* function doUpdate(){
 	if(confirm('회원 정보가 수정됩니다!')){
     $.ajax({
         type: "POST", 
@@ -107,7 +106,7 @@ function doUpdate(userId){
         dataType:"json",
         data:{
 	        	"work_div": "doUpdate",
-	            "ajax": true
+	            "ajax": true,
         },
         success:function(response){
             const messageVO = JSON.parse(response);
@@ -123,49 +122,36 @@ function doUpdate(userId){
         }
     });
   }
+} */
 
-function doDelete(usersId){
+function doDeleteUser(userId){
     if(confirm('회원 정보가 삭제됩니다!')){
         $.ajax({
-            type: "POST", 
+            type: "DELETE", 
             url:"/SEOUL_TRAVEL/admin/admin.do",
-            dataType:"json",
+            dataType:"JSON",
             data:{
-	            	"work_div": "doDelete",
-	                "ajax": true
+                "work_div": "doDeleteUser",
+                "ajax": true,
+                "userId": userId 
             },
             success:function(response){
-                const messageVO = JSON.parse(response);
+                const messageVO = response; // 응답을 JSON으로 받아 파싱
                 if("1" === messageVO.messageId){
                     alert(messageVO.msgContents);
-                    window.location.href= "http://localhost:8080/SEOUL_TRAVEL/resources/pages/admin/admin_list.jsp";
-                }else{
+                    window.location.href = "http://localhost:8080/SEOUL_TRAVEL/resources/pages/admin/admin_list.jsp";
+                } else {
                     alert(messageVO.msgContents);
                 }
             },
             error:function(data){
-                console.log("error:"+data);
+                console.log("error:", data);
+                alert("회원 정보를 삭제하는 도중 오류가 발생했습니다.");
             }
         });
     }
-  }
+}
 
-/* function doSelectOne(){
-    // 폼 요소 선택
-    let frm = document.getElementById("userForm");
-    if (frm) {
-        // 폼 데이터 설정
-        frm.work_div.value = "doSelectOne";
-        frm.user_id.value = "";  // 유저 아이디 설정
-        frm.action = "/admin/admin.do";
-        
-        // 폼 제출
-        frm.submit();
-    } else {
-        console.error("Element with id 'board_frm' not found.");
-    }
-
-} */
 
 </script>
 </head>
@@ -174,7 +160,6 @@ function doDelete(usersId){
     <div class="page-header mb-4">
         <h2>회원 목록</h2>
     </div>   
-   <!-- 회원 목록을 표시할 테이블 -->
     <table id="user-list" class="user-table">
         <thead>
             <tr>
@@ -191,12 +176,6 @@ function doDelete(usersId){
     </table>
 </div>
     
-<!-- 회원 상세 정보를 전달할 폼 -->
-<form id="userForm" method="post" style="display:none;">
-    <input type="hidden" name="userId" id="userId">
-    <input type="hidden" name="work_div" id="work_div">
-</form>
-
 <script src="/SEOUL_TRAVEL/assets/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
