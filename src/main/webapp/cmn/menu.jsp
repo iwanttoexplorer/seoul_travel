@@ -95,6 +95,7 @@ document.addEventListener("DOMContentLoaded", function(){
                 "work_div":"logout"
         },success:function(data){
             console.log("success data:"+data);
+            location.reload();
         },
         error:function(data){
                 console.log("error:"+data);
