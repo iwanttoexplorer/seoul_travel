@@ -22,12 +22,12 @@
     #user-list {
         width: 100%; /* 테이블 전체 너비를 100%로 설정 */
     }
-
+	
     #user-list th, #user-list td {
         text-align: center; /* 열의 텍스트 가운데 정렬 */
         padding: 10px; /* 셀의 패딩 설정 */
     }
-
+	
     #user-list .userName {
         width: 20%; /* 이름 열의 너비를 20%로 설정 */
     }
