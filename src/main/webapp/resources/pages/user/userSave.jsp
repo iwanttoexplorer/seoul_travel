@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function(){
             
             if(data === '회원가입을 축하합니다.'){
             	alert(data);
-            	window.location.href="/SEOUL_TRAVEL/resources/pages/main/mainpage.html";
+            	window.location.href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp";
             }else{
             	alert(data);
             }
