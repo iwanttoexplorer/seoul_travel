@@ -5,16 +5,16 @@
 <%@page import="com.pcwk.ehr.cmn.SearchDTO"%>
 <%@page import="com.pcwk.ehr.cmn.ContentsSearchDTO"%>
 <%@page import="com.pcwk.tvl.content.ContentDao"%>
+<%@page import="com.pcwk.tvl.user.UserDTO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
     List<ContentDTO> list = (List<ContentDTO>)request.getAttribute("list");
-    
     ContentsSearchDTO searchCon = (ContentsSearchDTO)request.getAttribute("vo");
-    
     List<ContentsSearchDTO> pageCode = (List<ContentsSearchDTO>)request.getAttribute("page");
     List<ContentsSearchDTO> searchCode = (List<ContentsSearchDTO>)request.getAttribute("boardSearchList");
+    UserDTO user = (UserDTO)session.getAttribute("user");
     
  %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -64,10 +64,36 @@ document.addEventListener("DOMContentLoaded", function(){
   }
   
   function moveToReview(){
-	   console.log('moveToReview()');
-	   alert("리뷰 쓰기로 이동 합니다.");
-	   window.location.href= "/SEOUL_TRAVEL/resources/pages/review/review_write.jsp";
-	 }
+	    console.log('moveToReview()');
+	    
+	     <%if(user != null){ %> 
+	      alert("리뷰 쓰기로 이동 합니다.");
+	      console.log(${outVO.contentId});
+	      
+	      $.ajax({
+	          type: "GET", 
+	          url:"/SEOUL_TRAVEL/content/content.do",
+	          asyn:"true",
+	          dataType:"html",
+	          data:{
+	              "work_div":"moveToReview",
+	              "contentid": $("#contentid").val()
+	          },
+	          success:function(response){//통신 성공
+	              console.log("success response:"+response);
+	          },
+	          error:function(response){//실패시 처리
+	                  console.log("error:"+response);
+	          }
+	      });
+	      
+	    window.location.href= "/SEOUL_TRAVEL/resources/pages/review/review_write.jsp";
+	    <%}else{%>
+	      alert("로그인 후 작성 가능합니다.");
+	      window.location.href= "/SEOUL_TRAVEL/resources/pages/user/login.jsp";
+	    <%}%>
+	    
+	  }
   
   initMap();
   

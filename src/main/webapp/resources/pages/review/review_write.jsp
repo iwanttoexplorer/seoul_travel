@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function(){
     <form id="reviewForm">
         <div class="mb-3">
             <label for="contentid" class="form-label">Content ID</label>
-             <input disabled="disabled" type="text" class="form-control" name="contentid" id="contentid"  value="${outVO.getContentId}">
+             <input type="text" class="form-control" name="contentid" id="contentid" value="<c:out value='${outVO.contentId}' escapeXml='true' />">
         </div>
         <div class="mb-3">
             <label for="user_id" class="form-label">User ID</label>

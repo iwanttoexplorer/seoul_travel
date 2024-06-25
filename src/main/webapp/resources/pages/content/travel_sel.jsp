@@ -1,3 +1,4 @@
+<%@page import="com.pcwk.tvl.user.UserDTO"%>
 <%@page import="org.apache.jasper.runtime.PageContextImpl"%>
 <%@page import="com.pcwk.ehr.cmn.StringUtil"%>
 <%@page import="com.pcwk.tvl.content.ContentDTO"%>
@@ -14,6 +15,7 @@
     ContentsSearchDTO searchCon = (ContentsSearchDTO)request.getAttribute("vo");
     List<ContentsSearchDTO> pageCode = (List<ContentsSearchDTO>)request.getAttribute("page");
     List<ContentsSearchDTO> searchCode = (List<ContentsSearchDTO>)request.getAttribute("boardSearchList");
+    UserDTO user = (UserDTO)session.getAttribute("user");
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="CP" value="${pageContext.request.contextPath }" />
@@ -61,30 +63,34 @@ document.addEventListener("DOMContentLoaded", function(){
   
   function moveToReview(){
     console.log('moveToReview()');
-    alert("리뷰 쓰기로 이동 합니다.");
-    console.log(${outVO.contentId});
-   
-    $.ajax({
-        type: "POST", 
-        url:"/SEOUL_TRAVEL/content/content.do",
-        dataType:"json",
-        data:{
-            "contentId": document.querySelector("#contentId").value
-        },
-        success:function(response){
-            if(response.success){
-                alert("리뷰 쓰기로 이동 되었습니다.");
-                window.location.href= "/SEOUL_TRAVEL/resources/pages/review/review_write.jsp";
-            } else {
-                alert("리뷰 쓰기로 이동 실패.");
-            }
-        },
-        error:function(){
-            alert("오류가 발생했습니다.");
-        }
-    });
     
-    //window.location.href= "/SEOUL_TRAVEL/resources/pages/review/review_write.jsp";
+     <%if(user != null){ %> 
+	    alert("리뷰 쓰기로 이동 합니다.");
+	    console.log(${outVO.contentId});
+	    
+	    $.ajax({
+	        type: "GET", 
+	        url:"/SEOUL_TRAVEL/content/content.do",
+	        asyn:"true",
+	        dataType:"html",
+	        data:{
+	            "work_div":"moveToReview",
+	            "contentid": $("#contentid").val()
+	        },
+	        success:function(response){//통신 성공
+	            console.log("success response:"+response);
+	        },
+	        error:function(response){//실패시 처리
+	                console.log("error:"+response);
+	        }
+	    });
+	    
+    window.location.href= "/SEOUL_TRAVEL/resources/pages/review/review_write.jsp";
+    <%}else{%>
+    	alert("로그인 후 작성 가능합니다.");
+    	window.location.href= "/SEOUL_TRAVEL/resources/pages/user/login.jsp";
+    <%}%>
+    
   }
   
   initMap();
