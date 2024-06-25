@@ -15,7 +15,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="/SEOUL_TRAVEL/assets/css/bootstrap.css">
-<title>✈︎관리자_회원 목록✈︎</title>
+<title>✈︎관리자 회원 목록✈︎</title>
 <link rel="stylesheet" href="/SEOUL_TRAVEL/assets/css/poster.css">
 <script src="/SEOUL_TRAVEL/assets/js/jquery_3_7_1.js"></script>
 <style>
@@ -69,7 +69,7 @@ function doRetrieve() {
                     var userPw = $("<td></td>").addClass("userPw").html(user.userPw);
                     var regDt = $("<td></td>").addClass("regDt").html(user.regDt);
 
-                    var updateButton = $("<button>수정</button>").addClass("btn btn-primary btn-sm ml-1");
+                    /* var updateButton = $("<button>수정</button>").addClass("btn btn-primary btn-sm ml-1");
                     updateButton.click(function() {
                         // 편집 동작 구현
                         doUpdate(user.userId); 
@@ -78,12 +78,12 @@ function doRetrieve() {
                     var deleteButton = $("<button>삭제</button>").addClass("btn btn-danger btn-sm ml-1");
                     deleteButton.click(function() {
                         // 삭제 동작 구현
-                        doDeleteUser(user.userId); 
+                        doDelete(user.userId); 
                     });
 
-                    var buttonCell = $("<td></td>").append(updateButton).append(deleteButton);
+                    var buttonCell = $("<td></td>").append(updateButton).append(deleteButton); */
 
-                    userRow.append(userName, userEmail, userId, userPw, regDt, buttonCell);
+                    userRow.append(userName, userEmail, userId, userPw, regDt);
                     uList.append(userRow);
                 });
             }
@@ -100,7 +100,7 @@ function doRetrieve() {
 /* function doUpdate(){
 	if(confirm('회원 정보가 수정됩니다!')){
     $.ajax({
-        type: "POST", 
+        type: "PUT", 
         url:"/SEOUL_TRAVEL/admin/admin.do",
         asyn:"true",
         dataType:"json",
@@ -124,14 +124,14 @@ function doRetrieve() {
   }
 } */
 
-function doDeleteUser(userId){
+/* function doDelete(userId){
     if(confirm('회원 정보가 삭제됩니다!')){
         $.ajax({
             type: "DELETE", 
             url:"/SEOUL_TRAVEL/admin/admin.do",
             dataType:"JSON",
             data:{
-                "work_div": "doDeleteUser",
+                "work_div": "doDelete",
                 "ajax": true,
                 "userId": userId 
             },
@@ -150,7 +150,7 @@ function doDeleteUser(userId){
             }
         });
     }
-}
+} */
 
 
 </script>
@@ -172,7 +172,7 @@ function doDeleteUser(userId){
             </tr>
         </thead>
         <tbody>
-        </tbody>
+        </tbody>       
     </table>
 </div>
     
