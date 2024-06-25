@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function(){
 	console.log(slide.length);
 	
 	showSlides();
-	
+	ajaxTopLikes();
 // 3초마다 메인 화면 이미지 변경
 function showSlides() {
 	  console.log('showSlides start: ',slideIndex);
@@ -101,6 +101,11 @@ function ajaxTopLikes(){
                     itemDiv.append(title);
                     itemDiv.append(userId);
                     itemDiv.append(likeCount);
+                    itemDiv.click(function() {
+                        var aboardSeq = review.aboardSeq;
+                        var url = "/SEOUL_TRAVEL/resources/pages/review/review_detail.jsp?aboardSeq=" + aboardSeq;
+                        window.location.href = url;
+                    });
 
                     recommendationsDiv.append(itemDiv);
                 });
@@ -112,7 +117,7 @@ function ajaxTopLikes(){
         }
 	})	
 }
-ajaxTopLikes();
+
 </script>
 </head>
 <body>
@@ -137,25 +142,6 @@ ajaxTopLikes();
     
 </div>
 <jsp:include page="/cmn/footer.jsp"></jsp:include>
-<script>
-    let slideIndex = 0;
-    const slides = document.querySelectorAll('.slide');
-    const totalSlides = slides.length;
 
-    function showSlides() {
-        slides.forEach((slide, index) => {
-            slide.style.transform = `translateX(${(index - slideIndex) * 100}%)`;
-        });
-    }
-
-    function nextSlide() {
-        slideIndex = (slideIndex + 1) % totalSlides;
-        showSlides();
-    }
-
-    setInterval(nextSlide, 3000); // 3초마다 슬라이드 넘김
-
-    document.addEventListener('DOMContentLoaded', showSlides);
-</script>
 </body>
 </html>

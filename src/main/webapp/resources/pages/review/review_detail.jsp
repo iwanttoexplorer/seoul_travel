@@ -44,58 +44,8 @@
 		ajaxdoSelectOne();
 		ajaxGetComments(aboardSeq);
 		// 추천 버튼 클릭 시
-        $("#likeBtn").click(function() {
-            ajaxDoLike();
-        });
-        ajaxGetLikeCount();
-        function ajaxDoLike() {
-        	if(userId=="null"){
-        		alert("로그인 후 추천이 가능합니다.");
-        		return;
-        	}
-            $.ajax({
-                type: "POST",
-                url: "/SEOUL_TRAVEL/review/review.do",
-                dateType:"html",
-                data: {
-                    "userId": "<%= userId %>",
-                    "aboardSeq": aboardSeq,
-                    "work_div": "doLikeSave",
-                    "ajax": true
-                },
-                success: function(response) {
-                	console.log("userId: "+userId);
-                    alert('추천하였습니다.');
-                    
-                	
-                },
-                error: function(error) {
-                    console.log("Error:", error);
-                }
-            });
-        	
-        }
-        function ajaxGetLikeCount() {
-            $.ajax({
-                type: "POST",
-                url: "/SEOUL_TRAVEL/review/review.do",
-                dataType: "html",
-                data: {
-                	"work_div": "doLikeCount",
-                    "aboardSeq": aboardSeq,
-                    "ajax": true
-                },
-                success: function(response) {
-                	console.log("success:", response);
-                	$("#likeCount").text(response);
-                   
-                },
-                error: function(error) {
-                    console.log("Error:", error);
-                    
-                }
-            });
-        }
+        
+        
    	 
 	        saveCommentBtn.addEventListener("click", function() {
 	            const commentContent = document.querySelector("#commentContent").value;
@@ -103,11 +53,133 @@
 	        });
 	    
 
-	    
-		
-		
-	});//document end
+	        ajaxGetLikeCount();
+	        var userId = "<%= userId %>";
+	        var liked = false; // 추천 상태를 저장하는 변수
+	        updateLikeButton();
+	        
+		    // 추천 버튼 클릭 시 동작
+		    $("#likeBtn").click(function() {
+		    <% if(userId != null) { %>
+		        if (!liked) {
+		            ajaxDoLike(); // 추천 추가
+		        } else {
+		            ajaxDoLikeDelete(); // 추천 취소
+		        }
+		    <% } else { %>
+		        alert("로그인 후 가능합니다.");
+		    <% } %>
+			});
 
+		 // 추천 상태에 따라 버튼을 업데이트하는 함수
+		    function updateLikeButton() {
+		        ajaxGetLikeStatus(); // 추천 상태 확인 Ajax 호출
+		    }
+
+		    // 추천 상태를 가져오는 Ajax 함수
+		    function ajaxGetLikeStatus() {
+		        $.ajax({
+		            type: "POST",
+		            url: "/SEOUL_TRAVEL/review/review.do",
+		            dataType: "json",
+		            data: {
+		                "work_div": "getLikeStatus",
+		                "aboardSeq": aboardSeq,
+		                "userId": userId,
+		                "ajax": true
+		            },
+		            success: function(response) {
+		                liked = response.liked; // 서버에서 받아온 추천 상태 업데이트
+		                updateLikeButtonUI(); // 버튼 UI 업데이트
+		                
+		            },
+		            error: function(error) {
+		                console.log("Error:", error);
+		            }
+		        });
+		    }
+
+		    // 추천 버튼 UI 업데이트 함수
+		    function updateLikeButtonUI() {
+		        var likeBtn = $("#likeBtn");
+		        if (liked) {
+		            likeBtn.text("추천 취소"); // 추천 취소 상태로 변경
+		            likeBtn.addClass("btn-danger"); // 추천 취소 스타일
+		        } else {
+		            likeBtn.text("추천"); // 추천 가능한 상태로 변경
+		            likeBtn.removeClass("btn-danger"); // 추천 취소 스타일 제거
+		        }
+		    }
+
+		    // 추천 추가 Ajax 함수
+		    function ajaxDoLike() {
+		        $.ajax({
+		            type: "POST",
+		            url: "/SEOUL_TRAVEL/review/review.do",
+		            dataType: "html",
+		            data: {
+		                "userId": userId,
+		                "aboardSeq": aboardSeq,
+		                "work_div": "doLikeSave",
+		                "ajax": true
+		            },
+		            success: function(response) {
+		                liked = true; // 추천 추가 성공 시 추천 상태 업데이트
+		                updateLikeButtonUI(); // 버튼 UI 업데이트
+		                alert('추천하였습니다.');
+		                ajaxGetLikeCount();
+		                
+		            },
+		            error: function(error) {
+		                console.log("Error:", error);
+		            }
+		        });
+		    }
+
+		    // 추천 취소 Ajax 함수
+		    function ajaxDoLikeDelete() {
+		        $.ajax({
+		            type: "POST",
+		            url: "/SEOUL_TRAVEL/review/review.do",
+		            dataType: "html",
+		            data: {
+		                "userId": userId,
+		                "aboardSeq": aboardSeq,
+		                "work_div": "doLikeDelete",
+		                "ajax": true
+		            },
+		            success: function(response) {
+		                liked = false; // 추천 취소 성공 시 추천 상태 업데이트
+		                updateLikeButtonUI(); // 버튼 UI 업데이트
+		                alert('추천을 취소하였습니다.');
+		                ajaxGetLikeCount();
+		            },
+		            error: function(error) {
+		                console.log("Error:", error);
+		            }
+		        });
+		    }
+		    function ajaxGetLikeCount() {
+		        $.ajax({
+		            type: "POST",
+		            url: "/SEOUL_TRAVEL/review/review.do",
+		            dataType: "html",
+		            data: {
+		                "work_div": "doLikeCount",
+		                "aboardSeq": aboardSeq,
+		                "ajax": true
+		            },
+		            success: function(response) {
+		                console.log("success:", response);
+		                $("#likeCount").text(response);
+		            },
+		            error: function(error) {
+		                console.log("Error:", error);
+		            }
+		        });
+		    }
+		});
+	
 	function ajaxGetComments(aboardSeq) {
 	    const data = {
 	        "work_div": "getComments",
@@ -233,6 +305,7 @@
 	        }
 	    });
 	}
+	
 
 	function ajaxUpdateComment(comSeq, newContent, aboardSeq) {
         const data = {
@@ -333,6 +406,17 @@
              }
          });
      }
+	
+		function updateLikeButton() {
+		    var likeBtn = $("#likeBtn");
+		    if (liked) {
+		        likeBtn.text("추천 취소"); // 버튼 텍스트 변경
+		        likeBtn.removeClass("btn-primary").addClass("btn-danger"); // 추천 취소 버튼 스타일 적용
+		    } else {
+		        likeBtn.text("추천"); // 버튼 텍스트 변경
+		        likeBtn.removeClass("btn-danger").addClass("btn-primary"); // 추천 버튼 스타일 적용
+		    }
+		}
 	
 	
 	

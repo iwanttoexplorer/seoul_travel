@@ -57,6 +57,26 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
 		out.print(flag);
     	return null;
     }
+    public JView doLikeDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	log.debug("---------------------");
+        log.debug("doLikeDelete()");
+        log.debug("---------------------");
+        
+        String userId = StringUtil.nvl(request.getParameter("userId"), "");
+        String aboardSeq = StringUtil.nvl(request.getParameter("aboardSeq"),"");
+        log.debug("userId: {}",userId);
+        log.debug("aboardSeq: {}",aboardSeq);
+        LikeDTO like = new LikeDTO();
+        like.setUserId(userId);
+        like.setAboardSeq(Integer.parseInt(aboardSeq));
+        int flag = reviewService.doLikeDelete(like);
+        log.debug("Delete flag:{}", flag);
+        response.setContentType("text/html; charset=UTF-8");
+        PrintWriter out =  response.getWriter();
+		out.print(flag);
+    	return null;
+        
+    }
     public JView doLikeCount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	log.debug("---------------------");
         log.debug("doLikeCount()");
@@ -214,7 +234,7 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
         return viewName;
     }
     */
-      
+    
     public JView doSelectOne(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("-----------------");
         log.debug("doSelectOne()");
@@ -264,6 +284,9 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
             	break;
             case "TopLikeReviews":
             	viewName = TopLikeReviews(request, response);
+            	break;
+            case "doLikeDelete":
+            	viewName = doLikeDelete(request, response);
             	break;
                 /*
             case "doRetrieveDetail":

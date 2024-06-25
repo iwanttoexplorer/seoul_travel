@@ -116,8 +116,42 @@ public class LikeDao implements PLog,WorkDiv<LikeDTO>{
 
 	@Override
 	public int doDelete(LikeDTO param) {
-		// TODO Auto-generated method stub
-		return 0;
+		int flag=0;
+		Connection conn = connectionMaker.getConnection();
+        PreparedStatement pstmt = null;
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("DELETE FROM v_like WHERE (user_id = ? AND aboard_seq = ?)           \n");
+      
+        log.debug("1.sql:{}", sb.toString());
+        log.debug("2.conn:{}", conn);
+        log.debug("3.param:{}", param);
+
+        try {
+            // preparestatement << 사용 금지!!! 해킹가능성!!!
+            pstmt = conn.prepareCall(sb.toString());
+            log.debug("4.pstmt:{}", pstmt);
+            
+            // param 설정
+            pstmt.setString(1, param.getUserId());
+            pstmt.setInt(2, param.getAboardSeq());
+
+            // DML
+            flag = pstmt.executeUpdate();
+
+
+           
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            DBUtill.close(conn, pstmt);
+            log.debug("5.finally conn:{} pstmt:{}", conn, pstmt);
+        }
+
+        log.debug("6.flag:{}", flag);
+
+        return flag;
 	}
 
 	@Override

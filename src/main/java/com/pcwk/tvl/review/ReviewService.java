@@ -29,7 +29,9 @@ public class ReviewService {
     public int doLikeSave(LikeDTO like) {
     	return likeDao.doSave(like);
     }
-    
+    public int doLikeDelete(LikeDTO like) {
+    	return likeDao.doDelete(like);
+    }
     // 페이징된 리뷰 목록을 가져오는 메서드
     public List<ReviewDTO> getReviews(int pageNumber, int pageSize) throws SQLException {
         return reviewDao.getReviews(pageNumber, pageSize);

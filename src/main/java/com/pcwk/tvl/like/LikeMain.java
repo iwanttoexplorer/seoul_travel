@@ -25,9 +25,16 @@ public class LikeMain implements PLog{
 		int likeCount = dao.doLike(like);
 		log.debug("추천수: {}",likeCount);
 	}
+	public void doDelete() {
+		log.debug("doDelete()");
+		int likeCount = dao.doDelete(like);
+		log.debug("추천수: {}",likeCount);
+	}
 	public static void main(String[] args) {
 		LikeMain m = new LikeMain();
-		//m.doSave();
+		m.doSave();
+		
+		//m.doDelete();
 		m.doLike();
 	}
 
