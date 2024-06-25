@@ -158,7 +158,7 @@ function doRetrieve() {
 <body>
 <div class="container">
     <div class="page-header mb-4">
-        <h2>회원 목록</h2>
+        <h2>✈︎회원 전체목록✈︎</h2>
     </div>   
     <table id="user-list" class="user-table">
         <thead>
