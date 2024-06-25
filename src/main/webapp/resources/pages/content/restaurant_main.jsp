@@ -19,7 +19,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<style>
+<style>  
     .img {
            width: 100%; 
            height: 200px; 

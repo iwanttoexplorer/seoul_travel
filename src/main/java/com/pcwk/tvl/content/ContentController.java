@@ -117,29 +117,16 @@ public class ContentController implements ControllerV, PLog{
 		JView viewName = null;
 		
 		ContentDTO inVO = new ContentDTO();
-		String contentId = StringUtil.nvl(request.getParameter("contentId"), "");
+		String contentId = StringUtil.nvl(request.getParameter("contentid"), "");
 		log.debug("contentId:" + contentId);
 		
 		inVO.setContentId(contentId);
 		log.debug("inVO:" + inVO);
+	
+		ContentDTO contentOutVO = this.service.doSelectOne(inVO);
+		log.debug("contentOutVO:" + contentOutVO);
 		
-		DTO dto = service.doSelectOne(inVO);
-		
-		MessageVO message = new MessageVO();
-		
-		if( dto instanceof ContentDTO) {
-			ContentDTO outVO = (ContentDTO) dto;
-			log.debug("성공 outVO :{}",  outVO);
-			
-		}else {
-			message = (MessageVO) dto;
-			log.debug("실패 message :{}",  message);
-		}
-		
-		ContentDTO outVO = this.service.doSelectOne(inVO);
-		log.debug("outVO:" + outVO);
-		
-		request.setAttribute("outVO", outVO);
+		request.setAttribute("contentOutVO", contentOutVO);
 		
 		return viewName = new JView("/SEOUL_TRAVEL/resources/pages/review/review_write.jsp");
 	}
