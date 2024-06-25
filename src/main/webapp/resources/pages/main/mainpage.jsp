@@ -64,6 +64,55 @@ function showSlides() {
     setTimeout(showSlides, 3000); // 3초마다 자동으로 호출
 }
 });
+function ajaxTopLikes(){
+	$.ajax({
+		type: "POST",
+        url: "/SEOUL_TRAVEL/review/review.do",
+        dataType: "json",
+        data:{
+        	"work_div":"TopLikeReviews",
+        	"ajax":true
+        },
+        success:function(response){
+        	console.log("success:",response);
+        	var recommendationsDiv = $(".item-list");
+            recommendationsDiv.empty();
+            var rList = response;
+
+            if (rList.length > 0) {
+                rList.forEach(function(review) {
+                    var itemDiv = $("<div></div>");
+                    itemDiv.addClass("item");
+
+                    var img = $("<img>");
+                    img.attr("src", review.imgLink);
+                    img.attr("alt", "Recommendation");
+
+                    var title = $("<h3></h3>");
+                    title.text(review.title);
+
+                    var userId = $("<p></p>");
+                    userId.text("작성자: " + review.userId);
+
+                    var likeCount = $("<p></p>");
+                    likeCount.text("추천수: " + review.likeCount);
+
+                    itemDiv.append(img);
+                    itemDiv.append(title);
+                    itemDiv.append(userId);
+                    itemDiv.append(likeCount);
+
+                    recommendationsDiv.append(itemDiv);
+                });
+            }
+        },
+        error:function(error){
+        	console.log("error:",error);
+        	
+        }
+	})	
+}
+ajaxTopLikes();
 </script>
 </head>
 <body>
@@ -83,24 +132,6 @@ function showSlides() {
     <div class="recommendations">
         <h2 class="section-title">추천이 가장 많은 게시물</h2>
         <div class="item-list">
-            <div class="item">
-                <img src="/SEOUL_TRAVEL/images/recommendation1.jpg" alt="Recommendation 1">
-                <h3>게시물 제목</h3>
-                <p>작성자: 작성자 이름</p>
-                <p>추천수: 15</p>
-            </div>
-            <div class="item">
-                <img src="/SEOUL_TRAVEL/images/recommendation2.jpg" alt="Recommendation 2">
-                <h3>게시물 제목</h3>
-                <p>작성자: 작성자 이름</p>
-                <p>추천수: 12</p>
-            </div>
-            <div class="item">
-                <img src="/SEOUL_TRAVEL/images/recommendation3.jpg" alt="Recommendation 3">
-                <h3>게시물 제목</h3>
-                <p>작성자: 작성자 이름</p>
-                <p>추천수: 10</p>
-            </div>
         </div>
     </div>
     

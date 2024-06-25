@@ -3,6 +3,7 @@ package com.pcwk.tvl.review;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,27 +88,24 @@ public class ReviewController extends HttpServlet implements ControllerV, PLog {
     	log.debug("---------------------");
         log.debug("TopLikeReviews()");
         log.debug("---------------------");
+        
+        	List<LikeDTO> likes = reviewService.getTopLikeCounts();
+        	log.debug("TopLikeReviews - likes: {}", likes);
 
-            // 좋아요가 많은 순으로 정렬된 좋아요 목록을 가져옴
-            List<LikeDTO> likes = reviewService.getTopLikeCounts();
-            // 좋아요 목록을 디버그 로그에 출력
-            log.debug("TopLikeReviews - likes: {}", likes);
-
-            // 각 좋아요에 대한 리뷰 목록을 가져와서 로그에 출력
-            for (LikeDTO like : likes) {
-                int aboardSeq = like.getAboardSeq();
-                List<ReviewDTO> reviews = reviewService.getReviewsByAboardSeq(aboardSeq);
-                for (ReviewDTO review : reviews) {
-                    log.debug("TopLikeReviews - Review: {}", review);
-                }
-            }
-            Map<String, Object> result = new HashMap<>();
-            result.put("reviews", likes);
-
+	        // 좋아요 순으로 정렬된 리뷰 목록을 저장할 리스트
+	        List<ReviewDTO> topReviews = new ArrayList<>();
+	
+	        for (LikeDTO like : likes) {
+	            int aboardSeq = like.getAboardSeq();
+	            List<ReviewDTO> reviews = reviewService.getReviewsByAboardSeq(aboardSeq);
+	            topReviews.addAll(reviews);
+	        }
+	        log.debug("topReviews {}", topReviews);
             Gson gson = new Gson();
-            String json = gson.toJson(result);
+            String json = gson.toJson(topReviews);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
         
     	return null;
     }
