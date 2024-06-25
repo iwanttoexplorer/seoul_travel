@@ -57,10 +57,34 @@
             margin-right: 20px;
             color: inherit;
         }
+        .user-info {
+            margin-right: 20px;
+            color: inherit;
+        }
+        .user-info a {
+            display: block;
+            padding: 10px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            color: #007bff;
+        }
+        .user-info a:hover {
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+        }
     </style>
 <script>
 document.addEventListener("DOMContentLoaded", function(){
+  <% if(session.getAttribute("user") != null) { %>
+    // 회원상세정보
+    const userInfo = document.createElement('div');
+    userInfo.className = 'user-info';
+    userInfo.innerHTML = '<a href="http://localhost:8080/SEOUL_TRAVEL/resources/pages/admin/admin_list.jsp"><h4>회원상세정보</h4></a>';
+    document.querySelector(".container").appendChild(userInfo);
 
+<<<<<<< HEAD
   <% if(session.getAttribute("user")!=null){ %>
     //로그 아웃   
 	  let logout = document.createTextNode('로그아웃');
@@ -96,48 +120,76 @@ document.addEventListener("DOMContentLoaded", function(){
         },success:function(data){
             console.log("success data:"+data);
             location.reload();
+=======
+    // 로그아웃
+    let logout = document.createTextNode('로그아웃');
+    let logoutA = document.createElement("a");
+    let hrefNode = document.createAttribute("href");
+    let h4 = document.createElement("h4");
+
+    hrefNode.value="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp";
+    logoutA.setAttributeNode(hrefNode);
+    h4.appendChild(logout);
+    logoutA.appendChild(h4);
+
+    document.querySelector(".login").appendChild(logoutA);
+
+    const sessionBtn = document.querySelector(".login a");
+    console.log('sessionBtn');
+
+    // 이벤트
+    sessionBtn.addEventListener('click', function(){
+      console.log('sessionBtn click');
+
+      if(false == confirm('로그아웃 하시겠습니까?')){
+        return;
+      }
+
+      $.ajax({
+        type: "POST", 
+        url: "/SEOUL_TRAVEL/user/login.do",
+        asyn: "true",
+        dataType: "html",
+        data: {
+          "work_div": "logout"
+>>>>>>> bd9bb65191c2aae9192047a481e7cefa83828ce3
         },
-        error:function(data){
-                console.log("error:"+data);
+        success: function(data){
+          console.log("success data:" + data);
+        },
+        error: function(data){
+          console.log("error:" + data);
         }
       });
-	    
-            
-	  });//sessionBtn
-	  
-  <%}else{ %>
-	  //회원 가입
-	  const userSave = document.querySelector(".user-save");
-	  console.log(userSave);
-	  userSave.innerHTML = ' <a href="/SEOUL_TRAVEL/resources/pages/user/userSave.jsp"><h4>회원가입</h4></a> ';
-  
-	  //로그인
-	  let login = document.createTextNode('로그인');
-	  let loginA = document.createElement("a");
-	  let hrefNode = document.createAttribute("href");
-	  let h4 = document.createElement("h4");
-	  
-	  hrefNode.value="/SEOUL_TRAVEL/resources/pages/user/login.jsp";
-	  loginA.setAttributeNode(hrefNode);
-	  h4.appendChild(login);
-	  loginA.appendChild(h4);
-	  
-	  document.querySelector(".login").appendChild(loginA);
-	  
-  <% }%> 
-  
-  
-  
-  
-}); //DOM
+    });
+
+  <% } else { %>
+    // 회원 가입
+    const userSave = document.querySelector(".user-save");
+    console.log(userSave);
+    userSave.innerHTML = '<a href="/SEOUL_TRAVEL/resources/pages/user/userSave.jsp"><h4>회원가입</h4></a>';
+
+    // 로그인
+    let login = document.createTextNode('로그인');
+    let loginA = document.createElement("a");
+    let hrefNode = document.createAttribute("href");
+    let h4 = document.createElement("h4");
+
+    hrefNode.value="/SEOUL_TRAVEL/resources/pages/user/login.jsp";
+    loginA.setAttributeNode(hrefNode);
+    h4.appendChild(login);
+    loginA.appendChild(h4);
+
+    document.querySelector(".login").appendChild(loginA);
+  <% } %> 
+});
 </script>
 </head>
 <body>
     <nav class="navbar">
-        
         <div class="container">
             <a class="navbar-brand" href="/SEOUL_TRAVEL/resources/pages/main/mainpage.jsp">
-                <img src="/SEOUL_TRAVEL/images/logo.png" alt="Bootstrap" width="130" height="80" >
+                <img src="/SEOUL_TRAVEL/images/logo.png" alt="Bootstrap" width="130" height="80">
             </a>
             <ul class="nav">
                 <li class="nav-item">
@@ -154,5 +206,5 @@ document.addEventListener("DOMContentLoaded", function(){
             <div class="login"></div>
         </div>
     </nav>
-
+</body>
 </html>

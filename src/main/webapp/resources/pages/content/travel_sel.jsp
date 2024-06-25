@@ -16,6 +16,7 @@
     List<ContentsSearchDTO> pageCode = (List<ContentsSearchDTO>)request.getAttribute("page");
     List<ContentsSearchDTO> searchCode = (List<ContentsSearchDTO>)request.getAttribute("boardSearchList");
     UserDTO user = (UserDTO)session.getAttribute("user");
+    
 %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="CP" value="${pageContext.request.contextPath }" />
@@ -51,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function(){
   //이벤트 핸들러 등록
   moveToReviewBtn.addEventListener("click", function(event){
     console.log('moveToReviewBtn click event'+event);
+    
     moveToReview();
   });
   
@@ -63,10 +65,10 @@ document.addEventListener("DOMContentLoaded", function(){
   
   function moveToReview(){
     console.log('moveToReview()');
-    
+    console.log('contentId:'+${outVO.contentId});
      <%if(user != null){ %> 
 	    alert("리뷰 쓰기로 이동 합니다.");
-	    console.log(${outVO.contentId});
+	    //console.log(${outVO.contentId});
 	    
 	    $.ajax({
 	        type: "GET", 
@@ -74,11 +76,12 @@ document.addEventListener("DOMContentLoaded", function(){
 	        asyn:"true",
 	        dataType:"html",
 	        data:{
-	            "work_div":"moveToReview",
-	            "contentid": $("#contentid").val()
+	        	  "work_div": "moveToReview",
+	            "contentid": ${outVO.contentId}
 	        },
 	        success:function(response){//통신 성공
 	            console.log("success response:"+response);
+	            console.log(${outVO.contentId});
 	        },
 	        error:function(response){//실패시 처리
 	                console.log("error:"+response);
@@ -118,19 +121,19 @@ function initMap() {
     if (status === kakao.maps.services.Status.OK) {
       var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
-      // 결과값으로 받은 위치를 마커로 표시합니다
+      // 결과값으로 받은 위치를 마커로 표시
       var marker = new kakao.maps.Marker({
         map: map,
         position: coords
       });
 
-      // 인포윈도우로 장소에 대한 설명을 표시합니다
+      // 인포윈도우로 장소에 대한 설명을 표시
       var infowindow = new kakao.maps.InfoWindow({
         content: '<div style="width:150px;text-align:center;padding:6px 0;">' + addr + '</div>'
       });
       infowindow.open(map, marker);
 
-      // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+      // 지도의 중심을 결과값으로 받은 위치로 이동
       map.setCenter(coords);
     }
   });
@@ -139,6 +142,7 @@ function initMap() {
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=53ca7ba233962018a7a8996d89d2622a&libraries=services"></script>
 </head>
 <body>
+
 <!-- container -->
 <div class="container">
   <!-- menu -->
